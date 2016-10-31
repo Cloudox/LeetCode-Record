@@ -2,7 +2,7 @@
 LeetCode笔记
 
 ## <a name="Catalogue"/>目录
-* easy
+* Easy
  * [292.Nim Game](#292.Nim Game)
 
 
