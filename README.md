@@ -5,6 +5,7 @@ LeetCode笔记
 * Easy
  * [292.Nim Game](#292.Nim Game)
  * [258.Add Digits](#258.Add Digits)
+ * [104.Maximum Depth of Binary Tree](#104.Maximum Depth of Binary Tree)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -137,6 +138,87 @@ public:
 ```
 
 示例工程：[https://github.com/Cloudox/AddDigits](https://github.com/Cloudox/AddDigits)
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="104.Maximum Depth of Binary Tree"/>104.Maximum Depth of Binary Tree
+###问题：
+>Given a binary tree, find its maximum depth.
+
+>The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+###大意：
+>给出一个二叉树，找到其最大的深度。
+>最大深度是指从根节点到最远的叶子节点的最长距离的节点数。
+
+###思路：
+要探索二叉树的深度，用递归比较方便。我们题目要求的函数返回根节点的深度，那么就做到对二叉树上每个节点调用此函数都返回其作为根节点看待时的深度。比如，所有叶子节点的深度都是1，再往上就是2、3...一直到root根节点的返回值就是最大的深度。
+对于每个节点，我们先判断其本身是否是节点，如果是一个空二叉树，那么就应该返回0。
+然后，我们定义两个变量，一个左节点深度，一个右节点深度。我们分别判断其有无左节点和右节点，两种节点中的做法都是一样的，假设没有左节点，那么就左节点深度变量就是1，有左节点的话，左节点深度变量就是对左节点调用此函数返回的结果加1；对右节点也做同样的操作。
+最后比较左节点深度和右节点深度，判断谁比较大，就返回哪个变量。这样就能一层一层地递归获取最大深度了。
+
+###代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root != null) {// 有此节点
+	        int rightResult;
+	        int leftResult;
+	        if (root.left != null) {// 有左节点
+				leftResult = maxDepth(root.left) + 1;
+			} else {// 无左节点
+				leftResult = 1;
+			}
+			if (root.right != null) {// 有右节点
+				rightResult = maxDepth(root.right) + 1;
+			} else {// 无右节点
+				rightResult = 1;
+			}
+			// 判断哪边更深，返回更深的深度
+            return leftResult > rightResult ? leftResult : rightResult;
+        } else {// 无此节点，返回0
+            return 0;
+        }
+    }
+}
+```
+
+不过我们稍加思考一下，就可以进一步简略一下代码。因为我们代码里对于root为null的情况下返回的是0，那其实没有左节点时，对齐使用函数返回的也会是0，加1的话就是我们需要的1了，所以其实不用判断有无左节点，右节点也是一样。所以可以简化如下：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root != null) {
+	        int rightResult = maxDepth(root.left) + 1;
+	        int leftResult = maxDepth(root.right) + 1;
+            return leftResult > rightResult ? leftResult : rightResult;
+        } else {
+            return 0;
+        }
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
