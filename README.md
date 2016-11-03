@@ -6,6 +6,7 @@ LeetCode笔记
  * [292.Nim Game](#292.Nim Game)
  * [258.Add Digits](#258.Add Digits)
  * [104.Maximum Depth of Binary Tree](#104.Maximum Depth of Binary Tree)
+ * [226. Invert Binary Tree](#226. Invert Binary Tree)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -223,5 +224,101 @@ public class Solution {
 [回到目录](#Catalogue)
 
 -------------------------
+
+## <a name="226. Invert Binary Tree"/>226. Invert Binary Tree
+###问题：
+
+> Invert a binary tree.
+>![](http://img.blog.csdn.net/20160326150503290)
+>to
+>![](http://img.blog.csdn.net/20160326150528760)
+>
+>Trivia:
+>Google: 90% of our engineers use the software you wrote (Homebrew), >but you can’t invert a binary tree on a whiteboard so fuck off.
+
+###大意：
+
+> 反转一个二叉树。
+> 从
+> ![](http://img.blog.csdn.net/20160326150503290)
+> 到
+> ![](http://img.blog.csdn.net/20160326150528760)
+> 
+> 琐事：
+> Google表示如果你连反转二叉树都做不到就滚吧。
+
+###思路：
+对于二叉树的每个子节点的左右节点都要反转，我们还是用递归，对每个节点都调用函数，这样就都可以反转了。就同置换变量的数字一样，我们可以创建两个新的节点对象，然后分别等同于其左右子节点，然后将其左节点变成其右节点的新对象，将其右节点变成其左节点的新对象，就可以了。同时我们对每个子节点都要进行同样的操作。还有一点很重要不要忘记了，我们一开始要先判断此节点是否为null，不为null才进行操作。
+
+###代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {// 节点为空，不处理
+            return null;
+        } else {// 节点不为空
+            TreeNode leftNode;// 左节点新对象
+            TreeNode rightNode;// 右节点新对象
+            if (root.left != null) {
+                leftNode = invertTree(root.left);//对其子节点进行同样的操作，并赋给新对象
+            } else {
+                leftNode = null;
+            }
+            if (root.right != null) {
+                rightNode = invertTree(root.right);//对其子节点进行同样的操作，并赋给新对象
+            } else {
+                rightNode = null;
+            }
+            // 反转左右子节点
+            root.left = rightNode;
+            root.right = leftNode;
+            return root;
+        }
+    }
+}
+```
+
+###精简代码（Java）：
+我们在处理其子节点时，也判断了是否是null的情况，但其实我们函数中对本节点就会进行一次判断，也就是说如果子节点为null，那么函数本身就会返回null，用不着特意处理了。所以可以精简一下：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        } else {
+            TreeNode leftNode = invertTree(root.left);
+            TreeNode rightNode = invertTree(root.right);
+            root.left = rightNode;
+            root.right = leftNode;
+            return root;
+        }
+    }
+}
+```
+[回到目录](#Catalogue)
+
+-------------------------
+
+不断更新中...
 
 更多内容查看[我的博客](http://blog.csdn.net/column/details/cloudox-column2.html)
