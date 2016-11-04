@@ -7,6 +7,7 @@ LeetCode笔记
  * [258.Add Digits](#258.Add Digits)
  * [104.Maximum Depth of Binary Tree](#104.Maximum Depth of Binary Tree)
  * [226. Invert Binary Tree](#226. Invert Binary Tree)
+ * [283. Move Zeroes](#283. Move Zeroes)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -315,6 +316,171 @@ public class Solution {
     }
 }
 ```
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="283. Move Zeroes"/283. Move Zeroes
+###题目：
+
+> Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+
+>For example, given nums = [0, 1, 0, 3, 12], after calling your function, nums should be [1, 3, 12, 0, 0].
+
+>Note:
+>You must do this in-place without making a copy of the array.
+>Minimize the total number of operations.
+
+###大意：
+>给出一个数字数组，写一个函数来移动其中的所有“0”到末尾，并保持其他非零元素的相对顺序不变。
+>比如说，给出数组 nums = [0, 1, 0, 3, 12]，调用你的函数之后，nums应该变成[1, 3, 12, 0, 0]。
+>注意：
+>你必须在不复制数组的情况下做。
+>使操作数尽可能地少。
+
+###思路1：
+首先想到了一个比较笨的方法，就是循环从头开始遍历数组中的每个数，遇到“0”，就将后面的所有数的位置往前移动一个，然后把最后一个数置为“0”，当进行完这样一次操作后，还要检测一下移动到前面来的下一位数是不是为“0”，如果是的话就再来一次同样的操作，否则就往下走。但是这样会遇到一个问题，那就是如果我后面的数都是“0”了，那我就会永远停留在某个位置循环，因为我移来移去当前位置的数都是“0”，所以在每次移动完后，就要检测一下后面的数是不是都是“0”了，只有当后面的数不都为“0”时，我才继续进行这种大挪移操作。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public void moveZeroes(int[] nums) {
+        int count = nums.length;
+        for (int i = 0; i < count;) {
+            if (nums[i] == 0) {// 当前数为0，进行大挪移
+                for (int j = i; j < count - 1; j++) {
+                    nums[j] = nums[j+1];
+                }
+                nums[count-1] = 0;
+            }
+            // 检测后面的数是不是都为0
+            int is = 1;
+            for (int j = i; j < count; j++) {
+                if (nums[j] != 0) {
+                    is = 0;
+                    break;
+                }
+            }
+            // 当前数不为0，或者后面都是0时，i++
+            if (nums[i] != 0 || is == 1) i++;
+        }
+    }
+}
+```
+
+这个代码的运行时间为25ms，明显有可以精简的地方，那就是当检测到后面的数字都是“0”时，就已经没必要再循环下去了，此时的数组已经符合要求了，直接结束就好，所以可以立马做出精简：
+
+###精简代码1（Java）：
+
+```java
+public class Solution {
+    public void moveZeroes(int[] nums) {
+        int count = nums.length;
+        for (int i = 0; i < count;) {// 当前数是1，放到最后去，后面的数往前移
+            if (nums[i] == 0) {
+                for (int j = i; j < count - 1; j++) {
+                    nums[j] = nums[j+1];
+                }
+                nums[count-1] = 0;
+            } else {// 不是1
+                i++;
+            }
+            // 检查后面的数是否都是0
+            int is = 1;
+            for (int j = i; j < count; j++) {
+                if (nums[j] != 0) {
+                    is = 0;
+                    break;
+                }
+            }
+            if (is == 1) return;// 后面都是0
+        }
+    }
+}
+```
+
+这个代码的运行时间为23ms，减少了2ms，有一点效果，再观察一下，其实后面那个检查后面的数是否都为0的操作，明明可以放在那个移动数字的循环中去做，在移动数字时，同样也要对后面的所有数字进行操作，所以可以在同一个循环中进行，没必要循环两次，应该可以进一步缩减时间了，所以继续精简如下：
+
+###精简代码2（Java）：
+
+```java
+public class Solution {
+    public void moveZeroes(int[] nums) {
+        int count = nums.length;
+        for (int i = 0; i < count;) {// 当前数是1，放到最后去，后面的数往前移
+            if (nums[i] == 0) {
+                int is = 1;// 标记是否后面的数都为0
+                for (int j = i; j < count - 1; j++) {
+                    nums[j] = nums[j+1];// 后面的数往前移
+                    if (nums[j] != 0) is = 0;// 标记是有不为0的数
+                }
+                nums[count-1] = 0;
+                if (is == 1) return;// 后面都是0，直接退出
+            } else {// 不是1
+                i++;
+            }
+        }
+    }
+}
+```
+
+*这样一精简，运行时间反而变成了45ms，运行了几次基本都稳定在这个附近，这就无法理解了，明明应该缩减了一半的工作量，但时间反而加倍了，实在是无法想明白，请教一下大家这是为什么呢？？？*
+
+###思路2：
+之前那条路已经走不到了一个奇怪的境况中，而且感觉这种一下子移动一堆数字也不是个好办法，那么就思考另一种方法。我们可以只移动一个啊。还是从数组的第一个数开始循环，当发现“0”以后，立马在它后面找到第一个不为“0”的数字，然后交换这两个数字的位置，其余的数字都不用动，这样应该简单一些。同时，我们还是要在每次都检测后面的数字是否都为“0”，如果都为“0”了，那也没必要继续往下走了，可以直接结束。
+
+###代码2（Java）：
+
+```java
+public class Solution {
+    public void moveZeroes(int[] nums) {
+        int count = nums.length;
+        for (int i = 0; i < count;) {// 当前数是1，放到最后去，后面的数往前移
+            if (nums[i] == 0) {
+                int is = 1;// 标记是否后面的数都为0
+                for (int j = i; j < count; j++) {
+                    if (nums[j] != 0) {// 找到后面第一个不为0的数
+                        int value = nums[i];
+                        nums[i] = nums[j];// 替换到前面来
+                        nums[j] = value;
+                        is = 0;// 标记后面有不为0的数
+                        break;// 停止此次循环
+                    }
+                }
+                if (is == 1) return;// 后面都是0，直接退出
+            } else {// 不是1
+                i++;
+            }
+        }
+    }
+}
+```
+
+这个代码的运行时间为18ms，就少了挺多了。
+
+###他山之石：
+在Disguss中看到排名第一的答案，其代码如下：
+
+```java
+public class Solution {
+    public void moveZeroes(int[] nums) {
+        if (nums == null || nums.length == 0) return;        
+
+        int insertPos = 0;
+        for (int num: nums) {
+            if (num != 0) nums[insertPos++] = num;
+        }        
+
+        while (insertPos < nums.length) {
+            nums[insertPos++] = 0;
+        }
+    }
+}
+```
+
+这个代码就比较恐怖了，运行时间为0ms...完败啊。他的思路是：设置一个从0开始的标记，然后遍历每个数字，当数字不为“0”时，将nums数组的序号为标记的位置的数改成这个数，然后把标记加一，注意它的“++”是后置的，只有当检测到不为0的数字时，才会增加标记值，所以标记值永远小于等于我当前遍历到的数字的位置，就不会对其产生影响。当遍历完一次后，对标记值后面的位置的数，都置为0，这样就结束了。时间复杂度为O（n）。
+
 [回到目录](#Catalogue)
 
 -------------------------
