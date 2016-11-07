@@ -8,6 +8,7 @@ LeetCode笔记
  * [104.Maximum Depth of Binary Tree](#104.Maximum Depth of Binary Tree)
  * [226. Invert Binary Tree](#226. Invert Binary Tree)
  * [283. Move Zeroes](#283. Move Zeroes)
+ * [237. Delete Node in a Linked List](#237. Delete Node in a Linked List)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -480,6 +481,65 @@ public class Solution {
 ```
 
 这个代码就比较恐怖了，运行时间为0ms...完败啊。他的思路是：设置一个从0开始的标记，然后遍历每个数字，当数字不为“0”时，将nums数组的序号为标记的位置的数改成这个数，然后把标记加一，注意它的“++”是后置的，只有当检测到不为0的数字时，才会增加标记值，所以标记值永远小于等于我当前遍历到的数字的位置，就不会对其产生影响。当遍历完一次后，对标记值后面的位置的数，都置为0，这样就结束了。时间复杂度为O（n）。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="237. Delete Node in a Linked List"/>237. Delete Node in a Linked List
+###题目：
+
+> Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
+
+>Supposed the linked list is 1 -> 2 -> 3 -> 4 and you are given the third node with value 3, the linked list should become 1 -> 2 -> 4 after calling your function.
+
+###大意：
+
+> 写一个函数来删除一个简单链表中的一个节点（除了尾节点），只给出这个节点。
+> 假设有一个链表 1->2->3->4，并给你第三个值为3的节点，在调用你的函数之后这个链表应该变成1->2->4。
+
+###思路：
+一般我们删除一个链表节点，直接将其上一个节点的next指向其下一个节点就可以了，但是这里只给出了该节点本身，也就是说你只能获取到该节点本身以及其下一个节点。那么就只能将该节点直接变成下一个节点了，将其值设为下一个节点的值，将其next指向下一个节点的next，就可以了。
+
+###代码（Java）：
+
+```
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}
+```
+
+###代码（C++）：
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public void deleteNode(ListNode node) {
+        *node = *node->next;
+    }
+}
+```
+
+###疑问：
+用Java像C++那样，直接将 node = node.next 将不能ac，必须对其val和next分别设置，这是为什么呢？希望高手帮忙解答一下~
 
 [回到目录](#Catalogue)
 
