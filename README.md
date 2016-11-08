@@ -9,6 +9,7 @@ LeetCode笔记
  * [226. Invert Binary Tree](#226. Invert Binary Tree)
  * [283. Move Zeroes](#283. Move Zeroes)
  * [237. Delete Node in a Linked List](#237. Delete Node in a Linked List)
+ * [100. Same Tree](#100. Same Tree)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -540,6 +541,76 @@ public class Solution {
 
 ###疑问：
 用Java像C++那样，直接将 node = node.next 将不能ac，必须对其val和next分别设置，这是为什么呢？希望高手帮忙解答一下~
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="100. Same Tree"/>100. Same Tree
+###题目：
+>Given two binary trees, write a function to check if they are equal or not.
+
+>Two binary trees are considered equal if they are structurally identical and the nodes have the same value.
+
+###大意：
+>给出两个二叉树，写一个函数来检查两者是否相等。
+>所谓相等，是指他们结构相同且节点有同样的值。
+
+###思路：
+这个思路还比较直接，考虑全面一点就好了。首先考虑节点为空的情况，如果两个都为空，那么直接相等；如果一个为空一个不为空，那么不相等；如果两个都不为空，那么继续进行深层次的判断。
+首先看两个节点的值是否相等，不相等则二叉树不等，然后判断其子节点，这时候使用递归就可以了，对两个节点的左节点和右节点分别调用这个函数，只有都返回相等时，才表示两个节点完全相同，由于递归，其子节点也就一层层地判断下去了，整个二叉树就会遍历完成。
+
+###代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        } else if (p != null && q != null) {
+            if (p.val != q.val) return false;
+        
+            if (isSameTree(p.left, q.left) && isSameTree(p.right, q.right)) return true;
+            else return false;
+        } else {
+            return false;
+        }
+    }
+}
+```
+
+其实还可以进一步精简代码，可以看下Discuss最火的代码，思路是一致的，只是精简到了极致，确实很赞：
+
+###精简代码（Java）：
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+	    if(p == null && q == null) return true;
+	    if(p == null || q == null) return false;
+	    if(p.val == q.val)
+	        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+	    return false;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
