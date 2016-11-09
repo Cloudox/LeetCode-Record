@@ -10,6 +10,7 @@ LeetCode笔记
  * [283. Move Zeroes](#283. Move Zeroes)
  * [237. Delete Node in a Linked List](#237. Delete Node in a Linked List)
  * [100. Same Tree](#100. Same Tree)
+ * [242. Valid Anagram](#242. Valid Anagram)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -611,6 +612,90 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="242. Valid Anagram"/>242. Valid Anagram
+###题目：
+
+> Given two strings s and t, write a function to determine if t is an anagram of s.
+
+>For example,
+s = "anagram", t = "nagaram", return true.
+s = "rat", t = "car", return false.
+
+>Note:
+You may assume the string contains only lowercase alphabets.
+
+>Follow up:
+What if the inputs contain unicode characters? How would you adapt your solution to such case?
+
+###大意：
+
+> 给出两个字符串s和t，写一个函数来判断t是否是s的易位构词。
+> 比如说：
+> s = "anagram", t = "nagaram", 返回true。
+> s = "rat", t = "car", 返回false。
+> 注意：
+> 你可以假设字符串只有小写字母组成。
+> 进一步：
+> 如果输入包含unicode字符呢？你如何调整你的代码来适应这种情况？
+
+###思路：
+一开始，想了一个现在看来很笨的办法，这道题无非就是要检查两个字符串中的字母是否全部一致，我就遍历其中一个字符串，在每一个字符中，从另一个字符串找到第一个相同的字符，然后删掉字符串中的这个字符，继续遍历，直到有一个字符在另一个字符串中找不到了，说明没有这个字符或者数量少一些，就返回false，如果全部遍历完了都找得到，且另一个字符串也被删完了，那就返回true。这个办法我提交之后，很悲剧的超时了。。。想想也是，时间复杂度是n的平方了，还是很大的。
+后来想到了另一个方法，我弄两个int数组，初始各自包含26个"0"，用来记录两个字符串中各个字母出现的次数，然后分别遍历两个数组，记录其各个字母出现的次数，最后比较两个int数组是否完全一致就可以了，一遍ac，耗时5ms，打败了85%的提交者，哈哈哈。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        // 用于存放两个字符串中字符出现次数的标记
+        int[] sArray = new int[26];
+        int[] tArray = new int[26];
+        for (int i = 0; i < 26; i++) {
+            sArray[i] = 0;
+            tArray[i] = 0;
+        }
+        // 遍历两个字符串，记录字符出现次数
+        char[] sCharArr = s.toCharArray();
+        for (int i = 0; i < sCharArr.length; i++) {
+            int index = sCharArr[i] - 97;
+            sArray[index] += 1;
+        }
+        char[] tCharArr = t.toCharArray();
+        for (int i = 0; i < tCharArr.length; i++) {
+            int index = tCharArr[i] - 97;
+            tArray[index] += 1;
+        }
+        // 比对两个记录字符出现次数的数组是否相等
+        for (int i = 0; i < 26; i++) {
+            if (sArray[i] != tArray[i]) return false;
+        }
+        return true;
+    }
+}
+```
+
+代码还是有点长，理所当然应该是可以精简的，然后我去看了看Discuss中最hot的答案，发现思路跟我是一样的，不过处理起来真的机智的不行：
+
+###精简代码（Java）：
+
+```java
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        int[] alphabet = new int[26];
+        for (int i = 0; i < s.length(); i++) alphabet[s.charAt(i) - 'a']++;
+        for (int i = 0; i < t.length(); i++) alphabet[t.charAt(i) - 'a']--;
+        for (int i : alphabet) if (i != 0) return false;
+        return true;
+    }
+}
+```
+
+其思路就是只有一个int数组，先遍历一个字符串，记录各个字母出现的次数，然后遍历另一个字符串，出现某个字母就将其对应的int数组中的值减一，最后判断int数组是否都是0，如果是，说明加减均衡，两个字符串一致，果然机智！
 
 [回到目录](#Catalogue)
 
