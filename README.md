@@ -11,6 +11,7 @@ LeetCode笔记
  * [237. Delete Node in a Linked List](#237. Delete Node in a Linked List)
  * [100. Same Tree](#100. Same Tree)
  * [242. Valid Anagram](#242. Valid Anagram)
+ * [171. Excel Sheet Column Number](#171. Excel Sheet Column Number)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -696,6 +697,82 @@ public class Solution {
 ```
 
 其思路就是只有一个int数组，先遍历一个字符串，记录各个字母出现的次数，然后遍历另一个字符串，出现某个字母就将其对应的int数组中的值减一，最后判断int数组是否都是0，如果是，说明加减均衡，两个字符串一致，果然机智！
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="171. Excel Sheet Column Number"/>171. Excel Sheet Column Number
+###题目：
+
+> Related to question Excel Sheet Column Title
+
+>Given a column title as appear in an Excel sheet, return its corresponding column number.
+
+>For example:
+
+>	A -> 1
+    B -> 2
+    C -> 3
+    ...
+    Z -> 26
+    AA -> 27
+    AB -> 28 
+
+###大意：
+
+> 与题目Excel Sheet Column Title相关
+> 给一个像Excel中显示的列标题，返回其对应的列数。
+> 比如说：
+> A -> 1
+    B -> 2
+    C -> 3
+    ...
+    Z -> 26
+    AA -> 27
+    AB -> 28 
+
+###思路：
+首先最简单的，A~Z分别是1~26。然后AA到AZ是27~(26+26)。AAA到AAZ是26*26+1 ~ 26*26 + 26。
+N位字母，前面位数的字母对应的数量总和为26^(n-1)，可以总结出一个公式来。加上我们当前计算一个n位字母的列数，其前面位数的字母数量总和为26^(n-1)，设其为startCount，从当前位数的字母开始计算，计算方法为：
+```
+startCount + ('A' - 65)*26^(n-1) + ('A' - 65)*26^(n-2) + ... + ('A' - 65) + 1
+```
+这样就可以总结为代码，分两步计算，第一步计算前面位数的字母数量总和，第二部计算当前位数的数量：
+
+###代码（Java）：
+```java
+public class Solution {
+    public int titleToNumber(String s) {
+        int count = 0;
+        // 当前字母位数对应之前的数量
+        int startCount = 0;
+        for (int i = 1; i < s.length(); i++) {
+            startCount += Math.pow(26, i);
+        }
+        
+        // 加上前期数量
+        count += startCount;
+        count += 1;
+        
+        // 计算当前位数的数量：start + ('A' - 65)*26^(n-1) + ('A' - 65)*26^(n-2) + ... + ('A' - 65) + 1
+        char[] sCharArr = s.toCharArray();
+        for (int i = sCharArr.length - 1, j = 0; i >= 0; i--, j++) {
+            count += (sCharArr[j] - 65) * Math.pow(26, i);
+        }
+        return count;
+    }
+}
+```
+
+###他山之石：
+最Hot的一个解决方法，只需要三行代码，把计算公式进行了化简，得出了一个特别简单的计算过程：
+```java
+int result = 0;
+for (int i = 0; i < s.length(); result = result * 26 + (s.charAt(i) - 'A' + 1), i++);
+return result;
+```
+也是把代码行数节约到了极致。
 
 [回到目录](#Catalogue)
 
