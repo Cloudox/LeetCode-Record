@@ -12,6 +12,7 @@ LeetCode笔记
  * [100. Same Tree](#100. Same Tree)
  * [242. Valid Anagram](#242. Valid Anagram)
  * [171. Excel Sheet Column Number](#171. Excel Sheet Column Number)
+ * [217. Contains Duplicate](#217. Contains Duplicate)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -773,6 +774,36 @@ for (int i = 0; i < s.length(); result = result * 26 + (s.charAt(i) - 'A' + 1), 
 return result;
 ```
 也是把代码行数节约到了极致。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="217. Contains Duplicate"/>217. Contains Duplicate
+###题目：
+>Given an array of integers, find if the array contains any duplicates. Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
+
+###大意：
+>给出一个int型的数组，判断数组是否包含了重复的数。如果有任何的数值在函数中出现过至少两次，你的数组就应该返回true，如果每个数值都是单一的，那么就返回false。
+
+###思路：
+一开始我采用之前一个判断字母数的同样的思路，用一个10位的数组记录0~9的出现次数，后来运行说还有负数。。。于是加上了-9~-1的9个数字，将数组改成19位，运行又发现还有极大的数。。。而不是我想的单一的个位数，这就超过数组的承受能力了，一开始又不说清楚= =。
+于是换了一种思路，先将数组中的数字进行排序，排序之后数组中的内容就是按顺序排列的，如果有相同的数值，那一定是相邻排列的，所以只要遍历数组检查是否有相邻的两个数值相等就可以啦。这次终于ac了，看了一下Discuss的最Hot的方法，跟我的思路一样，太开心了。
+关于排序有很多种方法，Java的数组自带有排序函数，也可以采用一些排序算法，可以参考这个博客：[http://blog.csdn.net/fengyifei11228/article/details/2623980](http://blog.csdn.net/fengyifei11228/article/details/2623980)，写的还蛮全的。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        Arrays.sort(nums);// 先数组内排序，参考：http://blog.csdn.net/fengyifei11228/article/details/2623980
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == nums[i + 1]) return true;// 循环判断排序后有没有两个相同的数字
+        }
+        return false;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
