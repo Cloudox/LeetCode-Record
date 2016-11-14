@@ -13,6 +13,7 @@ LeetCode笔记
  * [242. Valid Anagram](#242. Valid Anagram)
  * [171. Excel Sheet Column Number](#171. Excel Sheet Column Number)
  * [217. Contains Duplicate](#217. Contains Duplicate)
+ * [169. Majority Element](#169. Majority Element)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -801,6 +802,56 @@ public class Solution {
             if (nums[i] == nums[i + 1]) return true;// 循环判断排序后有没有两个相同的数字
         }
         return false;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="169. Majority Element"/>169. Majority Element
+###题目：
+>Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.
+
+>You may assume that the array is non-empty and the majority element always exist in the array.
+
+###大意：
+>给出一个尺寸为n的数组，找到主要的元素。所谓主要的元素是指出现次数超过n/2的元素。
+>你可以假设数组不为空且主要元素一定存在。
+
+###思路：
+第一直觉是先排序把相同的元素都放到一起再说，因为主要元素的出现次数大于n/2，那么排序后最中间的元素一定是主要元素，不管怎么移动位置，最中间的都一定是它，所以可以很简单地完成代码啦。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public int majorityElement(int[] nums) {
+        Arrays.sort(nums);// 先排序
+        return nums[nums.length/2];// 出现次数超过n/2次的元素排序后一定会出现在中间
+    }
+}
+```
+
+###他山之石：
+现在让我们看看Discuss最hot的答案，我的做法并不是最快的，因为排序需要时间，他说他的时间复杂度为O(1)，看了一下代码，他的做法是：用一个变量记录主要元素，初始化为第一个元素，一个变量记录出现次数，初始化为1，遍历数组中的元素，与当前记录的主要元素相同的话，次数就加1，不同就减1，如果次数减到0，那就将主要元素换成新遍历到的元素，这样遍历完一轮得到最后记录的主要元素，就是我们要的结果。因为主要元素出现的次数大于n/2，所以可以想见最后留下来的一定会是主要元素。别的元素即使记录过也会因为次数归零抛弃掉的。这个方法只需要遍历一次数组就可以了，确实不容易想到。代码如下：
+
+```java
+public class Solution {
+    public int majorityElement(int[] num) {
+
+        int major=num[0], count = 1;
+        for(int i=1; i<num.length;i++){
+            if(count==0){
+                count++;
+                major=num[i];
+            }else if(major==num[i]){
+                count++;
+            }else count--;
+
+        }
+        return major;
     }
 }
 ```
