@@ -14,6 +14,7 @@ LeetCode笔记
  * [171. Excel Sheet Column Number](#171. Excel Sheet Column Number)
  * [217. Contains Duplicate](#217. Contains Duplicate)
  * [169. Majority Element](#169. Majority Element)
+ * [206. Reverse Linked List](#206. Reverse Linked List)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -853,6 +854,53 @@ public class Solution {
         }
         return major;
     }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="206. Reverse Linked List"/>206. Reverse Linked List
+###题目：
+> Reverse a singly linked list.
+
+###大意：
+> 反转一个简单链表。
+
+###思路：
+题目的意思就是给出一个链表，本来是从头指向尾的，现在要你做成从尾指向头，并且返回原来的尾，现在的头。这个肯定是要用递归或者迭代来做。只要屡清楚过程，会比较绕。大体的流程就是，把下一个节点的next指向自己，一个个迭代、递归下去，最后返回最后的原来的尾节点
+
+###他山之石：
+这里给出Discuss中最火的方法。
+迭代实现：
+```java
+public ListNode reverseList(ListNode head) {
+    /* iterative solution */
+    ListNode newHead = null;
+    while (head != null) {
+        ListNode next = head.next;
+        head.next = newHead;
+        newHead = head;
+        head = next;
+    }
+    return newHead;
+}
+```
+
+递归实现：
+```java
+public ListNode reverseList(ListNode head) {
+    /* recursive solution */
+    return reverseListInt(head, null);
+}
+
+private ListNode reverseListInt(ListNode head, ListNode newHead) {
+    if (head == null)
+        return newHead;
+    ListNode next = head.next;
+    head.next = newHead;
+    return reverseListInt(next, head);
 }
 ```
 
