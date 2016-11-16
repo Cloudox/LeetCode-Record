@@ -15,6 +15,7 @@ LeetCode笔记
  * [217. Contains Duplicate](#217. Contains Duplicate)
  * [169. Majority Element](#169. Majority Element)
  * [206. Reverse Linked List](#206. Reverse Linked List)
+ * [326. Power of Three](#326. Power of Three)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -901,6 +902,54 @@ private ListNode reverseListInt(ListNode head, ListNode newHead) {
     ListNode next = head.next;
     head.next = newHead;
     return reverseListInt(next, head);
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="326. Power of Three"/>326. Power of Three
+### 问题：
+> Given an integer, write a function to determine if it is a power of three.
+
+> Follow up:
+Could you do it without using any loop / recursion?
+
+### 大意：
+> 给出一个整数，写一个函数来判断它是否是3的次方数。
+> 进阶：
+> 你能不能不用循环和递归来做？
+
+### 思路：
+一开始看这个题目没明白是什么意思，后来查了一下才知道是判断是否3的次方数，所谓次方数就是n个3相乘得出的数咯，总是容易想到立方上去。这个题其实最简单的就是不断地除以3，直到结果为0，看有没有余数，有则不是，没有则是。这个做法无论是用循环还是递归都差不多，不过题目的进阶要求是不用循环与递归，这就要想办法了。找了会规律并没有找到，看了看别人的想法发现自己数学敏感性还是太差了，这直接可以转换成求对数的计算：
+
+n = 3^x
+⇒ log3(n) = x
+
+要判断给出的整数是不是3的立方数，只用看x是不是整数就好了。而：
+
+log3(n) = log10(n) / log10(3)
+
+这里在做的时候我们直接用语言中的log函数去计算，但是要注意一点，必须要使用log10这个函数，而不能用ln或者其他数字做底数的log函数，否则在遇到243这个数字的时候会判断错误，我在这里也出了问题，这应该是一个底层计算中的巧合，在计算的时候：
+
+log(243) = 5.493061443340548    log(3) = 1.0986122886681098
+   ==> log(243)/log(3) = 4.999999999999999
+
+log10(243) = 2.385606273598312    log10(3) = 0.47712125471966244
+   ==> log10(243)/log10(3) = 5.0
+
+由于我们的判断依据是log后的结果是否是一个整数，如果用其他数作为log的底数，那计算出来应该是整数的243结果却不是整数，因为计算机在计算log(3)时实际上结果会稍微大一点点，这就坑爹了，所以只能用log10。
+
+要判断是不是整数很简单，直接%1看余数是不是0就好了。另外别忘了还有n=0的初始情况要考虑在内。再有值得一提的就是Math并不需要额外import就可以直接使用
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public boolean isPowerOfThree(int n) {
+        return (n > 0 && (Math.log10(n) / Math.log10(3)) % 1 == 0);
+    }
 }
 ```
 
