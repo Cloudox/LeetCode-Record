@@ -16,6 +16,7 @@ LeetCode笔记
  * [169. Majority Element](#169. Majority Element)
  * [206. Reverse Linked List](#206. Reverse Linked List)
  * [326. Power of Three](#326. Power of Three)
+ * [231. Power of Two](#231. Power of Two)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -949,6 +950,36 @@ log10(243) = 2.385606273598312    log10(3) = 0.47712125471966244
 public class Solution {
     public boolean isPowerOfThree(int n) {
         return (n > 0 && (Math.log10(n) / Math.log10(3)) % 1 == 0);
+    }
+}
+```
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="231. Power of Two"/>231. Power of Two
+### 问题：
+> Given an integer, write a function to determine if it is a power of two.
+
+### 大意：
+> 给出一个整数，写一个函数判断它是否是2的次方数。
+
+### 思路：
+这道题和另一道[判断是否是3的次方数的题目](http://blog.csdn.net/cloudox_/article/details/52582841)很像，但是这个更简单，因为有一个二进制的东西存在，我们要判断一个数是不是2的次方数，不用去一次次除以2，也不用用log去算，直接转换成二进制，如果是2的次方数，那一定是最高位为1，其余位均为0的二进制数，所以只用判断这个二进制数是不是符合这个情况就可以了。
+此外还有一个地方要小心，与判断3的次方数的题目描述有一点不同在于，这里没说给出的是非负数。。。所以一定还对负数的情况进行判断，很阴险。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if (n < 0) return false;
+        String binaryStr = Integer.toBinaryString(n);
+        for (int i = 0; i < binaryStr.length(); i++) {
+            if (i == 0 && binaryStr.charAt(i) != '1') return false;
+            else if (i > 0 && binaryStr.charAt(i) != '0') return false;
+        }
+        return true;
     }
 }
 ```
