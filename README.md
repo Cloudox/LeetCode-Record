@@ -17,6 +17,7 @@ LeetCode笔记
  * [206. Reverse Linked List](#206. Reverse Linked List)
  * [326. Power of Three](#326. Power of Three)
  * [231. Power of Two](#231. Power of Two)
+ * [202. Happy Number](#202. Happy Number)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -980,6 +981,54 @@ public class Solution {
             else if (i > 0 && binaryStr.charAt(i) != '0') return false;
         }
         return true;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="202. Happy Number"/>202. Happy Number
+### 问题：
+> Write an algorithm to determine if a number is "happy".
+
+> A happy number is a number defined by the following process: Starting with any positive integer, replace the number by the sum of the squares of its digits, and repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1. Those numbers for which this process ends in 1 are happy numbers.
+
+> Example: 19 is a happy number
+
+> 1^2 + 9^2 = 82
+8^2 + 2^2 = 68
+6^2 + 8^2 = 100
+1^2 + 0^2 + 0^2 = 1
+
+### 大意：
+> 写一个算法来判断一个数字是否“happy”。
+> 一个happy数字是通过下面的过程来判别的：从一个正整数开始，用其各位数字的平方和来代替它，然后重复这个过程直到数字等于1（此时就保持不变了），或者它会一直循环而不等于1。那些得到1的数字就是happy的数字。
+> 距离：19是一个happy数字
+> 1^2 + 9^2 = 82
+8^2 + 2^2 = 68
+6^2 + 8^2 = 100
+1^2 + 0^2 + 0^2 = 1
+
+### 思路：
+一看到这个题目我是懵逼的，看一个数字是不是happy，出题人真有童心。想找规律吧算了几个数字感觉没得规律找啊。从最简单的思路来看就是不断循环看最后得到的是不是1了，但是返回true的判断容易，什么时候就可以下结论说这个数字不happy呢？这才是问题。首先我们得到的数不知道是几位数，但是经过计算后最后肯定会变成个位数，而如果这个个位数是1那就是happy了，如果不是1应该就是不happy吧。所以我一开始的做法是循环求平方和，直到结果是个位数了就看是不是1来给出结果，这里还用到了一个递归，如果计算一次平方和还不是个位数就继续递归计算。
+提交后发现有个错误，那就是1111111这个数，也是一个happy数字，但我判断为不是了。我数了一下一共七个1，平方和是7，才知道原来到了个位数后还会继续计算，我算了一下发现7还真能最后算出1来，那只能对于1~9九个个位数都看看是不是能算出1来了，算了一下觉得太麻烦了，于是想到了一个简单的方法，leetcode是可以自定义测试用例的，勾选Custom Testcase就可以了，然后我把4~9都试了一遍，不用试2、3是因为就等于4、9，测完发现只有1和7是的，所以在代码里把7也算成true就可以了。
+最后的时间是4ms，还不错，看了看discuss也没有看到特别好的方法，那大抵就是这样了吧。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public boolean isHappy(int n) {
+        int sum = 0;
+        while (n > 0) {
+            sum += Math.pow((n % 10), 2);
+            n = n / 10;
+        }
+        if (sum >= 10) return isHappy(sum);
+        else if (sum == 1 || sum == 7) return true;
+        else return false;
     }
 }
 ```
