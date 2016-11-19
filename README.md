@@ -18,6 +18,7 @@ LeetCode笔记
  * [326. Power of Three](#326. Power of Three)
  * [231. Power of Two](#231. Power of Two)
  * [202. Happy Number](#202. Happy Number)
+ * [83. Remove Duplicates from Sorted List](#83. Remove Duplicates from Sorted List)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1029,6 +1030,68 @@ public class Solution {
         if (sum >= 10) return isHappy(sum);
         else if (sum == 1 || sum == 7) return true;
         else return false;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="83. Remove Duplicates from Sorted List"/>83. Remove Duplicates from Sorted List
+### 问题：
+> Given a sorted linked list, delete all duplicates such that each element appear only once.
+
+> For example,
+Given 1->1->2, return 1->2.
+Given 1->1->2->3->3, return 1->2->3.
+
+### 大意：
+> 给出一个排好序的链表，删除所有的重复的数字，让每个元素只出现一次。
+> 比如：
+> 给出 1->1->2, 返回1->2.
+给出1->1->2->3->3, 返回1->2->3.
+
+### 思路：
+既然链表本身已经排好序了，那么只用比较当前位置的值和next的值是否一样，一样就把next指向下一个再继续判断就好了，思路还是比较简单，但是有几个容易忽略的点需要注意。
+
+1. 首先是首节点为空的情况要考虑；
+2. 其次是只有当当前数字和下一个数字不一样时才把操作的节点换成下一个节点去继续向后操作，因为有可能有多个重复的数字串在一起，不能删除一个节点后就直接往后移进行判断，要判断删了一个以后下一个是否还是一样；
+3. 如果链表的最后几个数字都是重复的，我们在检测到重复的数字时会删除它然后将当前节点的next指向next的next，但是这里要注意判断next是否还有next，如果没有却进行操作，那就会出错了。
+
+在自己检测时可以试试代码对下面几个测试用例是否能通过：
+
+* []
+* [1,1]
+* [1,1,2]
+* [1,1,1]
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return head;
+        ListNode p = head;
+        while (p.next != null) {
+            ListNode q = p.next;
+            if (q.val == p.val) {
+                if (q.next != null) {
+                    p.next = q.next;
+                }
+                else p.next = null;
+            } 
+            else p = p.next;
+        }
+        return head;
     }
 }
 ```
