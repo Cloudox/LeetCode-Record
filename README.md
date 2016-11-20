@@ -19,6 +19,7 @@ LeetCode笔记
  * [231. Power of Two](#231. Power of Two)
  * [202. Happy Number](#202. Happy Number)
  * [83. Remove Duplicates from Sorted List](#83. Remove Duplicates from Sorted List)
+ * [191. Number of 1 Bits](#191. Number of 1 Bits)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1095,6 +1096,54 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="191. Number of 1 Bits"/>191. Number of 1 Bits
+### 问题：
+> Write a function that takes an unsigned integer and returns the number of ’1' bits it has (also known as the Hamming weight).
+
+> For example, the 32-bit integer ’11' has binary representation 00000000000000000000000000001011, so the function should return 3.
+
+### 大意：
+> 写一个函数，获取一个无符号整型数并返回它拥有的‘1’bits的个数（也称为Hamming weight）。
+> 比如，32位整型数‘11’二进制表示为00000000000000000000000000001011，所以函数应该返回3。
+
+### 思路：
+题目的意思其实就是问一个无符号整型数的二进制形式中有多少个1。这里无符号的意思是没有负数都是正数，直接的思路就是将它转换成二进制后一个个数里面1的个数，很简单。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        String binaryStr = Integer.toBinaryString(n);
+        int result = 0;
+        for (int i = 0; i < binaryStr.length(); i++) {
+            if (binaryStr.charAt(i) == '1') result++;
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public static int hammingWeight(int n) {
+	int ones = 0;
+    	while(n!=0) {
+    		ones = ones + (n & 1);
+    		n = n>>>1;
+    	}
+    	return ones;
+}
+```
+
+按照我的方法做完提交后虽然过了，也只有4ms，但是在结果统计中依然算慢的了，应该是转换成二进制那一步耗时了，然后一般数字都会有很多零，而我都会一个个判断一次，其实就不必要了。看了看Discuss中的好方法，确实挺好，直接让n和1去按位与，如果n的最后一位是1就会结果加一，然后将n右移一位继续判断，这里注意用到的右移运算发是三个箭头“>>>”，这是因为这是无符号数的右移运算符，有符号数就是两个箭头“>>”。同时循环的结束条件是n为0，这就免去了很多多余的判断，确实很赞。
 
 [回到目录](#Catalogue)
 
