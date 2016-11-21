@@ -20,6 +20,7 @@ LeetCode笔记
  * [202. Happy Number](#202. Happy Number)
  * [83. Remove Duplicates from Sorted List](#83. Remove Duplicates from Sorted List)
  * [191. Number of 1 Bits](#191. Number of 1 Bits)
+ * [263. Ugly Number](#263. Ugly Number)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1144,6 +1145,50 @@ public static int hammingWeight(int n) {
 ```
 
 按照我的方法做完提交后虽然过了，也只有4ms，但是在结果统计中依然算慢的了，应该是转换成二进制那一步耗时了，然后一般数字都会有很多零，而我都会一个个判断一次，其实就不必要了。看了看Discuss中的好方法，确实挺好，直接让n和1去按位与，如果n的最后一位是1就会结果加一，然后将n右移一位继续判断，这里注意用到的右移运算发是三个箭头“>>>”，这是因为这是无符号数的右移运算符，有符号数就是两个箭头“>>”。同时循环的结束条件是n为0，这就免去了很多多余的判断，确实很赞。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="263. Ugly Number"/>263. Ugly Number
+### 问题：
+> Write a program to check whether a given number is an ugly number.
+
+> Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly since it includes another prime factor 7.
+
+> Note that 1 is typically treated as an ugly number.
+
+### 大意：
+> 写一个程序来检查给出的数字是否是一个丑数字。
+> 丑数字是指只能被2、3、5整除的正数。比如说，6、8是丑数字而14就不是丑数字因为它还有7这个约数。
+> 注意1也被看待成丑数字。
+
+### 思路：
+leetcode中的题目都有有意思，一会happy数字一会ugly数字，也不知道是国外就这么叫的还是纯粹出题人有童心。这个题想着也没什么好办法，只能分别对2、3、5去看能不能被整除，能就除一下继续判断，直到不能被2、3、5整数了为止，看结果是不是1，是的话就是丑数字了，不是则不丑。看了看别人的做法，也大都是这个思路，这是实现上可能有点小差异。
+还有一个要注意的是题目说丑数字是个正数，但没说给出的数字都是正数，在这里栽了个跟头，被0和负数弄得错了两次，我的Accepted率啊。。。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public boolean isUgly(int num) {
+        if (num <= 0) return false;
+        while (true) {
+            if (num % 2 == 0) {
+                num = num / 2;
+            } else if (num % 3 == 0) {
+                num = num / 3;
+            } else if (num % 5 == 0) {
+                num = num / 5;
+            } else if (num == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
