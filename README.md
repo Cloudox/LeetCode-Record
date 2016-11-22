@@ -21,6 +21,7 @@ LeetCode笔记
  * [83. Remove Duplicates from Sorted List](#83. Remove Duplicates from Sorted List)
  * [191. Number of 1 Bits](#191. Number of 1 Bits)
  * [263. Ugly Number](#263. Ugly Number)
+ * [70. Climbing Stairs](#70. Climbing Stairs)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1186,6 +1187,41 @@ public class Solution {
                 return false;
             }
         }
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="70. Climbing Stairs"/>70. Climbing Stairs
+### 问题：
+> You are climbing a stair case. It takes n steps to reach to the top.
+
+> Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+### 大意：
+> 你在爬一个楼梯。需要n节楼梯到达顶部。
+> 每次你可以爬一节或者两节楼梯。你总共有多少种爬到顶部的方法？
+
+### 思路：
+总觉得这个题目小时候做过。一开始想着找找规律，按照全程走一个两节的、两个两节的、三个两节的这么去算，列了一下算式发现并没有什么规律。。。
+后来想我每到一节都面临两个选择，即走一节还是走两节，于是想到用递归去做，不断返回在某一节为止走两节和走一节的走法数量之和。按照这种方法做了之后，一开始是能够解决的，测试到了44节楼梯的时候，就超时了，看了看答案给出的总走法数，确实是一个很大的数字，用递归要算的太多了。
+既然往后面的走法去算走不通，那就往前看，我每来到一节新的位置的走法数量都是到上一节位置的走法数加上到上两节位置的走法数之和，一个是走一节楼梯到当前节，一个是走两节楼梯到当前节，这样从第二节开始去计算（第一节明显是一种走法，第二节开始才可以计算两节以前的位置走法数（即处于0位置时，设其为1）加上一节以前的位置走法数（即处于1位置时，设其为1）。）走到第二节的走法之和，慢慢算到最后一层。这里用一个数组去计算每一层的走法数。当然如果要节省空间也可以就用三个变量，只是每次去改变其值就可以了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int climbStairs(int n) {
+        int[] result = new int[n+1];
+        result[0] = 1;
+        result[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            result[i] = result[i-1] + result[i-2];
+        }
+        return result[n];
     }
 }
 ```
