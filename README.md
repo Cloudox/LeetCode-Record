@@ -23,6 +23,7 @@ LeetCode笔记
  * [263. Ugly Number](#263. Ugly Number)
  * [70. Climbing Stairs](#70. Climbing Stairs)
  * [404. Sum of Left Leaves](#404. Sum of Left Leaves)
+ * [121. Best Time to Buy and Sell Stock](#121. Best Time to Buy and Sell Stock)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1280,6 +1281,60 @@ public class Solution {
         else {
             return ((root.left != null && root.left.left == null && root.left.right == null) ? root.left.val : sumOfLeftLeaves(root.left)) + ((root.right != null && (root.right.left != null || root.right.right != null)) ? sumOfLeftLeaves(root.right) : 0);
         }
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="121. Best Time to Buy and Sell Stock"/>121. Best Time to Buy and Sell Stock
+### 问题：
+> Say you have an array for which the ith element is the price of a given stock on day i.
+
+> If you were only permitted to complete at most one transaction (ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.
+
+> Example 1:
+Input: [7, 1, 5, 3, 6, 4]
+Output: 5
+
+> max. difference = 6-1 = 5 (not 7-1 = 6, as selling price needs to be larger than buying price)
+Example 2:
+Input: [7, 6, 4, 3, 1]
+Output: 0
+
+> In this case, no transaction is done, i.e. max profit = 0.
+
+### 大意：
+> 说你有一个由每天的股票价格组成的数组。
+> 如果你只能进行一次交易（比如购买或者销售一个股票），设计一个算法来获取最大利润。
+> 例子1：
+> Input: [7, 1, 5, 3, 6, 4]
+> Output: 5
+> 最大的利润为：6-1 = 5（不是7-1 = 6，因为销售价格需要比购买价格大）
+> 例子2：
+> Input: [7, 6, 4, 3, 1]
+> Output: 0
+> 这个例子中，无法进行交易，所以最大收益为0。
+
+### 思路：
+这道题的意思就是，数组里的数按照顺序是每天的股票价格，你可以选择在某一天购买，然后再之后的某一天销售掉，销售的日子当然必须在购买的日子之后，也就是数组的顺序要靠后一些。要计算在哪两天进行买卖收益最大。这道题乍一看需要n*n的循环去计算每出一个价格后的最优解，我也是这样一开始就这样做，但是这样做时间复杂度太高，会超时，实际上也不用这么复杂。我们只需要每出一个新价格后，先判断这个价格减去我之前选择的买进价格后是否比之前的收益要大，以及这个新价格是否比我之前的买入价格要低，然后进行相应的操作即可，如果收益更大，就把这个收益记录下来，如果比买入价格低，就把买入价格换成这个价格。不需要担心这样直接换了之后往后计算的收益会不会不如之前，因为我们已经记录了在此之前的最大收益了，每次都会做对比的，而更换了更低的买入价格后，我们继续往后看能不能获得更大的收益，因为对于后面的数字来说这个数就是之前最小的买入价格了。其实想清楚后要进行的操作很简单，但如果想不清楚，就会觉得可能性太多了，要面面俱到总是会出问题，这里就要求头脑清晰了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int maxProfit(int[] prices) {
+        int result = 0;
+        int small = 0;
+        if (prices.length == 0) return 0;
+        else small = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] - small > result) result = prices[i] - small;
+            if (prices[i] < small) small = prices[i];
+        }
+        return result;
     }
 }
 ```
