@@ -24,6 +24,7 @@ LeetCode笔记
  * [70. Climbing Stairs](#70. Climbing Stairs)
  * [404. Sum of Left Leaves](#404. Sum of Left Leaves)
  * [121. Best Time to Buy and Sell Stock](#121. Best Time to Buy and Sell Stock)
+ * [235. Lowest Common Ancestor of a Binary Search Tree](#235. Lowest Common Ancestor of a Binary Search Tree)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1335,6 +1336,74 @@ public class Solution {
             if (prices[i] < small) small = prices[i];
         }
         return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="235. Lowest Common Ancestor of a Binary Search Tree"/>235. Lowest Common Ancestor of a Binary Search Tree
+### 问题：
+> Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+
+> According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).”
+>
+        _______6______
+       /              \
+    ___2__          ___8__
+    /      \        /      \ 
+    0      _4       7       9
+          /  \
+          3   5
+For example, the lowest common ancestor (LCA) of nodes 2 and 8 is 6. Another example is LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
+
+### 大意：
+ > 给出一个二叉查找树（BST），在其中找到给出的两个节点的最低的共同祖先（LCA）。
+
+> 根据维基百科对LCA的定义：“最低共同祖先是指两个节点v和w在T中有v和w作为后代节点的最低节点（我们允许节点是自己的祖先）。”
+>
+        _______6______
+       /              \
+    ___2__          ___8__
+    /      \        /      \ 
+    0      _4       7       9
+          /  \
+          3   5
+比如说，2和8的LCA是6。另一个例子，2和4的LCA是2，因为根据LCA的定义，一个节点可以是它自己的祖先。
+
+### 思路：
+这里要注意的地方是给出的二叉树是一个二叉查找树，所谓二叉查找树是指：
+
+1. 若左子树不空，则左子树上所有结点的值均小于它的根结点的值；
+2. 若右子树不空，则右子树上所有结点的值均大于它的根结点的值；
+3. 左、右子树也分别为二叉排序树；
+4. 没有键值相等的结点。
+
+对于这个问题，如果是一个随意的二叉树要找LCA是比较麻烦的，要先找到目标节点的位置然后又反过来一层层找最低祖先。但是对于二叉查找树就要简单的多了，因为是排好序了的，可以简单地找到位置。
+
+我们根据目标节点的值和根节点的值来判断目标节点在跟节点的左子树上还是右子树上，如果一个在左一个在右，就说明其LCA是根节点；如果都在左或者都在右，就对跟节点的左或者右子节点调用同样的方法进行递归。
+
+因为没有键值相等的节点，所以判断时不用考虑等于的情况，这道题中也不需要考虑节点为null的特殊情况，所以代码很简单。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root.val - p.val > 0 && root.val - q.val > 0) return lowestCommonAncestor(root.left, p, q);
+        else if (root.val - p.val < 0 && root.val - q.val < 0) return lowestCommonAncestor(root.right, p, q);
+        else return root;
     }
 }
 ```
