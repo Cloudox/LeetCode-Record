@@ -25,6 +25,7 @@ LeetCode笔记
  * [404. Sum of Left Leaves](#404. Sum of Left Leaves)
  * [121. Best Time to Buy and Sell Stock](#121. Best Time to Buy and Sell Stock)
  * [235. Lowest Common Ancestor of a Binary Search Tree](#235. Lowest Common Ancestor of a Binary Search Tree)
+ * [21. Merge Two Sorted Lists](#21. Merge Two Sorted Lists)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1407,6 +1408,83 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="21. Merge Two Sorted Lists"/>21. Merge Two Sorted Lists
+### 问题：
+> Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+
+### 大意：
+> 合并两个有序链表并返回一个新链表。新链表应该包含原先两个链表中全部节点。
+
+### 思路：
+合并两个有序的链表其实思路还挺直接的，从两个链表的第一个节点开始比较大小，将小的那个放到新链表里，然后后移继续比较，大概思路就是这样，只是实现起来麻烦一点。另外其实还想到了一个奇葩的思路，就是将两个链表中的键值放到一个数组中，对数组进行排序，然后将数组里的元素按顺序放到新建的节点里去然后放入一个新链表就可以了哈哈哈。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) return l2;
+        else if (l2 == null) return l1;
+        
+        ListNode result;
+        ListNode mark;
+        
+        if (l1.val <= l2.val) {
+            result = l1;
+            l1 = l1.next;
+        } else {
+            result = l2;
+            l2 = l2.next;
+        }
+        mark = result;
+        
+        while (l1 != null) {
+            if (l2 != null && l2.val < l1.val) {
+                mark.next = l2;
+                mark = mark.next;
+                l2 = l2.next;
+            } else {
+                mark.next = l1;
+                mark = mark.next;
+                l1 = l1.next;
+            }
+        }
+        if (l2 != null) mark.next = l2;
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public ListNode mergeTwoLists(ListNode l1, ListNode l2){
+		if(l1 == null) return l2;
+		if(l2 == null) return l1;
+		if(l1.val < l2.val){
+			l1.next = mergeTwoLists(l1.next, l2);
+			return l1;
+		} else{
+			l2.next = mergeTwoLists(l1, l2.next);
+			return l2;
+		}
+}
+```
+
+这个方法的思路其实差不多，但是用的是递归的方式。耗时1ms，而上面我的代码耗时16ms，真的有这么大的差异么。。。
 
 [回到目录](#Catalogue)
 
