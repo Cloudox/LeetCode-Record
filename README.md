@@ -26,6 +26,7 @@ LeetCode笔记
  * [121. Best Time to Buy and Sell Stock](#121. Best Time to Buy and Sell Stock)
  * [235. Lowest Common Ancestor of a Binary Search Tree](#235. Lowest Common Ancestor of a Binary Search Tree)
  * [21. Merge Two Sorted Lists](#21. Merge Two Sorted Lists)
+ * [345. Reverse Vowels of a String](#345. Reverse Vowels of a String)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1485,6 +1486,99 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2){
 ```
 
 这个方法的思路其实差不多，但是用的是递归的方式。耗时1ms，而上面我的代码耗时16ms，真的有这么大的差异么。。。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="345. Reverse Vowels of a String"/>345. Reverse Vowels of a String
+### 问题：
+> Write a function that takes a string as input and reverse only the vowels of a string.
+
+> Example 1:
+Given s = "hello", return "holle".
+
+> Example 2:
+Given s = "leetcode", return "leotcede".
+
+> Note:
+The vowels does not include the letter "y".
+
+### 大意：
+> 写一个函数，输入一个字符串然后翻转里面的元音字母。
+
+> 例1：
+> 给出  s = "hello"，返回"holle"。
+
+> 例2：
+> 给出 s = "leetcode"，返回"leotcede"。
+
+> 注意：
+> 元音不包括字母“y”。
+
+### 思路：
+首先想到的一个思路是遍历字符串中每个字母，遇到元音字母就记录下字母和所在的位置。遍历完后，对着记录下来的元音字母，将字符串中的元音按照反序替换一遍就好了，这种做法也做出来了，但是结果非常耗时，花了200多ms。
+后来想到了第二种方法，在字符串的头和尾都放一个指针进行遍历，两端向中间去遍历，当两端都遇到元音字母后，就对换。直到两个指针碰头为止。这个方法就快多了，同时优化一下检查是否是元音字母的方法，只需要几ms就搞定了。
+需要注意的是题目中并没有说字符串是纯大写或者小写，所以大小写都要考虑，这个容易忽略。
+
+
+### 代码1（Java）：
+
+```java
+public class Solution {
+    public String reverseVowels(String s) {
+        int[] vowelIndex = new int[s.length()];
+        char[] vowelChar = new char[s.length()];
+        int index = 0;// 标记上面两个数组记录的位置
+        // 记录元音字母及出现的位置
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'a' || s.charAt(i) == 'e' || s.charAt(i) == 'i' || s.charAt(i) == 'o' || s.charAt(i) == 'u' || s.charAt(i) == 'A' || s.charAt(i) == 'E' || s.charAt(i) == 'I' || s.charAt(i) == 'O' || s.charAt(i) == 'U') {
+                vowelChar[index] = s.charAt(i);
+                vowelIndex[index] = i;
+                index++;
+            }
+        }
+        // 替换元音字母位置
+        if (index == 0) return s;
+        else {
+            StringBuffer buffer = new StringBuffer(s);
+            for (int i = 0; i < index; i++) {
+                buffer.replace(vowelIndex[i], vowelIndex[i]+1, String.valueOf(vowelChar[index-i-1]));
+            }
+            return buffer.toString();
+        }
+    }
+}
+```
+
+### 代码2（Java）：
+
+```
+public class Solution {
+	static final String vowels = "aeiouAEIOU";
+	public String reverseVowels(String s) {
+	    int first = 0, last = s.length() - 1;
+	    char[] array = s.toCharArray();
+	    while(first < last){
+		    // 正向找元音
+	        while(first < last && vowels.indexOf(array[first]) == -1){
+	            first++;
+	        }
+	        // 逆向找元音
+	        while(first < last && vowels.indexOf(array[last]) == -1){
+	            last--;
+	        }
+	        // 对换
+	        char temp = array[first];
+	        array[first] = array[last];
+	        array[last] = temp;
+	        first++;
+	        last--;
+	    }
+	    return new String(array);
+	}
+}
+```
 
 [回到目录](#Catalogue)
 
