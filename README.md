@@ -27,6 +27,7 @@ LeetCode笔记
  * [235. Lowest Common Ancestor of a Binary Search Tree](#235. Lowest Common Ancestor of a Binary Search Tree)
  * [21. Merge Two Sorted Lists](#21. Merge Two Sorted Lists)
  * [345. Reverse Vowels of a String](#345. Reverse Vowels of a String)
+ * [342. Power of Four](#342. Power of Four)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1577,6 +1578,59 @@ public class Solution {
 	    }
 	    return new String(array);
 	}
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="342. Power of Four"/>342. Power of Four
+### 问题：
+> Given an integer (signed 32 bits), write a function to check whether it is a power of 4.
+
+> Example:
+Given num = 16, return true. Given num = 5, return false.
+
+> Follow up: Could you solve it without loops/recursion?
+
+### 大意：
+> 给出一个数字（有符号32位），写一个函数来检查它是不是4的次方数。
+
+> 例子：
+> 给出 num = 16，返回true。给出 num = 15，返回false。
+
+> 进阶：你能不能不用循环或者递归来解决它。
+
+### 思路：
+这道题也是老题目了，既可以用[判断2的次方数](http://blog.csdn.net/cloudox_/article/details/52583486)的方法稍作修改，即转化为二进制数后判断1后面的0个数是不是双数。也可以直接用[判断3的次方数](http://blog.csdn.net/cloudox_/article/details/52582841)的方法来做，直接求对数。
+
+### 代码1（Java）：
+
+```java
+public class Solution {
+    public boolean isPowerOfFour(int num) {
+		//　转化为二进制数来判断
+        if (num < 0) return false;
+        String binaryStr = Integer.toBinaryString(num);
+        for (int i = 0; i < binaryStr.length(); i++) {
+            if (i == 0 && binaryStr.charAt(i) !='1') return false;
+            else if (i > 0 && binaryStr.charAt(i) != '0') return false;
+        }
+        if (binaryStr.length() % 2 != 1) return false;
+        return true;
+    }
+}
+```
+
+### 代码2（Java）：
+
+```java
+public class Solution {
+    public boolean isPowerOfFour(int num) {
+	    // 求对数
+        return (num > 0 && (Math.log10(num) / Math.log10(4)) % 1 == 0);
+    }
 }
 ```
 
