@@ -28,6 +28,7 @@ LeetCode笔记
  * [21. Merge Two Sorted Lists](#21. Merge Two Sorted Lists)
  * [345. Reverse Vowels of a String](#345. Reverse Vowels of a String)
  * [342. Power of Four](#342. Power of Four)
+ * [24. Swap Nodes in Pairs](#24. Swap Nodes in Pairs)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1630,6 +1631,54 @@ public class Solution {
     public boolean isPowerOfFour(int num) {
 	    // 求对数
         return (num > 0 && (Math.log10(num) / Math.log10(4)) % 1 == 0);
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="24. Swap Nodes in Pairs"/>24. Swap Nodes in Pairs
+### 问题：
+> Given a linked list, swap every two adjacent nodes and return its head.
+
+> For example,
+Given 1->2->3->4, you should return the list as 2->1->4->3.
+
+> Your algorithm should use only constant space. You may not modify the values in the list, only nodes itself can be changed.
+
+### 大意：
+> 给出一个链表，交换每两个相邻的节点然后返回头节点。
+
+> 例子：
+> 给出 1->2->3->4，你应该返回链表 2->1->4->3。
+
+> 你的算法应该只使用恒定的空间。你不能修改链表中的值，只有节点本身可以被改变。
+
+### 思路：
+题目里把最好用的一种方法禁止了，就是直接交换两个节点的值就可以了。但也还好做，就交换相邻节点的next指向的节点就可以了，然后递归下去，要注意判断节点是不是null的情况。不过这种做法一定要创建新的节点来临时存储节点，不知道这算不算不遵守题目要求呢。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head != null && head.next != null) {
+            ListNode next = head.next;
+            head.next = swapPairs(next.next);
+            next.next = head;
+            return next;
+        } else return head;
     }
 }
 ```
