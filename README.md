@@ -29,6 +29,7 @@ LeetCode笔记
  * [345. Reverse Vowels of a String](#345. Reverse Vowels of a String)
  * [342. Power of Four](#342. Power of Four)
  * [24. Swap Nodes in Pairs](#24. Swap Nodes in Pairs)
+ * [198. House Robber](#198. House Robber)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1679,6 +1680,46 @@ public class Solution {
             next.next = head;
             return next;
         } else return head;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="198. House Robber"/>198. House Robber
+## 问题：
+> You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+
+> Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.
+
+## 大意：
+> 你是一个专业的盗贼，计划偷一条街上的马。每匹马都带着明确数量的金钱，唯一阻止你偷所有马的原因是相邻的马都连接了安全系统，如果相邻的两匹马在同一天夜里被偷走就会自动联系警察。
+
+> 给出一个非负数的数组表示每匹马所带的金钱数量，计算你今晚可以在不惊动警察的情况下偷到的最大金钱数。
+
+## 思路：
+面对这么一道题，感觉没什么思路，总觉得可能性太多了，不知道怎么去快速地判断计算，看了看Discuss的讨论，看到一个方法，想一想也有点道理，但又总觉得不确定是不是完全正确，试了试测试时通过了的，还是记录下来吧。
+
+先考虑初始情况，如果没有马，则返回0，如果只有一匹马，那就直接偷了。如果有多匹马，那么对遇到的每匹马都进行一个判断：偷这匹马（为了不惊动警察所以不偷上一匹马）所得到的总金额和偷上一匹马（为了不惊动警察所以不偷这匹马）所得到的总金额哪个更大？哪个大就偷哪个，这样一直判断到最后一匹马。当然为了要达成这个判断就需要有两个变量来记录一些数据才能进行比较。这种判断就是在每两匹马之间判断哪个得到的效果更好，应该是对的吧。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int rob(int[] nums) {
+        if (nums.length == 0) return 0;
+        if (nums.length == 1) return nums[0];
+        int last = 0;
+        int now = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int temp = last;
+            last = now;
+            now = Math.max(temp + nums[i], last);
+        }
+        return now;
     }
 }
 ```
