@@ -30,6 +30,7 @@ LeetCode笔记
  * [342. Power of Four](#342. Power of Four)
  * [24. Swap Nodes in Pairs](#24. Swap Nodes in Pairs)
  * [198. House Robber](#198. House Robber)
+ * [409. Longest Palindrome](#409. Longest Palindrome)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1723,6 +1724,100 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="409. Longest Palindrome"/>409. Longest Palindrome
+### 问题：
+> Given a string which consists of lowercase or uppercase letters, find the length of the longest palindromes that can be built with those letters.
+
+> This is case sensitive, for example "Aa" is not considered a palindrome here.
+
+> Note:
+Assume the length of given string will not exceed 1,010.
+
+> Example:
+
+>> Input:
+"abccccdd"
+
+>> Output:
+7
+
+>> Explanation:
+One longest palindrome that can be built is "dccaccd", whose length is 7.
+
+### 大意：
+> 给出一个由小写或大写字母组成的字符串，找到能被其中的字母组成的最长的回文的长度。
+
+> 这是区分大小写的，比如“Aa”就不能认为是回文。
+
+> 注意：
+> 假设给出的字符串长度不会超过1010。
+
+> 例子：
+
+>> 输入：
+>“abccccdd”
+
+>> 输出：
+>7
+
+>> 解释：
+>最长的回文为“dccaccd”，长度为7。
+
+### 思路：
+这里回文的意思就是正着和反着都是一样的字母顺序。思路大家都是比较一致的，先看看字符串有哪些字母以及各自的数量，把成双成对的数量的字母都挑出来，取其能成双的最大数量，这样可以对称地放在回文的两边，然后看有没有落单的字母或者在成双后还有剩余一个的字母，有就放在回文最中间，这样就是最长的回文了，数量也就出来了。这里是区分大小写的，所以要分开算。不过题目中的1010这个最长字符串长度没发现有什么特别的用处。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int longestPalindrome(String s) {
+        int[] letterNum = new int[26*2];
+        char[] sArray = s.toCharArray();
+        for (int i = 0; i < sArray.length; i++) {
+             if ((sArray[i] - 'a') >= 0) {// 小写字母
+                 letterNum[(sArray[i] - 'a')]++;
+             } else {// 大写字母
+                 letterNum[(sArray[i] - 'A' + 26)]++;
+             }
+        }
+        
+        int result = 0;
+        boolean hasSingle = false;// 有无单个字符的标记
+        boolean hasOdd = false;// 有无2个以上奇数数量字符的标记
+        for (int i = 0; i < 26*2; i++) {
+            if (letterNum[i] > 0 && letterNum[i] < 2) hasSingle = true;
+            if (letterNum[i] > 1) {
+                result += letterNum[i] / 2 * 2;
+                if (letterNum[i] % 2 == 1) hasOdd = true;
+            }
+        }
+        result += hasSingle || hasOdd ? 1 : 0;
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public int longestPalindrome(String s) {
+        boolean[] map = new boolean[128];
+        int len = 0;
+        for (char c : s.toCharArray()) {
+            map[c] = !map[c];         // flip on each occurrence, false when seen n*2 times
+            if (!map[c]) len+=2;
+        }
+        if (len < s.length()) len++; // if more than len, atleast one single is present
+        return len;
+    }
+```
+
+这个做法其实思路是一样的，只是更加精简巧妙，boolan数组初始化时都是false，128的长度是为了包含所有ASCII码，懒得特意去判断大小写了，每次遇到一个字母就将其对应的位置取反，如果出现两次就会又变回false，那么每出现两次就可以将回文长度加2。最后看加起来的长度和原字符串长度是否相同，不同则说明有单个字符剩余，就可以放在回文正中间，跟我的做法比，思路差不多，代码却巧妙多了，厉害呀。
 
 [回到目录](#Catalogue)
 
