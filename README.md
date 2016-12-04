@@ -31,6 +31,7 @@ LeetCode笔记
  * [24. Swap Nodes in Pairs](#24. Swap Nodes in Pairs)
  * [198. House Robber](#198. House Robber)
  * [409. Longest Palindrome](#409. Longest Palindrome)
+ * [415. Add Strings](#415. Add Strings)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1818,6 +1819,66 @@ public int longestPalindrome(String s) {
 ```
 
 这个做法其实思路是一样的，只是更加精简巧妙，boolan数组初始化时都是false，128的长度是为了包含所有ASCII码，懒得特意去判断大小写了，每次遇到一个字母就将其对应的位置取反，如果出现两次就会又变回false，那么每出现两次就可以将回文长度加2。最后看加起来的长度和原字符串长度是否相同，不同则说明有单个字符剩余，就可以放在回文正中间，跟我的做法比，思路差不多，代码却巧妙多了，厉害呀。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="415. Add Strings"/>415. Add Strings
+### 问题：
+> Given two non-negative numbers num1 and num2 represented as string, return the sum of num1 and num2.
+
+> Note:
+
+> 1、The length of both num1 and num2 is < 5100.
+2、Both num1 and num2 contains only digits 0-9.
+3、Both num1 and num2 does not contain any leading zero.
+4、You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+### 大意：
+> 给出两个字符串形式的非负数num1和num2，返回num1和num2之和。
+
+> 注意：
+
+> 1、num1和num2的长度都小于5100。
+> 2、num1和num2都只包含数字0-9。
+> 3、num1和num2都不包含处于首位的0。
+> 4、你不能使用任何内置的大数库或者直接将输入转化成整型。
+
+### 思路：
+题目不允许直接转化成整型去计算，也就是要我们一位一位地将数字加起来实现一次加法了。从两个字符串的最末尾开始去加，注意判断是否要进位，一位位加到两个字符串都遍历完为止，为了速度这里要使用StringBuilder，如果直接用 + 去进行字符拼接就太慢了，注意我们每次对每位数进行加时还是用整型来计算，这还是允许的，不然也太麻烦了，代码比较容易看懂。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String addStrings(String num1, String num2) {
+        if (num1.length() == 0) return num2;
+        else if (num2.length() == 0) return num1;
+        
+        boolean hasUp = false;// 是否进位
+        int i = num1.length() - 1;
+        int j = num2.length() - 1;
+        StringBuilder sb = new StringBuilder();
+        while (i >=0 || j >= 0) {
+            int n1 = i >= 0 ? num1.charAt(i) - '0' : 0;
+            int n2 = j >= 0 ? num2.charAt(j) - '0' : 0;
+            int sum = n1 + n2 + (hasUp ? 1 : 0);
+            if (sum >= 10) {
+                sb.insert(0, Integer.toString(sum - 10));
+                hasUp = true;
+            } else {
+                sb.insert(0, Integer.toString(sum));
+                hasUp = false;
+            }
+            i--;
+            j--;
+        }
+        if (hasUp) sb.insert(0, "1");
+        return sb.toString();
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
