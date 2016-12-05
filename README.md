@@ -32,6 +32,7 @@ LeetCode笔记
  * [198. House Robber](#198. House Robber)
  * [409. Longest Palindrome](#409. Longest Palindrome)
  * [415. Add Strings](#415. Add Strings)
+ * [107. Binary Tree Level Order Traversal II](#107. Binary Tree Level Order Traversal II)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1878,6 +1879,105 @@ public class Solution {
         return sb.toString();
     }
 }
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="107. Binary Tree Level Order Traversal II"/>107. Binary Tree Level Order Traversal II
+### 问题：
+> Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
+
+> For example:
+Given binary tree [3,9,20,null,null,15,7],
+>>    3
+>>   / \
+>>  9  20
+　 	 /  \
+　   15   7
+    
+> return its bottom-up level order traversal as:
+>>[
+　  [15,7],
+　  [9,20],
+　  [3]
+]
+
+### 大意：
+> 给出一个二叉树，返回从下到上的节点值序列。（比如，从左到右，一层层地从叶子到根）。
+
+> 例子：
+> 给出二叉树 [3,9,20,null,null,15,7]，
+>>    3
+>>   / \
+>>  9  20
+　 	 /  \
+　   15   7
+    
+> 返回从下到上的层级序列为：
+>>[
+　  [15,7],
+　  [9,20],
+　  [3]
+]
+
+### 思路：
+这道题比较麻烦，要遍历二叉树，返回反过来顺序的二阶List。有两种方法，也就是经常说到的DFS深度优先遍历和BFS广度优先遍历。
+
+BFS：
+广度优先遍历就是一层层地攻略过去，把每一层的所有节点都记录下来再走向下一层。因为每层会有多个节点，不是简单的一个左节点一个右节点的，所以这里用到队列，用队列的先进先出特性来记录每一层的节点，保证对每层的每个节点都处理到其子节点，并将值记录下来。队列用到Queue这个类，offer方法可以添加一个元素，peek方法获取队首的元素，poll方法会从队首移除一个元素并获取它。
+
+DFS：
+深度优先遍历一般用递归来实现，也就是对每个方向都用递归来找到最底层的叶子节点，一层层处理回来，把每层的节点值添加到当前层的List中去。
+
+### 代码：
+BFS：
+
+```java
+public class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+        
+        if(root == null) return wrapList;
+        
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int levelNum = queue.size();
+            List<Integer> subList = new LinkedList<Integer>();
+            for(int i=0; i<levelNum; i++) {
+                if(queue.peek().left != null) queue.offer(queue.peek().left);
+                if(queue.peek().right != null) queue.offer(queue.peek().right);
+                subList.add(queue.poll().val);
+            }
+            wrapList.add(0, subList);
+        }
+        return wrapList;
+    }
+}
+```
+
+DFS：
+
+```java
+public class Solution {
+        public List<List<Integer>> levelOrderBottom(TreeNode root) {
+            List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+            levelMaker(wrapList, root, 0);
+            return wrapList;
+        }
+        
+        public void levelMaker(List<List<Integer>> list, TreeNode root, int level) {
+            if(root == null) return;
+            if(level >= list.size()) {
+                list.add(0, new LinkedList<Integer>());
+            }
+            levelMaker(list, root.left, level+1);
+            levelMaker(list, root.right, level+1);
+            list.get(list.size()-level-1).add(root.val);
+        }
+    }
 ```
 
 [回到目录](#Catalogue)
