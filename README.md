@@ -1909,18 +1909,10 @@ Given binary tree [3,9,20,null,null,15,7],
 
 > 例子：
 > 给出二叉树 [3,9,20,null,null,15,7]，
->>    3
->>   / \
->>  9  20
-　 	 /  \
-　   15   7
+![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image1.png)
     
-> 返回从下到上的层级序列为：
->>[
-　  [15,7],
-　  [9,20],
-　  [3]
-]
+> 返回从下到上的层级序列为:
+![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image2.png)
 
 ### 思路：
 这道题比较麻烦，要遍历二叉树，返回反过来顺序的二阶List。有两种方法，也就是经常说到的DFS深度优先遍历和BFS广度优先遍历。
