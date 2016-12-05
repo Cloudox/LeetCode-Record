@@ -1909,9 +1909,11 @@ Given binary tree [3,9,20,null,null,15,7],
 
 > 例子：
 > 给出二叉树 [3,9,20,null,null,15,7]，
+
 ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image1.png)
     
 > 返回从下到上的层级序列为:
+
 ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image2.png)
 
 ### 思路：
