@@ -33,6 +33,7 @@ LeetCode笔记
  * [409. Longest Palindrome](#409. Longest Palindrome)
  * [415. Add Strings](#415. Add Strings)
  * [107. Binary Tree Level Order Traversal II](#107. Binary Tree Level Order Traversal II)
+ * [141. Linked List Cycle](#141. Linked List Cycle)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -1972,6 +1973,62 @@ public class Solution {
             list.get(list.size()-level-1).add(root.val);
         }
     }
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="141. Linked List Cycle"/>141. Linked List Cycle
+### 问题：
+> Given a linked list, determine if it has a cycle in it.
+
+> Follow up:
+Can you solve it without using extra space?
+
+### 大意：
+> 给出一个链表，判断它有没有回环。
+
+> 进阶：
+> 你能不能不用额外的空间来解决？
+
+### 思路：
+这道题我利用Java中Set集合的特性，即集合中不允许出现相同的对象。
+
+我们遍历链表，边遍历边把每个节点放入一个Set集合中，并且每次都判断Set集合内对象的个数是否增加了，如果没增加，说明有相同的对象加入，也就是有回环了。
+
+我看别人的解决办法，很多都是判断相邻的节点间有没有回环，其实不太理解，是不是回环只有相邻的这种情况呢，那如果存在大回环不是就判断不出来了么，还是觉得Set的方法比较保险。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null) return false;
+        HashSet list = new HashSet();
+        list.add(head);
+        int num = 1;
+        while (head.next != null) {
+            list.add(head.next);
+            num++;
+            if (num > list.size()) return true;
+            head = head.next;
+        }
+        return false;
+    }
+}
 ```
 
 [回到目录](#Catalogue)
