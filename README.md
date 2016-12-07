@@ -34,6 +34,7 @@ LeetCode笔记
  * [415. Add Strings](#415. Add Strings)
  * [107. Binary Tree Level Order Traversal II](#107. Binary Tree Level Order Traversal II)
  * [141. Linked List Cycle](#141. Linked List Cycle)
+ * [66. Plus One](#66. Plus One)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2028,6 +2029,90 @@ public class Solution {
         }
         return false;
     }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="66. Plus One"/>66. Plus One
+### 问题：
+> Given a non-negative number represented as an array of digits, plus one to the number.
+
+> The digits are stored such that the most significant digit is at the head of the list.
+
+### 大意：
+> 给出一个非负数的代表数字的数组，给这个“数字”加一。
+
+> 这个数字的存储形式为最高位的数再数组的最前端。
+
+### 思路：
+但看题目还看不懂是什么意思，跑了几个测试用例后看答案看明白了，就是数组的每一个位置代表一个数的每一位，有个位十位百位等，如[8]表示数字8，[1，2]表示数字12等等，题目要求将给出的数字代表的数字加一并用同样的形式返回结果。
+
+这个题目的要点在于对加法进位的判断，从个位数开始，如果加一后等于10，那么就要进位，而进位时也要不断对高位进行判断是否还要进位，所以只要把这个逻辑理清楚，代码还是好写出来的，我自己写出来的代码很复杂，明显可以进行优化。
+
+后来看了下别人写的代码，思路差不多，也是判断进位，但是代码精简了许多，从最低位开始，如果不进位就直接返回，否则就按照要进位的方式去一遍遍循环，简单明了多了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] plusOne(int[] digits) {
+        int length = digits.length;
+        int last = digits[length-1];
+        last++;
+        if (last < 10) {
+            digits[length-1] = last;
+        } else {// 最后一位要进位
+            digits[length-1] = 0;// 最后一位记得置零
+            int position = length-1;
+            while (position >= 0) {
+                if (position == 0) {// 只有一个数
+                    // 在第0位插入一个数
+                    int[] newDigits = new int[length+1];
+                    newDigits[0] = 1;
+                    for (int i = 0; i < length; i++) {
+                        newDigits[i+1] = digits[i];
+                    }
+                    digits = newDigits;
+                    break;
+                } else {// 有多位数
+                    position--;
+                    int num = digits[position]+1;
+                    if (num < 10) {
+                        digits[position] = num;
+                        break;
+                    } else {// 要进位，置零后继续循环
+                        digits[position] = 0;
+                    }
+                }
+            }
+        }
+        return digits;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public int[] plusOne(int[] digits) {
+        
+    int n = digits.length;
+    for(int i=n-1; i>=0; i--) {
+        if(digits[i] < 9) {
+            digits[i]++;
+            return digits;
+        }
+        
+        digits[i] = 0;
+    }
+    
+    int[] newNumber = new int [n+1];
+    newNumber[0] = 1;
+    
+    return newNumber;
 }
 ```
 
