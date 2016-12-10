@@ -35,6 +35,7 @@ LeetCode笔记
  * [107. Binary Tree Level Order Traversal II](#107. Binary Tree Level Order Traversal II)
  * [141. Linked List Cycle](#141. Linked List Cycle)
  * [66. Plus One](#66. Plus One)
+ * [27. Remove Element](#27. Remove Element)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2113,6 +2114,47 @@ public int[] plusOne(int[] digits) {
     newNumber[0] = 1;
     
     return newNumber;
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="27. Remove Element"/>27. Remove Element
+### 问题：
+> Given an array and a value, remove all instances of that value in place and return the new length.
+
+> Do not allocate extra space for another array, you must do this in place with constant memory.
+
+> The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+
+### 大意：
+> 给出一个数组和一个数，移除数组中所有等于该数的值并返回新长度。
+
+> 不要使用额外的空间来创建另一个数组，你必须在恒定的内存中做。
+
+> 元素的顺序可以改变。新长度以外的内容无所谓是什么样子。
+
+### 思路：
+这道题的要求在于不创建新数组，而是在原有的数组内容来进行操作，按题目的意思就是将所有不等于那个值的数放到数组前面，然后返回这些数的数量，也就是数组的一个长度，这个长度后面的数是什么样子的都没有关系。
+
+按照这个思路很明显就是检测如果不一样就放到前面来了。我们弄两个指针，一个遍历数组中的数，一个记录不一样的数的数量，那么记录数量的数一定是小于等于遍历的那个指针数的，所以每当遍历到不一样的数时，就放在数组中记录不一样的数的位置，因为第二个指针一定是不会大于第一个数的，所以不会存在覆盖一些没遍历到的数的问题，这相当于是把不一样的数都集中到数组前面了，等遍历完了，后面的数其实还是保持原样的，跟题目要求的很契合。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int removeElement(int[] nums, int val) {
+        int position = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != val) {
+                nums[position] = nums[i];
+                position++;
+            }
+        }
+        return position;
+    }
 }
 ```
 
