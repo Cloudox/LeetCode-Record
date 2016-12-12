@@ -2169,11 +2169,11 @@ public class Solution {
 
 > For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
 
->>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image1.png)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/101Image1.png)
 
 > But the following [1,2,2,null,3,null,3] is not:
 
->>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image2.png)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/101Image2.png)
 
 >Note:
 Bonus points if you could solve it both recursively and iteratively.
@@ -2183,11 +2183,11 @@ Bonus points if you could solve it both recursively and iteratively.
 
 > 比如，二进制数 [1,2,2,3,4,4,3] 是对称的
 
->>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image1.png)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/101Image1.png)
 
 >但 [1,2,2,null,3,null,3] 就不是：
 
->>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image2.png)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/101Image2.png)
 
 > 注意：
 > 如果可以用递归和迭代来做会加分
