@@ -36,6 +36,7 @@ LeetCode笔记
  * [141. Linked List Cycle](#141. Linked List Cycle)
  * [66. Plus One](#66. Plus One)
  * [27. Remove Element](#27. Remove Element)
+ * [101. Symmetric Tree](#101. Symmetric Tree)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2154,6 +2155,84 @@ public class Solution {
             }
         }
         return position;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="101. Symmetric Tree"/>101. Symmetric Tree
+### 问题：
+> Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+
+> For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
+
+>>　    1
+　   / \
+　２   2
+　 / \ / \
+　3  4 4  3
+
+> But the following [1,2,2,null,3,null,3] is not:
+>>    1
+   / \
+  2   2
+\　 \
+3 　   3
+
+>Note:
+Bonus points if you could solve it both recursively and iteratively.
+
+### 大意：
+> 给出一个二叉树，检查它是否是自己的镜像（中心对称）。
+
+> 比如，二进制数 [1,2,2,3,4,4,3] 是对称的
+
+>>　    1
+　   / \
+　２   2
+　 / \ / \
+　3  4 4  3
+
+但 [1,2,2,null,3,null,3] 就不是：
+>>    1
+   / \
+  2   2
+\　 \
+3 　   3
+
+> 注意：
+> 如果可以用递归和迭代来做会加分
+
+### 思路：
+这道题我没想出来，总觉得要递归地去比较中间那么多数字是不是对称的不好做到，看了看别人的做法，还是很简单的，只能怪自己没想明白，想得太复杂了。
+
+先检查root啊、左右子节点啊是不是null这些情况直接作出判断，然后用递归去做，每次检查一个节点的左子节点的左子节点和右子节点的右子节点以及左子节点的右子节点和右子节点的左子节点是不是一样的，就可以判断了。听起来有点绕，其实想一想就能明白了，我们总是去对一个节点的左右两个子节点去往下比较，这样就会越往下比较的越开，并不会出现单纯的相邻节点之间进行比较而已。
+
+### 他山之石：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) return true;
+        else return isMirror(root.left, root.right);
+    }
+    
+    public boolean isMirror(TreeNode left, TreeNode right) {
+        if (left == null && right == null) return true;
+        else if (left == null || right == null) return false;
+        else return (left.val == right.val) && isMirror(left.left, right.right) && isMirror(left.right, right.left);
     }
 }
 ```
