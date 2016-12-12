@@ -2169,18 +2169,11 @@ public class Solution {
 
 > For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
 
->>　    1
-　   / \
-　２   2
-　 / \ / \
-　3  4 4  3
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image1.png)
 
 > But the following [1,2,2,null,3,null,3] is not:
->>    1
-   / \
-  2   2
-\　 \
-3 　   3
+
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image2.png)
 
 >Note:
 Bonus points if you could solve it both recursively and iteratively.
@@ -2190,18 +2183,11 @@ Bonus points if you could solve it both recursively and iteratively.
 
 > 比如，二进制数 [1,2,2,3,4,4,3] 是对称的
 
->>　    1
-　   / \
-　２   2
-　 / \ / \
-　3  4 4  3
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image1.png)
 
-但 [1,2,2,null,3,null,3] 就不是：
->>    1
-   / \
-  2   2
-\　 \
-3 　   3
+>但 [1,2,2,null,3,null,3] 就不是：
+
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/107Image2.png)
 
 > 注意：
 > 如果可以用递归和迭代来做会加分
