@@ -37,6 +37,7 @@ LeetCode笔记
  * [66. Plus One](#66. Plus One)
  * [27. Remove Element](#27. Remove Element)
  * [101. Symmetric Tree](#101. Symmetric Tree)
+ * [118. Pascal's Triangle](#118. Pascal's Triangle)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2219,6 +2220,69 @@ public class Solution {
         if (left == null && right == null) return true;
         else if (left == null || right == null) return false;
         else return (left.val == right.val) && isMirror(left.left, right.right) && isMirror(left.right, right.left);
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="118. Pascal's Triangle"/>118. Pascal's Triangle
+### 问题：
+> Given numRows, generate the first numRows of Pascal's triangle.
+
+> For example, given numRows = 5,
+Return
+
+>> [
+     [1],
+    [1,1],
+   [1,2,1],
+  [1,3,3,1],
+ [1,4,6,4,1]
+]
+
+### 大意：
+> 给出一个行数，生出对应行数的杨辉三角形。
+
+> 比如，给出行数 = 5。
+> 返回
+
+>> [
+     [1],
+    [1,1],
+   [1,2,1],
+  [1,3,3,1],
+ [1,4,6,4,1]
+]
+
+### 思路：
+杨辉三角形好像是小学还是初中学的东西，像上面例子中显示的一样，每行数字递增1，,第一个数和最后一个数都是1，中间的每个数都是上一行对应位置和前一个位置的数之和。
+
+这道题就是要根据给出的行数返回对应的杨辉三角形，那么也可以依据这个特性来做。每一行第一个数和最后一个数肯定都是1，中间的数根据上一行来计算，所以需要保存和更新每一个“上一行”，本行中间 j 位置的数，是上一行 j 位置和 j-1位置的数之和，这样一个个数，一行行计算出来就可以了。这道题要求结果放在ArrayList里，ArrayList经常用到，还是需要了解一下增删改查的用法。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        if (numRows == 0) return new ArrayList<List<Integer>>();
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        List<Integer> lastArr = new ArrayList<Integer>();
+        lastArr.add(1);
+        result.add(lastArr);
+        for (int i = 1; i < numRows; i++) {
+            List<Integer> newArr = new ArrayList<Integer>();
+            newArr.add(1);
+            for (int j = 1; j < i; j++) {
+                newArr.add(lastArr.get(j-1) + lastArr.get(j));
+            }
+            newArr.add(1);
+            result.add(newArr);
+            lastArr = newArr;
+        }
+        return result;
     }
 }
 ```
