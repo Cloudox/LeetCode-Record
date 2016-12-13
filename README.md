@@ -2235,13 +2235,7 @@ public class Solution {
 > For example, given numRows = 5,
 Return
 
->> [
-     [1],
-    [1,1],
-   [1,2,1],
-  [1,3,3,1],
- [1,4,6,4,1]
-]
+>> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/118Image1.png)
 
 ### 大意：
 > 给出一个行数，生出对应行数的杨辉三角形。
@@ -2249,13 +2243,7 @@ Return
 > 比如，给出行数 = 5。
 > 返回
 
->> [
-     [1],
-    [1,1],
-   [1,2,1],
-  [1,3,3,1],
- [1,4,6,4,1]
-]
+>> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/118Image1.png)
 
 ### 思路：
 杨辉三角形好像是小学还是初中学的东西，像上面例子中显示的一样，每行数字递增1，,第一个数和最后一个数都是1，中间的每个数都是上一行对应位置和前一个位置的数之和。
