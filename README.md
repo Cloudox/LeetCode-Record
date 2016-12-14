@@ -38,6 +38,7 @@ LeetCode笔记
  * [27. Remove Element](#27. Remove Element)
  * [101. Symmetric Tree](#101. Symmetric Tree)
  * [118. Pascal's Triangle](#118. Pascal's Triangle)
+ * [102. Binary Tree Level Order Traversal](#102. Binary Tree Level Order Traversal)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2271,6 +2272,126 @@ public class Solution {
             lastArr = newArr;
         }
         return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="102. Binary Tree Level Order Traversal"/>102. Binary Tree Level Order Traversal
+### 问题：
+> Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
+
+> For example:
+Given binary tree [3,9,20,null,null,15,7],
+>>    3
+>>   / \
+>>  9  20
+　 	 /  \
+　   15   7
+    
+> return its level order traversal as:
+>>[
+　  [3],
+　  [9,20],
+　  [15,7]
+]
+
+### 大意：
+> 给出一个二叉树，返回层级顺序的节点值（从左到右，一层层的）。
+
+> 例子：
+> 给出二叉树 [3,9,20,null,null,15,7]。
+>>    3
+>>   / \
+>>  9  20
+　 	 /  \
+　   15   7
+
+> 返回他的层级顺序为：
+>>[
+　  [3],
+　  [9,20],
+　  [15,7]
+]
+
+### 思路：
+这道题和[LeetCode笔记：107. Binary Tree Level Order Traversal II](http://blog.csdn.net/cloudox_/article/details/52785627)是姊妹题，解题思路都是一样的，只是结果要求的顺序是反的，同样有两种方法，也就是经常说到的DFS深度优先遍历和BFS广度优先遍历。
+
+BFS： 
+广度优先遍历就是一层层地攻略过去，把每一层的所有节点都记录下来再走向下一层。因为每层会有多个节点，不是简单的一个左节点一个右节点的，所以这里用到队列，用队列的先进先出特性来记录每一层的节点，保证对每层的每个节点都处理到其子节点，并将值记录下来。队列用到Queue这个类，offer方法可以添加一个元素，peek方法获取队首的元素，poll方法会从队首移除一个元素并获取它。
+
+DFS： 
+深度优先遍历一般用递归来实现，也就是对每个方向都用递归来往下找子节点，先用一个空的List占个位置，这一层每找到一个都添加到这个位置的List中去，一直找到最底层为止。
+
+这个题目里BFS会比DFS快一点点。
+
+### 代码（Java）：
+BFS：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<List<Integer>> result = new LinkedList<List<Integer>>();
+        
+        if (root == null) return result;
+        
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            List<Integer> subList = new LinkedList<Integer>();
+            for (int i = 0; i < levelNum; i++) {
+                if (queue.peek().left != null) queue.offer(queue.peek().left);
+                if (queue.peek().right != null) queue.offer(queue.peek().right);
+                subList.add(queue.poll().val);
+            }
+            result.add(subList);
+        }
+        
+        return result;
+    }
+}
+```
+
+DFS：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<List<Integer>>();
+        levelMaker(result, root, 0);
+        return result;
+    }
+    
+    public void levelMaker(List<List<Integer>> list, TreeNode root, int level) {
+        if (root == null) return;
+        if (level >= list.size()) {
+            list.add(level, new LinkedList<Integer>());
+        }
+        levelMaker(list, root.left, level+1);
+        levelMaker(list, root.right, level+1);
+        list.get(level).add(root.val);
     }
 }
 ```
