@@ -39,6 +39,7 @@ LeetCode笔记
  * [101. Symmetric Tree](#101. Symmetric Tree)
  * [118. Pascal's Triangle](#118. Pascal's Triangle)
  * [102. Binary Tree Level Order Traversal](#102. Binary Tree Level Order Traversal)
+ * [110. Balanced Binary Tree](#110. Balanced Binary Tree)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2392,6 +2393,63 @@ public class Solution {
         levelMaker(list, root.left, level+1);
         levelMaker(list, root.right, level+1);
         list.get(level).add(root.val);
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="110. Balanced Binary Tree"/>110. Balanced Binary Tree
+### 问题：
+> 
+Given a binary tree, determine if it is height-balanced.
+
+> For this problem, a height-balanced binary tree is defined as a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+
+### 大意：
+> 给出一个二叉树，判断它高度是不是平衡的。
+
+> 对于这个问题，一个高度平衡的二叉树是指每个节点的两个子节点的深度的差异都不超过1的二叉树。
+
+### 思路：
+这道题题目说的太简略了也没有例子，根据不断试错摸出来的情况，就是说每个节点的两个子节点的深度不能想查大于1，比如左子节点下还有子节点，右子节点下没有了，这是允许的，深度相差1，但是如果左子节点的子节点还有子节点，深度相差就是2了，就不平衡了。
+
+如果直接判断有无子节点，情况太多了不好做。不如直接递归记录每个节点的深度，然后比较每个节点的两个子节点的深度相差是否大于1。
+
+这里要记录每个子节点的深度可以用递归的方法，叶子节点的深度为1，往上递增，注意在递归算一个节点深度时，要判断左子节点和右子节点的深度哪个更深，取更深的那一个，也就是数值更大的那一个。
+
+然后可以再判断每个节点的左右子节点的深度相差是否大于1。但是要重新遍历一遍所有节点，这无疑增加了时间。在上面我们计算每个节点的深度的时候，有一步是判断左右子节点哪个节点更深，这里明显可以直接比较相差是否大于1，如果大于1，我们将该节点的深度特殊记为-1这个不会出现的深度值，我们希望可以传递到最顶层去告诉题目这个二叉树是不平衡的，因此在计算每个节点的左右子节点的时候，需要判断左右子节点的深度有没有等于-1的，如果有，说明下面有个地方出现不平衡了，这时候直接把-1这个信号往上传就好了。这样一层层递归传回root，就可以根据根节点的深度是否是-1来判断是否平衡了。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if (height(root) == -1) return false;
+        else return true;
+    }
+    
+    public int height(TreeNode root) {
+        if (root == null) return 0;
+        else {
+            int leftHeight = height(root.left);
+            if (leftHeight == -1) return -1;
+            int rightHeight = height(root.right);
+            if (rightHeight == -1) return -1;
+            if (leftHeight - rightHeight > 1 || leftHeight - rightHeight < -1) return -1;
+            return Math.max(height(root.left), height(root.right)) + 1;
+        }
     }
 }
 ```
