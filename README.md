@@ -40,6 +40,7 @@ LeetCode笔记
  * [118. Pascal's Triangle](#118. Pascal's Triangle)
  * [102. Binary Tree Level Order Traversal](#102. Binary Tree Level Order Traversal)
  * [110. Balanced Binary Tree](#110. Balanced Binary Tree)
+ * [26. Remove Duplicates from Sorted Array](#26. Remove Duplicates from Sorted Array)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2450,6 +2451,54 @@ public class Solution {
             if (leftHeight - rightHeight > 1 || leftHeight - rightHeight < -1) return -1;
             return Math.max(height(root.left), height(root.right)) + 1;
         }
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="26. Remove Duplicates from Sorted Array"/>26. Remove Duplicates from Sorted Array
+### 问题：
+> Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.
+
+> Do not allocate extra space for another array, you must do this in place with constant memory.
+
+> For example,
+Given input array nums = [1,1,2],
+
+> Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively. It doesn't matter what you leave beyond the new length.
+
+### 大意：
+> 给出一个有序数组，移除重复的数字，让每个元素只出现一次，并返回新的长度。
+
+> 不要分配额外的空间给另一个数组，你必须在固定的内存下去做。
+
+> 举例：
+> 给出输入的数组为 nums = [1,1,2]，
+
+> 你的函数应该返回长度 = 2，并让前面两个数字为单独的1和2。在新长度之外的位置无所谓你留下了什么内容。
+
+### 思路：
+这道题和[LeetCode笔记：27. Remove Element](http://blog.csdn.net/cloudox_/article/details/52856469)这个很类似，只不过这道题的难度在于，在操作中不能随意改变数组中原本元素的位置，因为你要保持它后面的数字还是有序的，才好去比较相邻的数字是否一样。其实也简单，我们弄一个变量记录上一个单独的数字，再弄一个变量记录该数字后面的位置序号，往后遍历，直到遇到不一样的数字，才把那个数字放到该位置序号来，然后把记录单独数字的变量设为这个新数字，记录位置的变量序号+1，继续往后遍历，因为是随着遍历过程往前放数字，所以不会影响到后面的数字顺序。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) return 0;
+        int position = 1;
+        int lastNumber = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > lastNumber) {
+                nums[position] = nums[i];
+                position++;
+                lastNumber = nums[i];
+            }
+        }
+        return position;
     }
 }
 ```
