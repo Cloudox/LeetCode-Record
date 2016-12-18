@@ -41,6 +41,7 @@ LeetCode笔记
  * [102. Binary Tree Level Order Traversal](#102. Binary Tree Level Order Traversal)
  * [110. Balanced Binary Tree](#110. Balanced Binary Tree)
  * [26. Remove Duplicates from Sorted Array](#26. Remove Duplicates from Sorted Array)
+ * [232. Implement Queue using Stacks](#232. Implement Queue using Stacks)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2502,6 +2503,116 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="232. Implement Queue using Stacks"/>232. Implement Queue using Stacks
+### 问题：
+> Implement the following operations of a queue using stacks.
+
+> * push(x) -- Push element x to the back of queue.
+* pop() -- Removes the element from in front of queue.
+* peek() -- Get the front element.
+* empty() -- Return whether the queue is empty.
+
+> Notes:
+> 
+* You must use only standard operations of a stack -- which means only push to top, peek/pop from top, size, and is empty operations are valid.
+* Depending on your language, stack may not be supported natively. You may simulate a stack by using a list or deque (double-ended queue), as long as you use only standard operations of a stack.
+* You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).
+
+### 大意：
+> 用堆栈实现一个满足下列操作的队列。
+
+> * push(x)——push一个元素x到队列尾部。
+> * pop()——从队列头部移除一个元素。
+> * peek()——获取队列头部的元素。
+> * empty()——返回队列是否是空的。
+
+> 注意：
+>
+* 你必须使用标准的堆栈操作——也就是只有push到顶端、从顶端peek/pop、size以及empty操作是有效的。
+* 根据你的语言，堆栈可能不是原生支持的。你可能要通过使用list或者deque（double-ended queue）模仿一个堆栈，就好像在使用标准的堆栈操作一样。
+* 你可以假设所有的操作都是有效的（比如不会对一个空队列进行pop或者peek操作）。
+
+### 思路：
+这道题要我们用堆栈来实现队列操作。堆栈和队列最大的区别就在于堆栈是先进后出的，而队列是先进先出的。所以在实现的时候，其他操作都好说，主要是pop和peek操作，我们需要将堆栈本身移除新加入的元素改为移除堆栈底部最开始加入的元素，要达到这个操作就得用另一个堆栈来临时存储数据，就像小时候玩的游戏，要先把堆栈里的数据全部倒到另一个堆栈里，才能取出最底部的元素，移除或者返回后，再将元素全部还原。
+
+### 代码（Java）：
+
+```java
+class MyQueue {
+    private Stack<Integer> in = new Stack<>();
+    private Stack<Integer> out = new Stack<>();
+    
+    // Push element x to the back of queue.
+    public void push(int x) {
+        in.push(x);
+    }
+
+    // Removes the element from in front of queue.
+    public void pop() {
+        while (!in.empty()) {
+            out.push(in.pop());
+        }
+        out.pop();
+        while (!out.empty()) {
+            in.push(out.pop());
+        }
+    }
+
+    // Get the front element.
+    public int peek() {
+        while (!in.empty()) {
+            out.push(in.pop());
+        }
+        int result = out.peek();
+        while (!out.empty()) {
+            in.push(out.pop());
+        }
+        return result;
+    }
+
+    // Return whether the queue is empty.
+    public boolean empty() {
+        return in.empty();
+    }
+}
+```
+
+### 他山之石：
+
+```java
+class MyQueue {
+
+    Stack<Integer> input = new Stack();
+    Stack<Integer> output = new Stack();
+    
+    public void push(int x) {
+        input.push(x);
+    }
+
+    public void pop() {
+        peek();
+        output.pop();
+    }
+
+    public int peek() {
+        if (output.empty())
+            while (!input.empty())
+                output.push(input.pop());
+        return output.peek();
+    }
+
+    public boolean empty() {
+        return input.empty() && output.empty();
+    }
+}
+```
+
+这个做法其实和我的做法大致是一致的，但是我在进行pop和peek操作时，需要循环两次来进行倒出来又倒回去的工作。他的做法则是，只有当另一个堆栈空了，才将原堆栈的元素倒过去，因为每次倒都是全部倒空，新加入的元素会加到原堆栈去，而老元素都一批批地倒进另一个堆栈了，但我取元素的时候就是从老元素开始取得，所以只需要从另一个堆栈的顶部开始取就行了，毕竟倒一次顺序就反过来了，当取空了另一个堆栈后，就再倒一次，这样时间复杂度就大大降低了。
 
 [回到目录](#Catalogue)
 
