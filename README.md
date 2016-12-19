@@ -42,6 +42,7 @@ LeetCode笔记
  * [110. Balanced Binary Tree](#110. Balanced Binary Tree)
  * [26. Remove Duplicates from Sorted Array](#26. Remove Duplicates from Sorted Array)
  * [232. Implement Queue using Stacks](#232. Implement Queue using Stacks)
+ * [172. Factorial Trailing Zeroes](#172. Factorial Trailing Zeroes)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2613,6 +2614,36 @@ class MyQueue {
 ```
 
 这个做法其实和我的做法大致是一致的，但是我在进行pop和peek操作时，需要循环两次来进行倒出来又倒回去的工作。他的做法则是，只有当另一个堆栈空了，才将原堆栈的元素倒过去，因为每次倒都是全部倒空，新加入的元素会加到原堆栈去，而老元素都一批批地倒进另一个堆栈了，但我取元素的时候就是从老元素开始取得，所以只需要从另一个堆栈的顶部开始取就行了，毕竟倒一次顺序就反过来了，当取空了另一个堆栈后，就再倒一次，这样时间复杂度就大大降低了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="172. Factorial Trailing Zeroes"/>172. Factorial Trailing Zeroes
+### 问题：
+> Given an integer n, return the number of trailing zeroes in n!.
+
+> Note: Your solution should be in logarithmic time complexity.
+
+### 大意：
+> 给出一个整数n，返回n!后面0的个数。
+
+> 注意：你的算法时间复杂度要是logn以内。
+
+### 思路：
+这道题的要求是计算n的阶乘后面0的个数，而且要求算法时间复杂度为logn，那么就绝对不是要人傻傻地做一遍阶乘再去做。
+
+思考一下，什么时候末尾才会出现0，我们知道只有2*5，或者n*10的时候才会在末尾出现0，其实10也可以看做一种2*5，那么其实就是看我们这个n中包含多少个2*5了，而因为有5就一定会有2，因为5比2大，相反有2不一定有5，所以只需要考虑n中有多少个5就可以了。此外，对于25这个数，我们知道25*4=100，末尾会有两个0，而4也比5小，所以当出现25时，会加上两个0，也就是说答案还要加上有多少个25。以此类推，还要考虑125、625等等，所以这是一个需要递归来实现的过程。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int trailingZeroes(int n) {
+        return n == 0 ? 0 : n/5 + trailingZeroes(n/5);
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
