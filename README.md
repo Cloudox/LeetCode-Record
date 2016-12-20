@@ -43,6 +43,7 @@ LeetCode笔记
  * [26. Remove Duplicates from Sorted Array](#26. Remove Duplicates from Sorted Array)
  * [232. Implement Queue using Stacks](#232. Implement Queue using Stacks)
  * [172. Factorial Trailing Zeroes](#172. Factorial Trailing Zeroes)
+ * [119. Pascal's Triangle II](#119. Pascal's Triangle II)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2644,6 +2645,81 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="119. Pascal's Triangle II"/>119. Pascal's Triangle II
+### 问题：
+> Given an index k, return the kth row of the Pascal's triangle.
+
+> For example, given k = 3,
+Return [1,3,3,1].
+
+> Note:
+Could you optimize your algorithm to use only O(k) extra space?
+
+### 大意：
+> 给出一个序号k，返回杨辉三角形的第k行。
+
+> 比如给出 k = 3，
+> 返回 [1,3,3,1]。
+
+> 注意：
+> 你能不能让你的算法只使用O(k)的额外空间？
+
+### 思路：
+这道题与[LeetCode笔记：118. Pascal's Triangle](http://blog.csdn.net/cloudox_/article/details/52908943)很类似，那道题要求返回整个杨辉三角，这道题只要求一行，所以其实把那边的代码简化一下就可以了，不断利用杨辉三角的性质通过上一行计算下一行。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> last = new ArrayList<Integer>();
+        last.add(1);
+        for (int i = 1; i < rowIndex+1; i++) {
+            List<Integer> newList = new ArrayList<Integer>();
+            newList.add(1);
+            for (int j = 1; j < i; j++) {
+                newList.add(last.get(j-1) + last.get(j));
+            }
+            newList.add(1);
+            last = newList;
+        }
+        return last;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+  public List<Integer> getRow(int rowIndex) {
+	List<Integer> list = new ArrayList<Integer>();
+	if (rowIndex < 0)
+		return list;
+
+	for (int i = 0; i < rowIndex + 1; i++) {
+		list.add(0, 1);
+		for (int j = 1; j < list.size() - 1; j++) {
+			list.set(j, list.get(j) + list.get(j + 1));
+		}
+	}
+	return list;
+}
+```
+
+这个做法乍一看跟上面的做法很类似，但其实其精髓完全不一样，他这边只在一个List进行操作，每次循环的情况如下：
+
+在0的位置添上1：[1]，此时为第一行，不满足则继续；
+不执行小循环，继续0的位置添上1：[1，1]，此时为第二行，不满足则继续；
+不执行小循环，继续0的位置添上1：[1，1，1]，执行小循环，得[1，2，1]，此时为第三行，不满足则继续；
+此时继续0的位置添上1：[1，1，2，1]，执行小循环，得[1，3，3，1]，此时为第四行，不满足则继续；
+……
+
+这样下去确实可以得到每一行的数据，其实就是在一个List内模拟杨辉三角的性质，确实很赞。
 
 [回到目录](#Catalogue)
 
