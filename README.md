@@ -44,6 +44,7 @@ LeetCode笔记
  * [232. Implement Queue using Stacks](#232. Implement Queue using Stacks)
  * [172. Factorial Trailing Zeroes](#172. Factorial Trailing Zeroes)
  * [119. Pascal's Triangle II](#119. Pascal's Triangle II)
+ * [412. Fizz Buzz](#412. Fizz Buzz)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2720,6 +2721,87 @@ public class Solution {
 ……
 
 这样下去确实可以得到每一行的数据，其实就是在一个List内模拟杨辉三角的性质，确实很赞。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="412. Fizz Buzz"/>412. Fizz Buzz
+### 问题：
+> Write a program that outputs the string representation of numbers from 1 to n.
+
+> But for multiples of three it should output “Fizz” instead of the number and for the multiples of five output “Buzz”. For numbers which are multiples of both three and five output “FizzBuzz”.
+
+> Example:
+
+>> n = 15,
+
+>> Return:
+[
+    "1",
+    "2",
+    "Fizz",
+    "4",
+    "Buzz",
+    "Fizz",
+    "7",
+    "8",
+    "Fizz",
+    "Buzz",
+    "11",
+    "Fizz",
+    "13",
+    "14",
+    "FizzBuzz"
+]
+
+### 大意：
+> 写一个程序输出代表1到n的字符串。
+
+> 但是3的倍数要输出“Fizz”，5的倍数要输出“Buzz”，3和5共同的倍数要输出“FizzBuzz”。
+
+> 例子：
+
+>> n = 15,
+
+>> Return:
+[
+    "1",
+    "2",
+    "Fizz",
+    "4",
+    "Buzz",
+    "Fizz",
+    "7",
+    "8",
+    "Fizz",
+    "Buzz",
+    "11",
+    "Fizz",
+    "13",
+    "14",
+    "FizzBuzz"
+]
+
+### 思路：
+思路。。。这道题没啥思路好说的，无非就是在循环里判断是不是3和5的倍数并作出相应的处理罢了。就如Discuss里所说的，没有明白这道题的点在哪。实在不像leetcode的水平。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public List<String> fizzBuzz(int n) {
+        List<String> result = new ArrayList<String>();
+        for (int i = 1; i <= n; i++) {
+            if (i % 3 == 0 && i % 5 == 0) result.add("FizzBuzz");
+            else if (i % 3 == 0) result.add("Fizz");
+            else if (i % 5 == 0) result.add("Buzz");
+            else result.add(String.valueOf(i));
+        }
+        return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
