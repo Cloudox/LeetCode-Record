@@ -2821,9 +2821,12 @@ public class Solution {
 >> n = 5
 
 >> The coins can form the following rows:
-¤
-¤ ¤
-¤ ¤
+
+>>¤
+
+>>¤ ¤
+
+>>¤ ¤
 
 >>  Because the 3rd row is incomplete, we return 2.
 
@@ -2832,10 +2835,14 @@ public class Solution {
 >> n = 8
 
 >> The coins can form the following rows:
-¤
-¤ ¤
-¤ ¤ ¤
-¤ ¤
+
+>>¤
+
+>>¤ ¤
+
+>>¤ ¤ ¤
+
+>>¤ ¤
 
 >> Because the 4th row is incomplete, we return 3.
 
@@ -2851,9 +2858,12 @@ public class Solution {
 >> n = 5
 
 >> 硬币可以组成下面的行：
-¤
-¤ ¤
-¤ ¤
+
+>>¤
+
+>>¤ ¤
+
+>>¤ ¤
 
 >>  因为第三层是不完整的，所以我们返回2。
 
@@ -2862,10 +2872,14 @@ public class Solution {
 >> n = 8
 
 >> 硬币可以组成下面的行：
-¤
-¤ ¤
-¤ ¤ ¤
-¤ ¤
+
+>>¤
+
+>>¤ ¤
+
+>>¤ ¤ ¤
+
+>>¤ ¤
 
 >> 因为第四行是不完整的，所以我们返回3。
 
