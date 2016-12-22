@@ -45,6 +45,7 @@ LeetCode笔记
  * [172. Factorial Trailing Zeroes](#172. Factorial Trailing Zeroes)
  * [119. Pascal's Triangle II](#119. Pascal's Triangle II)
  * [412. Fizz Buzz](#412. Fizz Buzz)
+ * [441. Arranging Coins](#441. Arranging Coins)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2799,6 +2800,98 @@ public class Solution {
             else result.add(String.valueOf(i));
         }
         return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="441. Arranging Coins"/>441. Arranging Coins
+### 问题：
+> You have a total of n coins that you want to form in a staircase shape, where every k-th row must have exactly k coins.
+
+> Given n, find the total number of full staircase rows that can be formed.
+
+> n is a non-negative integer and fits within the range of a 32-bit signed integer.
+
+> Example 1:
+
+>> n = 5
+
+>> The coins can form the following rows:
+¤
+¤ ¤
+¤ ¤
+
+>>  Because the 3rd row is incomplete, we return 2.
+
+> Example 2:
+
+>> n = 8
+
+>> The coins can form the following rows:
+¤
+¤ ¤
+¤ ¤ ¤
+¤ ¤
+
+>> Because the 4th row is incomplete, we return 3.
+
+### 大意：
+> 你有n枚硬币，想要用来组成一个完整的楼梯，每一层都要有层数对应的硬币数。
+
+> 给出n，返回可以组成的完整楼梯的层数。
+
+> n是一个非负数，且满足32位int的范围。
+
+> 例1:
+
+>> n = 5
+
+>> 硬币可以组成下面的行：
+¤
+¤ ¤
+¤ ¤
+
+>>  因为第三层是不完整的，所以我们返回2。
+
+> Example 2:
+
+>> n = 8
+
+>> 硬币可以组成下面的行：
+¤
+¤ ¤
+¤ ¤ ¤
+¤ ¤
+
+>> 因为第四行是不完整的，所以我们返回3。
+
+### 思路：
+这道题要用硬币去一层层堆楼梯。其实很容易想到累加和。
+
+题目的意思其实就是从1~x层完整楼梯硬币数量加起来，要小于等于n，求最大的x。说到加起来的数量，很容易想到求累加和，我们知道求累加和的公式为：
+
+sum = (1+x)*x/2
+
+这里就是要求 sum <= n 了。我们反过来求层数x。如果直接开方来求会存在错误，必须因式分解求得准确的x值：
+
+(1+x)*x/2 <= n
+x + x*x <= 2*n
+4*x*x + 4*x <= 8*n
+(2*x + 1)*(2*x + 1) - 1 <= 8*n
+x <= (sqrt(8*n + 1) - 1) / 2
+
+其中Math.sqrt()是求平方根的函数。这样我们就求出了x，最后要记得强制转换为int型数。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int arrangeCoins(int n) {
+        return (int)((Math.sqrt(8*(long)n + 1) - 1)/2);
     }
 }
 ```
