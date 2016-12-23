@@ -46,6 +46,7 @@ LeetCode笔记
  * [119. Pascal's Triangle II](#119. Pascal's Triangle II)
  * [412. Fizz Buzz](#412. Fizz Buzz)
  * [441. Arranging Coins](#441. Arranging Coins)
+ * [437. Path Sum III](#437. Path Sum III)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -2906,6 +2907,121 @@ x <= (sqrt(8*n + 1) - 1) / 2
 public class Solution {
     public int arrangeCoins(int n) {
         return (int)((Math.sqrt(8*(long)n + 1) - 1)/2);
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="437. Path Sum III"/>437. Path Sum III
+### 问题：
+> You are given a binary tree in which each node contains an integer value.
+
+> Find the number of paths that sum to a given value.
+
+> The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).
+
+> The tree has no more than 1,000 nodes and the values are in the range -1,000,000 to 1,000,000.
+
+> Example:
+
+>> root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
+
+>>　10
+>>　      /  \
+>> 　    5   -3
+>>　   / \ 　   \
+>>　  3   2   11
+>>　  / \   \
+>>　 3  -2   1
+
+>> Return 3. The paths that sum to 8 are:
+
+>> 1.  5 -> 3
+2.  5 -> 2 -> 1
+3. -3 -> 11
+
+### 大意：
+> 给你一个每个节点都包含int值的二叉树。
+
+> 计算能累加成指定值的路径的个数。
+
+> 路径不需要从根节点开始到叶子节点，但必须是往下走的（只能从父节点到子节点）。
+
+> 树的节点数在1000以内，并且给定的值到-1000000到1000000之间。
+
+> 例子：
+
+>> root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
+
+>>　10
+>>　      /  \
+>> 　    5   -3
+>>　   / \ 　   \
+>>　  3   2   11
+>>　  / \   \
+>>　 3  -2   1
+
+>> 返回 3. 累加成8的路径数为：
+
+>> 1.  5 -> 3
+2.  5 -> 2 -> 1
+3. -3 -> 11
+
+### 思路：
+这道题要从每个节点去判断往下走不断累加能不能达到要求的数字，是一个比较麻烦的过程，我们把它分解成两个过程：
+
+* 一个是对每个节点，都计算往下面不同分支走能不能累加成指定的值；
+* 另一个是从上往下去对每个节点进行上一条的判断。
+
+要记录每一个节点，我们使用队列来进行节点的记录比较方便，队列的先进先出的，我们从根节点开始，将其加入队列中，判断能不能找到满足要求的路径，然后将其两个子节点加到队列中（当然要判断有无子节点），然后将根节点踢出队列，往后一次都是这个过程。
+
+而对每个节点进行路径累加和的判断，用递归比较合适，这里要注意的是，一个节点往下走路径的过程中，并不是只要找到一条路径就可以了，而是要计算有多少条路径满足条件，也就是说对每个节点，找完左节点即使找到了，还要找右节点，一条路径满足后，如果对路径的最后一个节点还有子节点，那还要往下看看能不能继续累加满足，那又是一条新路径，因为有可能下面两个节点的值互相抵消了。所以在递归的过程中，函数返回的值不应该是能不能的布尔值，而是一个不断累加的数字，这个数字代表从一个节点往下走找到的路径数量。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int pathSum(TreeNode root, int sum) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        int result = 0;
+        
+        if (root == null) return result;
+        
+        // 用队列来存储每次当做计算开头的每个节点
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            for (int i = 0; i < levelNum; i++) {// 计算队列中每个元素可否满足条件，并将子节点添加到队列
+                result += canSum(queue.peek(), sum, 0);
+                
+                if (queue.peek().left != null) queue.offer(queue.peek().left);
+                if (queue.peek().right != null) queue.offer(queue.peek().right);
+                queue.poll();
+            }
+        }
+        return result;
+    }
+    
+    // 计算节点能达成条件的情况数量
+    public int canSum(TreeNode root, int targetSum, int tempSum) {
+        int sumNumber = 0;
+        if (root == null) return sumNumber;
+        
+        if (root.val + tempSum == targetSum) sumNumber++;
+        sumNumber += canSum(root.left, targetSum, root.val + tempSum) + canSum(root.right, targetSum, root.val + tempSum);
+        return sumNumber;
     }
 }
 ```
