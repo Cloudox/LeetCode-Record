@@ -2930,12 +2930,8 @@ public class Solution {
 >> root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
 
 >>　10
->>　      /  \
->> 　    5   -3
->>　   / \ 　   \
->>　  3   2   11
->>　  / \   \
->>　 3  -2   1
+
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/437Image.png)
 
 >> Return 3. The paths that sum to 8 are:
 
@@ -2957,12 +2953,8 @@ public class Solution {
 >> root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
 
 >>　10
->>　      /  \
->> 　    5   -3
->>　   / \ 　   \
->>　  3   2   11
->>　  / \   \
->>　 3  -2   1
+
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/437Image.png)
 
 >> 返回 3. 累加成8的路径数为：
 
