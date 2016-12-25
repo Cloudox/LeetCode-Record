@@ -46,7 +46,7 @@ LeetCode笔记
  * [119. Pascal's Triangle II](#119. Pascal's Triangle II)
  * [412. Fizz Buzz](#412. Fizz Buzz)
  * [441. Arranging Coins](#441. Arranging Coins)
- * [437. Path Sum III](#437. Path Sum III)
+ * [9. Palindrome Number](#9. Palindrome Number)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3013,6 +3013,56 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="9. Palindrome Number"/>9. Palindrome Number
+### 问题：
+> Determine whether an integer is a palindrome. Do this without extra space.
+
+### 大意：
+> 判断一个整数是否是回文。不使用额外的空间来完成。
+
+### 思路：
+这道题目很简单，只有一句话，不要要求不使用额外空间，一般来说不使用额外空间的意思是不使用复杂度为O（n）的额外空间，新建一些字符串、整型值之类的还是可以的。回文的意思是从左到右读和从右到左读数字是一样的，比如11是回文，121是回文。
+
+我们直接比较数字不太好比较（其实是打脸），先将其转为字符串，然后依次比较字符串第一位和最后一位、第二位和倒数第二位等等的字符是不是一样的，这里只需要比较到字符串长度一半的位置就可以了，原因显而易见。
+
+题目比较蛋疼的设定是，题目中只说了整数，没说是正数，而他的答案判断负数统统不是回文，即使是-121这种也不行，一开始还直接取绝对值统一判断了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        String xStr = String.valueOf(x);
+        for (int i = 0; i < xStr.length() / 2; i++) {
+            if (xStr.charAt(i) != xStr.charAt(xStr.length()-i-1)) return false;
+        }
+        return true;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public boolean isPalindrome(int x) {
+    if (x<0 || (x!=0 && x%10==0)) return false;
+    int rev = 0;
+    while (x>rev){
+    	rev = rev*10 + x%10;
+    	x = x/10;
+    }
+    return (x==rev || x==rev/10);
+}
+```
+
+这是直接用数字来做的一个做法，他有趣的一个想法是，只要数字是末尾为0的，也就是说除以10的余数为0，就一定不是回文，因为不可能最高位是0嘛。
+然后他创建了一个整型变量来记录x从右往左读到一半时的数，而原来的x则一步步转化成从左往右读一半的数，最后看看两个数是不是相等，而因为有可能中间有单独一个数，所以还有可能是除以十以后相等。
 
 [回到目录](#Catalogue)
 
