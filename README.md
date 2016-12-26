@@ -3075,7 +3075,7 @@ public boolean isPalindrome(int x) {
 
 > For example, given the following binary tree:
 
->>   ![](http://img.blog.csdn.net/20161225154945685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>   ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/257Image.png)
 
 > All root-to-leaf paths are:
 
@@ -3086,11 +3086,7 @@ public boolean isPalindrome(int x) {
 
 > 比如给出下面这个二叉树：
 
->>    1
-	 /   \
-2     3
- \
-  5
+>>   ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/257Image.png)
 
 > 所有从根节点到叶子节点的路径为：
 
