@@ -47,6 +47,7 @@ LeetCode笔记
  * [412. Fizz Buzz](#412. Fizz Buzz)
  * [441. Arranging Coins](#441. Arranging Coins)
  * [9. Palindrome Number](#9. Palindrome Number)
+ * [257. Binary Tree Paths](#257. Binary Tree Paths)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3063,6 +3064,83 @@ public boolean isPalindrome(int x) {
 
 这是直接用数字来做的一个做法，他有趣的一个想法是，只要数字是末尾为0的，也就是说除以10的余数为0，就一定不是回文，因为不可能最高位是0嘛。
 然后他创建了一个整型变量来记录x从右往左读到一半时的数，而原来的x则一步步转化成从左往右读一半的数，最后看看两个数是不是相等，而因为有可能中间有单独一个数，所以还有可能是除以十以后相等。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="257. Binary Tree Paths"/>257. Binary Tree Paths
+### 问题：
+> Given a binary tree, return all root-to-leaf paths.
+
+> For example, given the following binary tree:
+
+>>   ![](http://img.blog.csdn.net/20161225154945685?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+> All root-to-leaf paths are:
+
+>> ["1->2->5", "1->3"]
+
+### 大意：
+> 给出一个二叉树，返回所有从根节点到叶子节点的路径。
+
+> 比如给出下面这个二叉树：
+
+>>    1
+	 /   \
+2     3
+ \
+  5
+
+> 所有从根节点到叶子节点的路径为：
+
+>> ["1->2->5", "1->3"]
+
+### 思路：
+这道题适合用递归，依次判断有没有左右叶子节点，分别去做递归，在递归中把遇到的节点值拼接到路径字符串的最后，注意要拼接“->”这个内容，直到没有左右子节点后，表示已经到了叶子节点了，就可以终止了，把这条路径的字符串添加到结果中去。
+
+### 代码：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> result = new ArrayList<String>();
+        if (root == null) return result;
+        
+        String path = String.valueOf(root.val);
+        findPath(result, root, path);
+        return result;
+    }
+    
+    public void findPath(List<String> list, TreeNode root, String path) {
+        if (root.left == null && root.right == null) {
+            list.add(path);
+            return;
+        }
+        if (root.left != null) {
+            StringBuffer pathBuffer = new StringBuffer(path);
+            pathBuffer.append("->");
+            pathBuffer.append(String.valueOf(root.left.val));
+            findPath(list, root.left, pathBuffer.toString());
+        } 
+        if (root.right != null) {
+            StringBuffer pathBuffer = new StringBuffer(path);
+            pathBuffer.append("->");
+            pathBuffer.append(String.valueOf(root.right.val));
+            findPath(list, root.right, pathBuffer.toString());
+        }
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
