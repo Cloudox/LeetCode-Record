@@ -49,6 +49,7 @@ LeetCode笔记
  * [9. Palindrome Number](#9. Palindrome Number)
  * [257. Binary Tree Paths](#257. Binary Tree Paths)
  * [438. Find All Anagrams in a String](#438. Find All Anagrams in a String)
+ * [374. Guess Number Higher or Lower](#374. Guess Number Higher or Lower)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3292,6 +3293,76 @@ public class Solution {
 在循环的最后，先判断左右标志位中间是否是p的长度，是的话，我们就该把左标志位也右移了，而右移之前，先要看看左标志位这个数我们是否找到过，找到过则要把count数量补回1，不论有没有找到过，都要讲数组中的对应的字母数量补回1。
 
 整个过程感觉理解的也不是很到位，希望大家指点一下。
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="374. Guess Number Higher or Lower"/>374. Guess Number Higher or Lower
+###问题：
+>We are playing the Guess Game. The game is as follows:
+
+>I pick a number from 1 to n. You have to guess which number I picked.
+
+>Every time you guess wrong, I'll tell you whether the number is higher or lower.
+
+>You call a pre-defined API guess(int num) which returns 3 possible results (-1, 1, or 0):
+
+>>-1 : My number is lower
+ 1 : My number is higher
+ 0 : Congrats! You got it!
+
+>Example:
+
+>>n = 10, I pick 6.
+Return 6.
+
+###大意：
+>我们玩一个猜数字游戏，方法如下：
+
+>我在1到n之间选一个数字，你来猜我选的是什么
+
+>每次你猜错了，我都会告诉你数字是大了还是小了
+
+>你可以调用预定义的 API guess(int num) ，它会返回三个可能的结果 (-1, 1, or 0)：
+
+>>-1 : 我的数字更小
+ 1 : 我的数字更大
+ 0 : 恭喜！猜中了！
+
+>例子:
+
+>>n = 10, 我选 6.
+返回6.
+
+###思路：
+这道题题目主动提示了用二分法来做，所以只用把二分法的思想写出来，根据每次猜测得到的大了或者小了的结果来进行分别处理。猜小了就在大的那个区间去继续取中间数字猜，猜大了就在小的那个区间取中间数字猜，因为取中间数字猜整体来说是最快的，为了记录区间，还要保留上次猜的情况，来让区间越缩越小。
+
+###代码（Java）：
+
+```java
+/* The guess API is defined in the parent class GuessGame.
+   @param num, your guess
+   @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
+      int guess(int num); */
+
+public class Solution extends GuessGame {
+    public int guessNumber(int n) {
+        return helper(1,n);
+    }
+    
+    public int helper(int start, int end){
+        if(start == end) return start;
+        int mid = Math.toIntExact(((long)start+(long)end)/2);
+        int r = 0;
+        if(guess(mid) == 0) r = mid;
+        else if(guess(mid) == 1) r = helper(mid+1, end);
+        else if(guess(mid) == -1) r = helper(start, mid-1);
+        return r;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
