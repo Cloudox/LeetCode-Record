@@ -50,6 +50,7 @@ LeetCode笔记
  * [257. Binary Tree Paths](#257. Binary Tree Paths)
  * [438. Find All Anagrams in a String](#438. Find All Anagrams in a String)
  * [374. Guess Number Higher or Lower](#374. Guess Number Higher or Lower)
+ * [299. Bulls and Cows](#299. Bulls and Cows)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3363,6 +3364,130 @@ public class Solution extends GuessGame {
     }
 }
 ```
+
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="299. Bulls and Cows"/>299. Bulls and Cows
+###问题：
+>You are playing the following Bulls and Cows game with your friend: You write down a number and ask your friend to guess what the number is. Each time your friend makes a guess, you provide a hint that indicates how many digits in said guess match your secret number exactly in both digit and position (called "bulls") and how many digits match the secret number but locate in the wrong position (called "cows"). Your friend will use successive guesses and hints to eventually derive the secret number.
+
+>For example:
+
+>>Secret number:  "1807"
+Friend's guess: "7810"
+
+>Hint: 1 bull and 3 cows. (The bull is 8, the cows are 0, 1 and 7.)
+
+>Write a function to return a hint according to the secret number and friend's guess, use A to indicate the bulls and B to indicate the cows. In the above example, your function should return "1A3B".
+
+>Please note that both secret number and friend's guess may contain duplicate digits, for example:
+
+>>Secret number:  "1123"
+Friend's guess: "0111"
+
+>In this case, the 1st 1 in friend's guess is a bull, the 2nd or 3rd 1 is a cow, and your function should return "1A1B".
+
+>You may assume that the secret number and your friend's guess only contain digits, and their lengths are always equal.
+
+###大意：
+>你和你的朋友玩下面这个Bulls and Cows的游戏：你写一个数字，然后问你的朋友去猜数字。每次你的朋友进行一次猜测，你都给他提示说有多少数字是数字与位置都正确的（成为bulls）以及多少数字是数字有但是位置不正确的（成为cows）。你的朋友会根据提示最终猜出数字来。
+
+>例子：
+
+>>秘密数字：“1807”
+>朋友的猜测：“7810”
+
+>提示：1个bull以及3个cows。（bull是8，cows是0，1和7）
+
+>写一个函数来根据秘密数字和朋友的额猜测来返回暗示，使用A表示bull，B表示cows。在上面的例子中，你的函数应该返回“1A3B”。
+
+>请注意秘密数字和朋友的猜测都可能包含重复的数字，比如：
+
+>>秘密数字：“1123”
+>朋友的猜测：“0111”
+
+>这种情况下，朋友猜测中的第一个1是bull，第二和第三个1是cow，你的函数应该返回“1A1B”。
+
+>你可以假设秘密数字和朋友的猜测都只包含数字，并且长度相等。
+
+###思路：
+这道题分两步：
+
+第一步找到bull，也就是数字和位置都正确的个数，这个直接循环比对两个字符串同等位置的数字是否一样就好，为了方便我们先全部转换成数组去比较，比较完了记录下个数，还要记录下有哪些位置的数字是bull，这样第二步找cow的时候就不要再判断了。
+
+第二步找cow，再次循环朋友的猜测，这次我们要跳过那些是bull的位置，对不是bull的每一个数字，去循环秘密数字中的数进行判断，判断时要注意第一不能位置一样，第二数字要相等，第三不能是秘密数字中已经是bull的位置。且找到以后除了增加cow数字外也要记录下来在秘密数字中的位置，以后就不要再找了。
+
+在第二次找的过程中要注意我们不能重复找秘密数字中的位置，也就是有一个新数组要记录秘密数字中已经被找到的数字，这时候和bull中的位置是不一样的，所以要另外加一个数组，但是加的时候不能直接等于之前第一步记录的数组来创建，这样在进行修改数组的时候其实还是修改的第一个数组，因为只是引用了一遍位置，要进行深复制，使用clone。
+
+此外对于朋友猜测中的一个数组，只能找一个cow，不能循环找多个，所以找到一个以后直接break退出循环开始找下一个数字。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public String getHint(String secret, String guess) {
+        char[] secretArr = secret.toCharArray();
+        char[] guessArr = guess.toCharArray();
+        int[] bullArr = new int[guess.length()];
+        int bull = 0;
+        int cow = 0;
+        for (int i = 0; i < guessArr.length; i++) {
+            if (guessArr[i] == secretArr[i]) {
+                bull ++;
+                bullArr[i] = 1;
+            }
+        }
+        int[] bullSecretArr = bullArr.clone();
+        for (int i = 0; i < guessArr.length; i++) {
+            if (bullArr[i] == 0) {
+                for (int j = 0; j < secretArr.length; j++) {
+                    if (i != j && guessArr[i] == secretArr[j] && bullSecretArr[j] == 0) {
+                        cow++;
+                        bullSecretArr[j] = 1;
+                        break;
+                    }
+                }
+            }
+        }
+        String result = String.valueOf(bull) + 'A' + String.valueOf(cow) + 'B';
+        return result;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public String getHint(String secret, String guess) {
+        int[] a1 = new int[256];
+        int[] a2 = new int[256];
+        
+        int count1 = 0, count2 = 0;
+        
+        for(int i = 0; i < secret.length(); i++){
+            if(secret.charAt(i) == guess.charAt(i)) count1++;
+            else{
+                a1[secret.charAt(i)]++;
+                a2[guess.charAt(i)]++;
+            }
+        }
+        
+        for(int i = 0; i < 255; i++){
+            if(a1[i] == a2[i]) count2+=a1[i];
+            else count2 += Math.min(a1[i],a2[i]);
+        }
+        
+        return count1+"A"+count2+"B";
+    }
+}
+```
+
+这个做法第一步也是直接找bull，巧妙的地方在于第二步找cow数量的方法。在第一步中对于不是bull的位置的数字，分别都记录下来对应位置的数字，对数字的数量进行累加，这样循环一遍后就知道各自还有哪些数字没找到，以及他们的个数。在找cow的时候，只需要对每个出现过的数字，取两边出现的较少的那一个数量即可，这样也可以避免重复，很巧妙地减少了时间复杂度。
 
 [回到目录](#Catalogue)
 
