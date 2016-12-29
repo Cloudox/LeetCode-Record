@@ -51,6 +51,7 @@ LeetCode笔记
  * [438. Find All Anagrams in a String](#438. Find All Anagrams in a String)
  * [374. Guess Number Higher or Lower](#374. Guess Number Higher or Lower)
  * [299. Bulls and Cows](#299. Bulls and Cows)
+ * [112. Path Sum](#112. Path Sum)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3488,6 +3489,66 @@ public class Solution {
 ```
 
 这个做法第一步也是直接找bull，巧妙的地方在于第二步找cow数量的方法。在第一步中对于不是bull的位置的数字，分别都记录下来对应位置的数字，对数字的数量进行累加，这样循环一遍后就知道各自还有哪些数字没找到，以及他们的个数。在找cow的时候，只需要对每个出现过的数字，取两边出现的较少的那一个数量即可，这样也可以避免重复，很巧妙地减少了时间复杂度。
+
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="112. Path Sum"/>112. Path Sum
+###问题：
+>Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+
+>For example:
+>Given the below binary tree and sum = 22,
+![](http://img.blog.csdn.net/20161111090723783)
+return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
+
+###大意：
+>给出一个二叉树和一个值，判断树是否有从根节点到叶子节点的路径让每个节点的值加起来等于给出的值。
+
+>例子：
+>给出下面的二叉树以及 sum = 22，
+>![](http://img.blog.csdn.net/20161111090723783)
+>返回true，因为存在根节点到叶子节点的路径 5->4->11->2 加起来的和为22。
+
+###思路：
+这个因为只需要判断有没有路径满足，也就是说只需要找到一条即可，那么采用深度优先遍历比较好，用递归来实现。
+
+每次判断当前路径的累加和是否等于目标值了，如果等于，因为题目要求从根节点到叶子节点，所以还要判断是否已经到叶子节点了，这个对有无左右子节点判断就可以了。
+
+如果还不等于，那么就继续判断走左子节点或者走右子节点有没有等于。
+
+要注意的是题目并没说节点值都是正数，我之前对当前的累加和是否已经大于了目标值来希望减少一些多余的运算，属于自作聪明了，对于负数目标值来说，就完全错误了。
+
+###代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean hasPathSum(TreeNode root, int sum) {
+        return canSum(root, sum, 0);
+    }
+    
+    public boolean canSum(TreeNode root, int sum, int nowSum) {
+        if (root == null) return false;
+        
+        nowSum = nowSum + root.val;
+        System.out.println(nowSum);
+        if (nowSum == sum && root.left == null && root.right == null) return true;
+        else return canSum(root.left, sum, nowSum) || canSum(root.right, sum, nowSum);
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
