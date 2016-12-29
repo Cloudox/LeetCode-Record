@@ -3502,7 +3502,9 @@ public class Solution {
 
 >For example:
 >Given the below binary tree and sum = 22,
-![](http://img.blog.csdn.net/20161111090723783)
+
+![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/112Image.png)
+
 return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
 
 ###大意：
@@ -3510,7 +3512,9 @@ return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
 
 >例子：
 >给出下面的二叉树以及 sum = 22，
->![](http://img.blog.csdn.net/20161111090723783)
+
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/112Image.png)
+
 >返回true，因为存在根节点到叶子节点的路径 5->4->11->2 加起来的和为22。
 
 ###思路：
