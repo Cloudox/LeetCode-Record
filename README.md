@@ -3503,9 +3503,9 @@ public class Solution {
 >For example:
 >Given the below binary tree and sum = 22,
 
-![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/112Image.png)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/112Image.png)
 
-return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
+>return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
 
 ###大意：
 >给出一个二叉树和一个值，判断树是否有从根节点到叶子节点的路径让每个节点的值加起来等于给出的值。
