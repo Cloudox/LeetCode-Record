@@ -52,6 +52,7 @@ LeetCode笔记
  * [374. Guess Number Higher or Lower](#374. Guess Number Higher or Lower)
  * [299. Bulls and Cows](#299. Bulls and Cows)
  * [112. Path Sum](#112. Path Sum)
+ * [205. Isomorphic Strings](#205. Isomorphic Strings)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3550,6 +3551,80 @@ public class Solution {
         System.out.println(nowSum);
         if (nowSum == sum && root.left == null && root.right == null) return true;
         else return canSum(root.left, sum, nowSum) || canSum(root.right, sum, nowSum);
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="205. Isomorphic Strings"/>205. Isomorphic Strings
+###问题：
+> Given two strings s and t, determine if they are isomorphic.
+
+> Two strings are isomorphic if the characters in s can be replaced to get t.
+
+>All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character but a character may map to itself.
+
+>For example,
+Given "egg", "add", return true.
+
+>Given "foo", "bar", return false.
+
+>Given "paper", "title", return true.
+
+>Note:
+You may assume both s and t have the same length.
+
+###大意：
+>给出两个字符串s和t，判断他们是不是同构的。
+
+>如果s中的字母可以被t中的替换，就说两个字符串是同构的。
+
+>所有出现的字母都必须被其他的字母以原来的顺序去替换。两个字母不同替换同一个字母，但是一个字母可以替换他自己。
+
+>例子：
+>给出 “egg”，“add”，返回true。
+
+>给出“foo”，“bar”，返回faalse。
+
+>给出“paper”，“title”，返回true。
+
+>注意：
+>你可以假设s和t的长度是一样的。
+
+###思路：
+这道题的意思是把原来的字符串字母替换掉，出现了几次的字母，替换他的也要出现几次，都要在原来的位置出现。
+
+说到字母还是想到用记数字的方式来判断，遍历字符串记录每个字母出现的次数，因为没说只有小写，所以记录次数的数组容量要大一点，因为说了两个字符串长度一样，所以在一个循环里面遍历就可以了。
+
+记录完后再遍历一次字符串，对两个字符串中依次出现的对应位置的字母判断其出现次数是不是一样的。
+
+不过还有一个问题，提交时遇到一个测试用例为“abba”与“abab”，这个用例中字母出现的次数是一样的，但是位置有点差异，要解决它，就得再创建两个数组记录两个字符串中对应字母出现的位置的序号之和，只有对应字母出现的位置序号的和也是一样的，才能保证是完全同构的。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        int[] sNum = new int[128];
+        int[] sPosition = new int[128];
+        int[] tNum = new int[128];
+        int[] tPosition = new int[128];
+        for (int i = 0; i < s.length(); i++) {
+            sNum[s.charAt(i)]++;
+            sPosition[s.charAt(i)] += i;
+            tNum[t.charAt(i)]++;
+            tPosition[t.charAt(i)] += i;
+        }
+        
+        for (int i = 0; i < s.length(); i++) {
+            if (sNum[s.charAt(i)] != tNum[t.charAt(i)]) return false;
+            if (sPosition[s.charAt(i)] != tPosition[t.charAt(i)]) return false;
+        }
+        return true;
     }
 }
 ```
