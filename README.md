@@ -53,6 +53,7 @@ LeetCode笔记
  * [299. Bulls and Cows](#299. Bulls and Cows)
  * [112. Path Sum](#112. Path Sum)
  * [205. Isomorphic Strings](#205. Isomorphic Strings)
+ * [111. Minimum Depth of Binary Tree](#111. Minimum Depth of Binary Tree)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3625,6 +3626,56 @@ public class Solution {
             if (sPosition[s.charAt(i)] != tPosition[t.charAt(i)]) return false;
         }
         return true;
+    }
+}
+```
+
+###问题：
+>Given a binary tree, find its minimum depth.
+
+>The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+
+###大意：
+>给出一个二叉树，找到他最小的深度。
+
+>最小的深度是指从根节点到叶子节点距离最短的节点数。
+
+###思路：
+这道题要找到最短的深度，个人认为更应该用广度优先遍历来做，一层一层地扫过去，哪一层有叶子节点了，就不扫了，把深度返回来。如果用深度优先遍历，每一条路都要走完，要所有路径都走到最后才能确定最短的。
+
+广度优先取一个队列来记录每一层的节点数，利用队列先进先出的特性，一层层扫，每次扫到下一层的都加到队尾，把当前层的个数扫完后就将层数加一，直到找到叶子节点就直接返回当前找的深度。
+
+###代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int minDepth(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        if (root == null) return 0;
+        
+        int result = 1;
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            for (int i = 0; i < levelNum; i++) {
+                if (queue.peek().left == null && queue.peek().right == null) return result;
+                
+                if (queue.peek().left != null) queue.offer(queue.peek().left);
+                if (queue.peek().right != null) queue.offer(queue.peek().right);
+                queue.poll();
+            }
+            result++;
+        }
+        return result;
     }
 }
 ```
