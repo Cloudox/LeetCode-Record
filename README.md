@@ -54,6 +54,7 @@ LeetCode笔记
  * [112. Path Sum](#112. Path Sum)
  * [205. Isomorphic Strings](#205. Isomorphic Strings)
  * [111. Minimum Depth of Binary Tree](#111. Minimum Depth of Binary Tree)
+ * [38. Count and Say](#38. Count and Say)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3683,6 +3684,130 @@ public class Solution {
         }
         return result;
     }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="38. Count and Say"/>38. Count and Say
+###问题：
+>The count-and-say sequence is the sequence of integers beginning as follows:
+
+>1, 11, 21, 1211, 111221, ...
+
+>1 is read off as "one 1" or 11.
+>11 is read off as "two 1s" or 21.
+>21 is read off as "one 2, then one 1" or 1211.
+
+>Given an integer n, generate the nth sequence.
+
+>Note: The sequence of integers will be represented as a string.
+
+###大意：
+>数着说序列是从下面的整型序列开始的：
+
+>1, 11, 21, 1211, 111221, ...
+
+>1 被称为 "一个1" 或者 11.
+>11 被称为 "两个1" 或者 21.
+>21 被称为 "两个2, 然后一个1" 或者 1211.
+
+>给出一个整型n，生成第n个序列。
+
+>注意：整型序列需要时字符串的形式。
+
+###思路：
+乍一看题目没懂意思，后来知道了，就是看上一个序列的数字，念出来是什么样子就写什么样子，比如一个1，两个2一个1，这么念的就这么写。
+
+做法的话其实只能循环着来老老实实做，只是在做的时候要注意一些边界情况，最后输出的是第n个序列，不是整体n个序列的连接，无非就是一个个算下来，判断有几个连续的什么数字，然后加进去，这里利用数组来做循环方便一些，最后再转换成字符串。
+
+有些要注意的是在做序列时由于循环的条件限制，每次序列的最后一段需要额外写一下，而且数组的复制要使用clone的深度复制，否则只是浅复制，拿到一个引用而已，修改数组时两个数组都会发生变化，代码写的比较丑，后面别人写的要稍微好看一点，但是思路还是比较清晰地。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public String countAndSay(int n) {
+        if (n == 0) return "";
+        
+        int[] resultArray = new int[10000];
+        resultArray[0] = 1;
+        int index = 1;
+        for (int i = 1; i < n; i++) {
+            int last = resultArray[0];
+            int lastSame = 0;
+            int[] tempArray = new int[10000];
+            int num = 0;
+            
+            int j = 0;
+            for (; j < index; j++) {
+                if (resultArray[j] == last) lastSame++;
+                else {
+                    tempArray[num] = lastSame;
+                    tempArray[num+1] = last;
+                    
+                    last = resultArray[j];
+                    lastSame = 1;
+                    num += 2;
+                }
+            }
+            tempArray[num] = lastSame;
+            tempArray[num+1] = last;
+            num += 2;
+            
+            index = num;
+            resultArray = tempArray.clone();
+        }
+        
+        int[] trueArray = Arrays.copyOfRange(resultArray, 0, index);
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < trueArray.length; i++) {
+            sb.append(trueArray[i]);
+        }
+        return sb.toString();
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public String countAndSay(int n) {
+        
+        StringBuilder curr = new StringBuilder();
+        StringBuilder prev = new StringBuilder();
+        
+        if(n<=0) return curr.toString();
+        curr.append(1);
+        
+        for(int i = n; i>1; i--) {
+        	
+            prev = curr;
+            curr = new StringBuilder();
+            
+            char[] c = prev.toString().toCharArray();
+            int count = 1;
+            
+            for(int j = 1; j <=c.length; j++) {
+                
+            	if(j == c.length || c[j]!=c[j-1]) {
+                    curr.append(count);
+                    curr.append(c[j-1]);
+                    count = 1 ;
+                } else {
+                    count++;
+                }
+                
+            }
+            
+        }
+        
+        return curr.toString();
+    }
+    
 }
 ```
 
