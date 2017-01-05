@@ -55,6 +55,7 @@ LeetCode笔记
  * [205. Isomorphic Strings](#205. Isomorphic Strings)
  * [111. Minimum Depth of Binary Tree](#111. Minimum Depth of Binary Tree)
  * [38. Count and Say](#38. Count and Say)
+ * [19. Remove Nth Node From End of List](#19. Remove Nth Node From End of List)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3810,6 +3811,113 @@ public class Solution {
     
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="19. Remove Nth Node From End of List"/>19. Remove Nth Node From End of List
+###问题：
+>Given a linked list, remove the nth node from the end of list and return its head.
+
+>For example,
+
+>>   Given linked list: 1->2->3->4->5, and n = 2.
+
+>>   After removing the second node from the end, the linked list becomes 1->2->3->5.
+
+>Note:
+Given n will always be valid.
+Try to do this in one pass.
+
+###大意：
+>给出一个链表，移除链表的倒数第n个节点并返回链表头。
+
+>例子，
+
+>>给出链表： 1->2->3->4->5, 以及 n = 2.
+>在移除倒数第二个节点后，列表变为了 1->2->3->5。
+
+>注意：
+>给出的n一定是有效的。
+>尝试在一轮循环中做。
+
+###思路：
+题目的难点在于你不知道遍历到第几个节点时是要删除的倒数第n个节点。
+
+我的做法很笨，遍历一遍记录所有节点的值和位置，然后重新根据值和位置创建新的链表，跳过要删除的那个位置的节点，因为此时知道总节点数了就可以推出是第几个节点了。在操作时要注意一些特殊情况，比如只有一个节点时、删除头结点时要怎么处理。
+
+###代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        int[] nodeVal = new int[100];
+        int[] nodeIndex = new int[100];
+        nodeVal[0] = head.val;
+        nodeIndex[0] = 0;
+        int index = 1;
+        while (head.next != null) {
+            head = head.next;
+            nodeVal[index] = head.val;
+            nodeIndex[index] = index;
+            index++;
+        }
+        
+        ListNode newHead;
+        int begin = 0;
+        if (index == 1) return null;
+        else if (index == n) {
+            newHead = new ListNode(nodeVal[1]);
+            begin = 1;
+        } else newHead = new ListNode(nodeVal[0]);
+        ListNode tempNode = newHead;
+        for (int i = begin+1; i < index; i++) {
+            if (i != index - n) {
+                ListNode newNode = new ListNode(nodeVal[i]);
+                tempNode.next = newNode;
+                tempNode = newNode;
+            }
+        }
+        
+        return newHead;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public ListNode removeNthFromEnd(ListNode head, int n) {
+    
+    ListNode start = new ListNode(0);
+    ListNode slow = start, fast = start;
+    slow.next = head;
+    
+    //Move fast in front so that the gap between slow and fast becomes n
+    for(int i=1; i<=n+1; i++)   {
+        fast = fast.next;
+    }
+    //Move fast to the end, maintaining the gap
+    while(fast != null) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+    //Skip the desired node
+    slow.next = slow.next.next;
+    return start.next;
+}
+```
+
+看一下这个巧妙的做法，他设了快慢两个标记，初始都在头结点，快的先往后遍历，遍历到与头结点相差为n的时候停止，然后快的和慢的一起往后走，直到快的走到了链表尾节点打止，这时候快慢两个节点间相差的节点数正好是n，也就是说慢的所在的下一个节点正好是要删除的节点，直接跳过去就可以了，一遍遍历完成，很棒。
 
 [回到目录](#Catalogue)
 
