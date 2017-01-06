@@ -56,6 +56,7 @@ LeetCode笔记
  * [111. Minimum Depth of Binary Tree](#111. Minimum Depth of Binary Tree)
  * [38. Count and Say](#38. Count and Say)
  * [19. Remove Nth Node From End of List](#19. Remove Nth Node From End of List)
+ * [290. Word Pattern](#290. Word Pattern)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3918,6 +3919,85 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
 ```
 
 看一下这个巧妙的做法，他设了快慢两个标记，初始都在头结点，快的先往后遍历，遍历到与头结点相差为n的时候停止，然后快的和慢的一起往后走，直到快的走到了链表尾节点打止，这时候快慢两个节点间相差的节点数正好是n，也就是说慢的所在的下一个节点正好是要删除的节点，直接跳过去就可以了，一遍遍历完成，很棒。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="290. Word Pattern"/>290. Word Pattern
+###问题：
+>Given a pattern and a string str, find if str follows the same pattern.
+
+>Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in str.
+
+>Examples:
+
+>1. pattern = "abba", str = "dog cat cat dog" should return true.
+2. pattern = "abba", str = "dog cat cat fish" should return false.
+3. pattern = "aaaa", str = "dog cat cat dog" should return false.
+4. pattern = "abba", str = "dog dog dog dog" should return false.
+
+>Notes:
+You may assume pattern contains only lowercase letters, and str contains lowercase letters separated by a single space.
+
+###大意：
+>给出一个模型和一个字符串，判断字符串是否遵循模型
+
+>这里的遵循是指全匹配，模型中的每个字母都映射字符串中的非空单词。
+
+>例子：
+
+>1. pattern = "abba", str = "dog cat cat dog" 应该返回 true。
+2. pattern = "abba", str = "dog cat cat fish" 应该返回 false.
+3. pattern = "aaaa", str = "dog cat cat dog" 应该返回 false.
+4. pattern = "abba", str = "dog dog dog dog" 应该返回 false.
+
+>注意：
+>你可以假设模型只包含小写字母，并且字符串包含由空格分开的小写字母单词。
+
+###思路：
+题目的意思是模型中的每个字母对应一个单词，相同字母位置对应的单词也要一样。
+
+问题在于怎么判断单词是在之前哪个位置出现过的。
+
+这里的模型和字符串都是字符串，我们先全部转化为字母数组和字符串数组，方便进行比较。
+
+为了记录不同的字母是否出现过以及在哪个位置出现过，同时注意题目提示的模型全为小写字母，我们可以创建两个长度26的数组，当对应字母出现过，就将一个数组的对应位置加一，同时在另一个数组中记录其在模型中出现的位置，也就是模型数组序号，在遍历模型数组时，如果发现记录字母出现次数的数组对应的数量大于0，说明出现过，就可以在记录位置的数组中根据字母找到首次出现的位置了，这里我们其实只需要知道首次出现的位置，如果没出现过，就记录下来。
+
+当发现出现过之后，就要根据记录的首次出现的位置和当前的位置，比较对应两个位置的字符串是否相等，不等则返回false。
+
+如果是第一次在模型中出现的字母，不仅仅要记录下出现的位置，还有一个陷阱在于，这个位置对应的单词应该也是第一次出现，而不应该在之前出现过，否则就不匹配模型的第一次出现这个概念了。判断方法只能是遍历当前位置之前的单词，看有没有相同的单词，有就返回false。
+
+在比较单词是否相同，也就是字符串是否相同时，注意要使用 a.equals(b) 来进行比较，而不能简单地用 == 来比较， == 比较的是两个字符串对象的内存为止，就算内容一样，也会返回不相同。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        String[] strArr = str.split(" ");
+        char[] patternArr = pattern.toCharArray();
+        if (strArr.length != patternArr.length) return false;
+        int[] letter = new int[26];
+        int[] index = new int[26];
+        for (int i = 0; i < patternArr.length; i++) {
+            if (letter[patternArr[i] - 'a'] > 0) {// 出现过
+                int nowIndex = index[patternArr[i] - 'a'];
+                if (!strArr[i].equals(strArr[nowIndex])) return false;
+            } else {// 第一次出现
+                if (i != 0) {
+                    for (int j = 0; j < i; j++) {
+                        if (strArr[i].equals(strArr[j])) return false;
+                    }
+                }
+                letter[patternArr[i] - 'a'] ++;
+                index[patternArr[i] - 'a'] = i;
+            }
+        }
+        return true;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
