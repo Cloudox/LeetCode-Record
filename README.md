@@ -57,6 +57,7 @@ LeetCode笔记
  * [38. Count and Say](#38. Count and Say)
  * [19. Remove Nth Node From End of List](#19. Remove Nth Node From End of List)
  * [290. Word Pattern](#290. Word Pattern)
+ * [455. Assign Cookies](#455. Assign Cookies)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -3995,6 +3996,91 @@ public class Solution {
             }
         }
         return true;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="455. Assign Cookies"/>455. Assign Cookies
+###问题：
+>Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie. Each child i has a greed factor gi, which is the minimum size of a cookie that the child will be content with; and each cookie j has a size sj. If sj >= gi, we can assign the cookie j to the child i, and the child i will be content. Your goal is to maximize the number of your content children and output the maximum number.
+
+>Note:
+You may assume the greed factor is always positive. 
+You cannot assign more than one cookie to one child.
+
+>Example 1:
+
+>>Input: [1,2,3], [1,1]
+
+>>Output: 1
+
+>>Explanation: You have 3 children and 2 cookies. The greed factors of 3 children are 1, 2, 3. 
+And even though you have 2 cookies, since their size is both 1, you could only make the child whose greed factor is 1 content.
+You need to output 1.
+
+>Example 2:
+
+>>Input: [1,2], [1,2,3]
+
+>>Output: 2
+
+>>Explanation: You have 2 children and 3 cookies. The greed factors of 2 children are 1, 2. 
+You have 3 cookies and their sizes are big enough to gratify all of the children, 
+You need to output 2.
+
+###大意：
+>假设你是一个很棒的父母，并且想要拍给你的孩子一些饼干。但是你应该给每个小孩至少一个饼干。每个小孩 i 有一个贪婪因子 gi，这是那个小孩能满足的饼干的最小尺寸；而每个饼干 j 都有一个尺寸 sj，如果 sj >= gi，我们就可以把 j 饼干给小孩 i，并且小孩 i 会得到满足。你的目标是给尽量多的小孩饼干并且返回最大数量。
+
+>注意：
+>你可以假设贪婪因子始终是正数。
+>你不能给超过一块饼干给一个小孩。
+
+>例1：
+
+>>输入： [1,2,3], [1,1]
+>输出：1
+>解释：你有三个小孩和两块饼干，三个小孩的贪婪因子为1、2、3。虽然你有两块饼干，但是因为它们的尺寸都是1，所以你只能让贪婪因子是1的小孩满足。所以你需要输出1。
+
+>例2：
+
+>>输入： [1,2], [1,2,3]
+>输出：2
+>解释：你有两个小孩和三块饼干，两个小孩的贪婪因子是1、2。你有三块饼干并且他们足够大来满足所有的小孩，你需要输出2。
+
+###思路：
+这乍看之下有点复杂，涉及到一个类似最优分配的问题，但其实是简化了的，因为每个小孩最多只能给一块饼干，只用考虑尽量给的小孩多就可以了。
+
+简单地说就是看每个小孩有没有剩下的饼干能满足他，有就给他，没有就过，但是为了给的尽量多，所以大饼干尽量给更贪婪的小孩子，给每个小孩的饼干尽量维持刚好满足他就行了，不过如果实在只能找到大饼干给他那也行，反正最后只要求小孩数量，给谁都是给。
+
+我们先将饼干尺寸和小孩需求都排个序，然后从小到大去遍历地给。在遍历过程中可以取个巧，两个排序后的数组都设一个标记，一起往后移，饼干大小不满足就移饼干的标记，看看后面的饼干能不能满足他，只有满足了才移小孩的标记，因为如果这个小孩都不能满足，后面更贪婪的小孩更加满足不了。循环的结束条件就是小孩或者饼干的标记二者有一个到了数组的尾部，就算停止。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        if (g.length == 0 || s.length == 0) return 0;
+        
+        Arrays.sort(g);
+        Arrays.sort(s);
+        
+        int i = 0;
+        int j = 0;
+        int result = 0;
+        while (!(i >= g.length || j >= s.length)) {
+            if (s[j] >= g[i]) {
+                result ++;
+                j++;
+                i++;
+            } else {
+                j++;
+            }
+        }
+        return result;
     }
 }
 ```
