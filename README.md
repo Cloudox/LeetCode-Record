@@ -58,6 +58,7 @@ LeetCode笔记
  * [19. Remove Nth Node From End of List](#19. Remove Nth Node From End of List)
  * [290. Word Pattern](#290. Word Pattern)
  * [455. Assign Cookies](#455. Assign Cookies)
+ * [459. Repeated Substring Pattern](#459. Repeated Substring Pattern)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4081,6 +4082,98 @@ public class Solution {
             }
         }
         return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="459. Repeated Substring Pattern"/>459. Repeated Substring Pattern
+###问题：
+>Given a non-empty string check if it can be constructed by taking a substring of it and appending multiple copies of the substring together. You may assume the given string consists of lowercase English letters only and its length will not exceed 10000.
+
+>Example 1:
+
+>>Input: "abab"
+Output: True
+Explanation: It's the substring "ab" twice.
+
+>Example 2:
+
+>>Input: "aba"
+Output: False
+
+>Example 3:
+
+>>Input: "abcabcabcabc"
+Output: True
+Explanation: It's the substring "abc" four times. (And the substring "abcabc" twice.)
+
+###大意：
+>给出一个非空字符串，检查它是否可以由它的子字符串重复组成。你可以假设给出的字符串全部由小写字母组成并且它的长度不超过10000。
+
+>例1：
+
+>>输入：“abab”
+>输出：True
+>解释：重复两次子字符串 “ab”。
+
+>例2：
+
+>>输入：“aba”
+>输出：False
+
+>例3：
+
+>>输入：“abcabcabc”
+>输出：True
+>解释：多次重复子字符串 “abc”。（或者重复两次子字符串 “abcabc”。）
+
+###思路：
+这道题我的想法是，检测是否由子字符串重复组成，只需要看是不是可以后面部分的字符串与前面的字符串完全一样就可以了。
+
+首先如果字符串的字母数小于两个，那也不用判断了，一定不可能是多个子字符串重复出来的。
+
+设立两个标记，一个快一点一个慢一点。快的从第二个字母开始往后遍历，找到与第一个字母一样的，就停下来开始判断，慢的从第一个字母开始，两个标记一起往后遍历，看是不是可以完全一致，一直到最后一个字母，如果从后面开始的与从头开始的一模一样，说明是存在重复的字符串，并且由它重复组成的。
+
+如果遍历时又出现不一样了，这时候说明还不是重复的，就要继续当做从头开始找了，继续往后遍历快的标记，找与第一个字母一样的，然后重复上面的过程，注意找到后慢的标记需要回到第一个字母。
+
+不管找没找到，当快的遍历到最后字母了就停止遍历了，这时如果是没找到的状态，那就直接false了，如果是找到的状态，那么有可能是确实重复组成的，也有可能只是最后一小节和前面的一样，中间的一段还是没有重复的，这时候根据慢的标记来判断，如果慢的标记已经走过了整个字符串的一半，就说明至少是二分之一的子字符串重复两次得到的，或者更小的字符串重复多次。如果慢的标记还没走过一半，说明中间还有一部分并没有来得及重复，这时候就依然是false了。在判断慢的是否过半了时，由于存在整个字符串长度可能为基数也可能为偶数的情况，所以用慢标记的位置乘以二来和整体长度作比较进行判断比较合适。
+
+这个方法只需要遍历一次字符串，时间复杂度只有O（n），还是很快的，实际结果也打败了95%的人~
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public boolean repeatedSubstringPattern(String str) {
+        if (str.length() < 2) return false;
+        
+        char[] arr = str.toCharArray();
+        int low = 0;
+        int fast = 1;
+        boolean match = false;// 匹配到与否的标记
+        while (fast < arr.length) {
+            if (arr[fast] == arr[0]) {
+                // 匹配到了第一个，开始判断是否重复
+                for (low = 0; fast < arr.length;) {
+                    if (arr[low] == arr[fast]) {// 往后走进行不断判断
+                        match = true;
+                        low++;
+                        fast++;
+                    } else {// 匹配不一致，跳出去重新找
+                        match = false;
+                        break;
+                    }
+                }
+            } else {// 没能匹配首字母
+                match = false;
+                fast++;
+            }
+        }
+        return match && low*2 >= arr.length;
     }
 }
 ```
