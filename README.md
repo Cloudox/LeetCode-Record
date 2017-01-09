@@ -59,6 +59,7 @@ LeetCode笔记
  * [290. Word Pattern](#290. Word Pattern)
  * [455. Assign Cookies](#455. Assign Cookies)
  * [459. Repeated Substring Pattern](#459. Repeated Substring Pattern)
+ * [223. Rectangle Area](#223. Rectangle Area)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4177,6 +4178,104 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="223. Rectangle Area"/>223. Rectangle Area
+###问题：
+>Find the total area covered by two rectilinear rectangles in a 2D plane.
+
+>Each rectangle is defined by its bottom left corner and top right corner as shown in the figure.
+
+>![](http://img.blog.csdn.net/20161121101542056)
+
+>Assume that the total area is never beyond the maximum possible value of int.
+
+###大意：
+>计算两个2D矩形覆盖的全部区域面积。
+
+>每个矩形都由图中这种左下角和右上角的坐标来定义。
+
+>![](http://img.blog.csdn.net/20161121101542056)
+
+>假设整体区域不会大于整型的最大值。
+
+###思路：
+一开始弄错了，以为是计算重复面积，后来才发现是计算全部面积，其实也差不多，就是用两个矩形的面积和减去重复覆盖的面积。
+
+计算面积其实很容易，关键在于判断各种可能的情况，判断有没有重复覆盖的面积，以及如何去准确的计算，题目给的用例实在是任性，说好的左下角和右上角，G,H的值却可能比E,F要小= =
+
+做过这道题后不得不说坐标的计算真的要细心并且考虑周全啊，好多粗心犯的错误。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        if (A > C) {
+            int temp = A;
+            A = C;
+            C = temp;
+        }
+        if (B > D) {
+            int temp = B;
+            B = D;
+            D = temp;
+        }
+        if (E > G) {
+            int temp = E;
+            E = G;
+            G = temp;
+        }
+        if (F > H) {
+            int temp = F;
+            F = H;
+            H = temp;
+        }
+        
+        int width1 = Math.abs(C - A);
+        int height1 = Math.abs(D - B);
+        int width2 = Math.abs(G - E);
+        int height2 = Math.abs(H - F);
+        
+        // 两个长方形面积
+        int area1 = width1 * height1;
+        int area2 = width2 * height2;
+        
+        // 计算重合部分
+        // 重合部分为0
+        if (A + width1 <= E || E + width2 <= A || B + height1 <= F || F + height2 <= B) return area1 + area2;
+        // 重合部分不为0
+        int width;
+        if (E == A) width = Math.min(width1, width2);
+        else if (E > A) width = Math.abs(E - A) + width2 < width1 ? width2 : width1 - Math.abs(E - A);
+        else width = Math.abs(A - E) + width1 < width2 ? width1 : width2 - Math.abs(A - E);
+        
+        int height;
+        if (F == B) height = Math.min(height1, height2);
+        else if (F > B) height = Math.abs(F - B) + height2 < height1 ? height2 : height1 - Math.abs(F - B);
+        else height = Math.abs(B - F) + height1 < height2 ? height1 : height2 - Math.abs(B - F);
+        
+        return area1 + area2 - width * height;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        int left = Math.max(A,E), right = Math.max(Math.min(C,G), left);
+        int bottom = Math.max(B,F), top = Math.max(Math.min(D,H), bottom);
+        return (C-A)*(D-B) - (right-left)*(top-bottom) + (G-E)*(H-F);
+    }
+}
+```
+
+这个计算重复面积的方式很巧妙，简单多了。
 
 [回到目录](#Catalogue)
 
