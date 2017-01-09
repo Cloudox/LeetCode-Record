@@ -4189,7 +4189,7 @@ public class Solution {
 
 >Each rectangle is defined by its bottom left corner and top right corner as shown in the figure.
 
->![](http://img.blog.csdn.net/20161121101542056)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/223Image.png)
 
 >Assume that the total area is never beyond the maximum possible value of int.
 
@@ -4198,7 +4198,7 @@ public class Solution {
 
 >每个矩形都由图中这种左下角和右上角的坐标来定义。
 
->![](http://img.blog.csdn.net/20161121101542056)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/223Image.png)
 
 >假设整体区域不会大于整型的最大值。
 
