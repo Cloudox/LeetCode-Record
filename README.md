@@ -60,6 +60,7 @@ LeetCode笔记
  * [455. Assign Cookies](#455. Assign Cookies)
  * [459. Repeated Substring Pattern](#459. Repeated Substring Pattern)
  * [223. Rectangle Area](#223. Rectangle Area)
+ * [20. Valid Parentheses](#20. Valid Parentheses)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4276,6 +4277,114 @@ public class Solution {
 ```
 
 这个计算重复面积的方式很巧妙，简单多了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="20. Valid Parentheses"/>20. Valid Parentheses
+###问题：
+>Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+>The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+
+###大意：
+>给出一个只包含 '(', ')', '{', '}', '[' 和 ']' 的字符串，判断它的输入是否是有效的。
+
+>括号必须是以正确的顺序关闭的， "()" 和 "()[]{}" 都是有效的，但是 "(]" 和 "([)]" 是无效的。
+
+###思路：
+题目的要求说来也简单，就是判断括号是不是有效的，自己先用测试用例试了一下，括号中包含括号也是有效的。
+
+其实无效的情况也就几种，左括号匹配到了不一样的右括号、左括号多了、右括号多了，我用一个数组记录不同位置出现的括号的种类，出现新的右括号的时候判断是否匹配到了正确的括号，还要看是不是是多了的右括号，最后看有没有多出来的左括号。方法很笨，代码也写的很冗余，不过速度还可以。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public boolean isValid(String s) {
+        int[] markArr = new int[s.length()];// 1表示()，2表示[]，3表示{}
+        
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == '(') {
+                markArr[i] = 1;
+            } else if (arr[i] == ')') {
+                boolean hasMatched = false;
+                for (int j = i-1; j >= 0; j--) {
+                    if (markArr[j] > 0 && markArr[j] != 1) return false;
+                    else if (markArr[j] == 1) {
+                        markArr[j] = 0;
+                        hasMatched = true;
+                        break;
+                    }
+                }
+                if (!hasMatched) return false;
+            } else if (arr[i] == '[') {
+                markArr[i] = 2;
+            } else if (arr[i] == ']') {
+                boolean hasMatched = false;
+                for (int j = i-1; j >= 0; j--) {
+                    if (markArr[j] > 0 && markArr[j] != 2) return false;
+                    else if (markArr[j] == 2) {
+                        markArr[j] = 0;
+                        hasMatched = true;
+                        break;
+                    }
+                }
+                if (!hasMatched) return false;
+            } else if (arr[i] == '{') {
+                markArr[i] = 3;
+            } else if (arr[i] == '}') {
+                boolean hasMatched = false;
+                for (int j = i-1; j >= 0; j--) {
+                    if (markArr[j] > 0 && markArr[j] != 3) return false;
+                    else if (markArr[j] == 3) {
+                        markArr[j] = 0;
+                        hasMatched = true;
+                        break;
+                    }
+                }
+                if (!hasMatched) return false;
+            }
+        }
+        
+        for (int i = 0; i < markArr.length; i++) {
+            if (markArr[i] > 0) return false;
+        }
+        return true;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<Character>();
+        // Iterate through string until empty
+        for(int i = 0; i<s.length(); i++) {
+            // Push any open parentheses onto stack
+            if(s.charAt(i) == '(' || s.charAt(i) == '[' || s.charAt(i) == '{')
+                stack.push(s.charAt(i));
+            // Check stack for corresponding closing parentheses, false if not valid
+            else if(s.charAt(i) == ')' && !stack.empty() && stack.peek() == '(')
+                stack.pop();
+            else if(s.charAt(i) == ']' && !stack.empty() && stack.peek() == '[')
+                stack.pop();
+            else if(s.charAt(i) == '}' && !stack.empty() && stack.peek() == '{')
+                stack.pop();
+            else
+                return false;
+        }
+        // return true if no open parentheses left in stack
+        return stack.empty();
+    }
+}
+```
+
+这个做法用到了Stack栈这个类型，确实这道题很适合用栈来做，先进后出，遇到左括号的时候放进去，遇到右括号的时候从栈顶拿括号进行匹配，匹配失败就错了，全部匹配正确而且最后栈里没东西了就对了。代码简洁多了。
 
 [回到目录](#Catalogue)
 
