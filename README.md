@@ -61,6 +61,7 @@ LeetCode笔记
  * [459. Repeated Substring Pattern](#459. Repeated Substring Pattern)
  * [223. Rectangle Area](#223. Rectangle Area)
  * [20. Valid Parentheses](#20. Valid Parentheses)
+ * [219. Contains Duplicate II](#219. Contains Duplicate II)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4385,6 +4386,35 @@ public class Solution {
 ```
 
 这个做法用到了Stack栈这个类型，确实这道题很适合用栈来做，先进后出，遇到左括号的时候放进去，遇到右括号的时候从栈顶拿括号进行匹配，匹配失败就错了，全部匹配正确而且最后栈里没东西了就对了。代码简洁多了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="219. Contains Duplicate II"/>219. Contains Duplicate II
+###问题：
+>Given an array of integers and an integer k, find out whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the difference between i and j is at most k.
+
+###大意：
+>给出一个整型数组和一个整型数k，判断数组中是否任何两个不一样的位置i和j，如果 nums[i] = nums[j] ，i和j的距离不大于k。
+
+###思路：
+这道题看起来简单，不过有很多陷阱，比如如果k = 0，那么无论数组如何都是错的。如果数组中不存在一样的两个数，也是错的。如果数组中存在多个一样的同一个数，只要有最短的两个的距离小于等于k就可以了等等，我把代码缝缝补补后，还是在一个很长数组的测试用例下超时了。。。不过我用的是最直接的方法，看了看如果合理地使用一些数据结构，就会很方便，比如使用set，set集合的特性是里面不会出现两个不一样的数字，那么我们建立一个长度为k的set，用它来扫描整个数组，不断地判断新出现的数据能不能放进去，如果不能放进去，说明存在距离小于等于k的数据是有相等的，否则就可以放进去，当然set中的数据量如果超过k了就要同时把早先放进去的数据拿出来了，如果扫描过后都可以放进去和取出来，说明没找到小于等于k的相等的数，那就错了。
+
+这道题有个地方不一样在于，一般的题目都是碰到什么就返回false，都没有false才返回true。而这道题却是遇到什么则返回true，都没有true，才返回false。
+
+###他山之石：
+
+```java
+public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> set = new HashSet<Integer>();
+        for(int i = 0; i < nums.length; i++){
+            if(i > k) set.remove(nums[i-k-1]);
+            if(!set.add(nums[i])) return true;
+        }
+        return false;
+ }
+```
 
 [回到目录](#Catalogue)
 
