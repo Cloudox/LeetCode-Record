@@ -62,6 +62,7 @@ LeetCode笔记
  * [223. Rectangle Area](#223. Rectangle Area)
  * [20. Valid Parentheses](#20. Valid Parentheses)
  * [219. Contains Duplicate II](#219. Contains Duplicate II)
+ * [88. Merge Sorted Array](#88. Merge Sorted Array)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4415,6 +4416,85 @@ public boolean containsNearbyDuplicate(int[] nums, int k) {
         return false;
  }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="88. Merge Sorted Array"/>88. Merge Sorted Array
+###问题：
+>Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+
+>Note:
+
+>You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2. The number of elements initialized in nums1 and nums2 are m and n respectively.
+
+###大意：
+>给出两个排序好了的整型数组 nums1 和 nums2，将 nums2 合并到 nums1 中去成为一个排好序的数组。
+
+>注意：
+
+>你可以假设 nums1 有足够的空间（尺寸大于等于 m + n）来添加从 nums2 来的额外的元素。nums1 和 nums2 中的元素个数分别为 m 和 n。
+
+###思路：
+这道题一开始并不想用最直接最笨的方法做，而是试图利用题目的条件来做。题目两个原本的数组都是排好序了的，题目没有返回值，因此只能在nums1中直接操作，不能放新的数组，题目额外给出了元素个数m和n，这都是暗示。不过最终也没做好，后来发现其实还是思路方向反了= =
+
+这里先说最直接的办法，空间换时间，直接创建一个新数组，然后一个个从两个数组中按照顺序拿元素去比较大小放回nums1中，就得到一个排好序的数组了。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        if (nums2.length == 0) return;
+        
+        int[] nums = Arrays.copyOfRange(nums1, 0, m);
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        while (i < nums.length && j < nums2.length) {
+            if (nums[i] <= nums2[j]) {
+                nums1[k] = nums[i];
+                i++;
+            } else {
+                nums1[k] = nums2[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < nums.length) {
+            nums1[k] = nums[i];
+            i++;
+            k++;
+        }
+        while (j < nums2.length) {
+            nums1[k] = nums2[j];
+            j++;
+            k++;
+        }
+        
+        return;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i=m-1, j=n-1, k=m+n-1;
+        while (i>-1 && j>-1) nums1[k--]= (nums1[i]>nums2[j]) ? nums1[i--] : nums2[j--];
+        while (j>-1)         nums1[k--]=nums2[j--];
+        
+        return;
+    }
+}
+```
+
+这个做法让我明白我的思路还是反了，之前一直想的还是顺序去找元素，还在想怎么处理原来位置的元素，这个方法直接从后面开始排，先放最后面的数，从大到小慢慢往前走，放的数一定不会覆盖原来nums1中的数，因为有足够的位置。如果nums2中的数先放完，那么剩下的nums1前面的数位置不用动，如果nums1的先放完，剩下还有一些nums2的数就直接放在前面去了。
+
+此外，这里为了精简代码，使用了i--这种先取值然后减一的特性。
 
 [回到目录](#Catalogue)
 
