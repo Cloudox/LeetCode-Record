@@ -63,6 +63,7 @@ LeetCode笔记
  * [20. Valid Parentheses](#20. Valid Parentheses)
  * [219. Contains Duplicate II](#219. Contains Duplicate II)
  * [88. Merge Sorted Array](#88. Merge Sorted Array)
+ * [234. Palindrome Linked List](#234. Palindrome Linked List)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4495,6 +4496,93 @@ public class Solution {
 这个做法让我明白我的思路还是反了，之前一直想的还是顺序去找元素，还在想怎么处理原来位置的元素，这个方法直接从后面开始排，先放最后面的数，从大到小慢慢往前走，放的数一定不会覆盖原来nums1中的数，因为有足够的位置。如果nums2中的数先放完，那么剩下的nums1前面的数位置不用动，如果nums1的先放完，剩下还有一些nums2的数就直接放在前面去了。
 
 此外，这里为了精简代码，使用了i--这种先取值然后减一的特性。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="234. Palindrome Linked List"/>234. Palindrome Linked List
+###问题：
+>Given a singly linked list, determine if it is a palindrome.
+
+>Follow up:
+
+>Could you do it in O(n) time and O(1) space?
+
+###大意：
+>给出一个单链表，判断它是否是回文。
+
+>进阶：
+
+>你能在O（n）的时间复杂度和O（1）的空间复杂度下来做吗？
+
+###思路：
+回文的意思就是正着读反着读都是一样的。
+
+这道题我使用简单的思路，一个个遍历链表节点来倒序组成一个新链表，然后和旧链表一起遍历看节点是不是一样的，如果一样说明是回文，否则不是。这个方法很简单，时间复杂度是O（n），但是空间复杂度也是O（n），并不符合进阶的要求。
+
+###代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
+        
+        ListNode newHead = head;
+        ListNode lastNode = new ListNode(head.val);
+        while (newHead.next != null) {
+            newHead = newHead.next;
+            ListNode newNode = new ListNode(newHead.val);
+            newNode.next = lastNode;
+            lastNode = newNode;
+        }
+        
+        if (head.val != lastNode.val) return false;
+        while (head.next != null) {
+            head = head.next;
+            lastNode = lastNode.next;
+            if (head.val != lastNode.val) return false;
+        }
+        
+        return true;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public boolean isPalindrome(ListNode head) {
+        ListNode fast = head, slow = head;
+        Stack<ListNode> stack = new Stack<>();
+        while(fast != null && fast.next != null){
+            stack.push(slow);
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+// for odd list
+        if(fast != null){
+            slow = slow.next;
+        }
+        while(slow != null){
+            if(stack.pop().val != slow.val) return false;
+            slow = slow.next;
+        }
+        return true;
+    }
+}
+```
+
+这个做法跟我的不一样，使用了快慢两个标记，快的那个只有一个用处，就是以两倍速度遍历，引导慢的标记到达链表最中心，当然这里要根据链表个数是奇数还是偶数来分开判断，也是看fast是正好跑到最后面还是跑过了来判断。找到中心后，利用栈存放的数据先进后出的特性，从中间往两头一起遍历，看遍历的值是不是都一样，一样则是回文，否则不是。这个做法同样的时间复杂度是O（n），二空间复杂度是O（n），因为用到了一个栈。不过速度应该比我的要快一半
 
 [回到目录](#Catalogue)
 
