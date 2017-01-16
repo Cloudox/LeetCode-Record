@@ -64,6 +64,7 @@ LeetCode笔记
  * [219. Contains Duplicate II](#219. Contains Duplicate II)
  * [88. Merge Sorted Array](#88. Merge Sorted Array)
  * [234. Palindrome Linked List](#234. Palindrome Linked List)
+ * [225. Implement Stack using Queues](#225. Implement Stack using Queues)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4583,6 +4584,86 @@ public class Solution {
 ```
 
 这个做法跟我的不一样，使用了快慢两个标记，快的那个只有一个用处，就是以两倍速度遍历，引导慢的标记到达链表最中心，当然这里要根据链表个数是奇数还是偶数来分开判断，也是看fast是正好跑到最后面还是跑过了来判断。找到中心后，利用栈存放的数据先进后出的特性，从中间往两头一起遍历，看遍历的值是不是都一样，一样则是回文，否则不是。这个做法同样的时间复杂度是O（n），二空间复杂度是O（n），因为用到了一个栈。不过速度应该比我的要快一半
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="225. Implement Stack using Queues"/>225. Implement Stack using Queues
+## 问题：
+>Implement the following operations of a stack using queues.
+
+>* push(x) -- Push element x onto stack.
+* pop() -- Removes the element on top of the stack.
+* top() -- Get the top element.
+* empty() -- Return whether the stack is empty.
+
+>Notes:
+
+>* You must use only standard operations of a queue -- which means only push to back, peek/pop from front, size, and is empty operations are valid.
+* Depending on your language, queue may not be supported natively. You may simulate a queue by using a list or deque (double-ended queue), as long as you use only standard operations of a queue.
+* You may assume that all operations are valid (for example, no pop or top operations will be called on an empty stack).
+
+## 大意：
+>使用队列实现下面的栈操作：
+
+>* push（x）--将元素xpush到栈中去。
+>* pop（）--移除栈顶的元素。
+>* top（）--获取栈顶的元素。
+>* empty（）--返回栈是否为空。
+
+>注意：
+
+>* 你只能使用队列的标准操作——也就是只有push到队尾、从队首peek/pop、size和是否为empty操作是有效的。
+>* 根据你的语言，队列可能不是原生支持的。你可以使用list或者deque（双尾队列）模仿一个队列，只要你只使用队列的标准操作。
+>* 你可以假设所有的操作都是有效的（比如，不会pop或者top一个空栈）。
+
+## 思路：
+这道题和[232. Implement Queue using Stacks](http://blog.csdn.net/Cloudox_/article/details/52956764)很像，跟他是相反的要求。
+
+其实用队列实现栈无非就是一个出的顺序不一样，栈是后进先出，队列是先进先出，因此要么改变队列出的做法，全部出完直到最后一个才是作为栈需要出的；要么改入队的做法，每次入的时候都全部取出来一遍，将新元素入在队首去，这样出的时候就是第一个出的了。
+
+因为题目的代码要求有两个取元素操作，一个添加元素操作，所以我采用了第二种做法，改变入队方式，具体实现还是很简单的。
+
+## 代码（Java）：
+
+```java
+class MyStack {
+    Queue<Integer> q;
+    
+    public MyStack(){
+        q = new LinkedList<Integer>();
+        //temp = new LinkedList<Integer>();
+    }
+    
+    // Push element x onto stack.
+    public void push(int x) {
+        Queue<Integer> temp = new LinkedList<Integer>();
+        while (q.peek() != null) {
+            temp.add(q.poll());
+        }
+        q.add(x);
+        while (temp.peek() != null) {
+            q.add(temp.poll());
+        }
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        q.remove();
+    }
+
+    // Get the top element.
+    public int top() {
+        return q.peek();
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return q.peek() == null;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
