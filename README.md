@@ -65,6 +65,7 @@ LeetCode笔记
  * [88. Merge Sorted Array](#88. Merge Sorted Array)
  * [234. Palindrome Linked List](#234. Palindrome Linked List)
  * [225. Implement Stack using Queues](#225. Implement Stack using Queues)
+ * [58. Length of Last Word](#58. Length of Last Word)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4664,6 +4665,80 @@ class MyStack {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="58. Length of Last Word"/>58. Length of Last Word
+## 问题：
+>Given a string s consists of upper/lower-case alphabets and empty space characters ' ', return the length of last word in the string.
+
+>If the last word does not exist, return 0.
+
+>Note: A word is defined as a character sequence consists of non-space characters only.
+
+>For example, 
+Given s = "Hello World",
+return 5.
+
+##大意：
+>给出一个由大小写字母和空格组成的字符串s，返回其最后一个单词的长度。
+
+>如果最后一个单词不存在，返回0。
+
+>注意：单词是指仅有非空格字符组成的序列。
+
+>例子：
+>给出 s = "Hello World",
+>返回 5。
+
+##思路：
+题目并不难，只是要注意，我在用测试用例尝试的时候发现，如果给出的字符串最后是空格，也会取空格前最后一个单词的长度，也就是说即使最后是多个空格，只要前面还有单词，就将其视为最后一个单词。
+
+我的做法是遍历数组，遇到字符串第一个就是字母或者说字母前一个字符是空格时，就将其视为一个单词的开始，令结果回到1，重新计算长度，其余遇到字母就将结果加一，遇到空格就不管了。
+
+##代码（Java）：
+
+```java
+public class Solution {
+    public int lengthOfLastWord(String s) {
+        int length = 0;
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            if (i == 0) {
+                if (arr[i] != ' ') length ++;
+            } 
+            else if (arr[i-1] == ' ' && arr[i] != ' ') length = 1;
+            else if (arr[i] != ' ') length ++;
+        }
+        return length;
+    }
+}
+```
+
+##他山之石：
+
+```java
+public class Solution {
+	public int lengthOfLastWord(String s) {
+		int len = s.length();
+		int i = len -1;
+		int empty = 0;
+		if(s == null || len == 0)
+			return 0;
+		while(i>=0 && s.charAt(i)==' '){
+			i--;
+			empty++;
+		}
+		while(i>=0 && s.charAt(i)!=' ')
+			i--;
+		return len- empty - (i+1);
+	}
+}
+```
+
+这个做法是从后往前遍历字符串，末尾如果有空格，先把空格去除干净，然后取字母的长度，再次遇到空格打止，因为是从后往前遍历，不需要全部遍历完整个字符串，所以会快一点。
 
 [回到目录](#Catalogue)
 
