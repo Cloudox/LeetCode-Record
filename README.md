@@ -66,6 +66,7 @@ LeetCode笔记
  * [234. Palindrome Linked List](#234. Palindrome Linked List)
  * [225. Implement Stack using Queues](#225. Implement Stack using Queues)
  * [58. Length of Last Word](#58. Length of Last Word)
+ * [203. Remove Linked List Elements](#203. Remove Linked List Elements)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4739,6 +4740,62 @@ public class Solution {
 ```
 
 这个做法是从后往前遍历字符串，末尾如果有空格，先把空格去除干净，然后取字母的长度，再次遇到空格打止，因为是从后往前遍历，不需要全部遍历完整个字符串，所以会快一点。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="203. Remove Linked List Elements"/>203. Remove Linked List Elements
+## 问题：
+>Remove all elements from a linked list of integers that have value val.
+
+>Example
+Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+Return: 1 --> 2 --> 3 --> 4 --> 5
+
+## 大意：
+>移除链表中素有值为val的元素。
+
+>例子：
+给出: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+返回: 1 --> 2 --> 3 --> 4 --> 5
+
+## 思路：
+这道题没什么特殊的，遍历链表遇到值跟val相同的就删除节点就好，链表删除节点的做法也比较固定了，只是要细心一点不要漏了什么特殊情况，比如删除节点时是最后一个节点的处理、链表头部连续出现要删除的节点时的处理等等，另外因为最终要返回的是头结点，所以这个节点要有一个变量去保留着最后返回。
+
+我的做法是先把头部的连续的目标节点都删掉，然后遍历链表，中间遇到了就删，当然遇到时要判断是不是最后一个节点了，是的话就next直接指向null了。在删头结点时，因为可能循环着遇到后面没节点了的情况，比如 1 --> 1 这种全部要删除的，所以在循环条件中利用 && 运算符的特性，先判断节点存在，然后再判断值，如果节点不存在，第一个判断条件就无效，那么就不会处理第二个判断条件，否则直接判断值有可能在无节点时报错。
+
+## 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return head;
+        
+        ListNode result = head;
+        while (result != null && result.val == val) result = result.next;
+        
+        while (head.next != null) {
+            if (head.next.val == val) {
+                if (head.next.next != null) head.next = head.next.next;
+                else head.next = null;
+            } else {
+                head = head.next;
+            }
+        }
+        
+        return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
