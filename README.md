@@ -67,6 +67,7 @@ LeetCode笔记
  * [225. Implement Stack using Queues](#225. Implement Stack using Queues)
  * [58. Length of Last Word](#58. Length of Last Word)
  * [203. Remove Linked List Elements](#203. Remove Linked List Elements)
+ * [400. Nth Digit](#400. Nth Digit)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4793,6 +4794,92 @@ public class Solution {
         }
         
         return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="400. Nth Digit"/>400. Nth Digit
+### 问题：
+>Find the nth digit of the infinite integer sequence 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...
+
+>Note:
+n is positive and will fit within the range of a 32-bit signed integer (n < 231).
+
+>Example 1:
+
+>>Input:
+3
+
+>>Output:
+3
+
+>Example 2:
+
+>>Input:
+11
+
+>>Output:
+0
+
+>>Explanation:
+The 11th digit of the sequence 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... is a 0, which is part of the number 10.
+
+### 大意：
+>在无限整数序列 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... 中找到第n个数字。
+
+>注意：
+>n是个正数而且会在32位范围内（n<2的31次方）
+
+>例1：
+
+>>输入：3
+>输出：3
+
+>例2：
+
+>>输入：11
+>输出：0
+>解释：序列 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... 的第11个数是数字10中的0。
+
+### 思路：
+开始没看到意思，后来明白了，当序列中的数字是两位数、三位数等等后，第n个数就不再是序列中的第n个数了，比如10中的1是第10个数字，0是第11个数字。
+
+这么一来，要找到第n个数，首先要知道这个数所在的序列中的数字是什么，我们只能先判断当前的是几位数，因为每多一位数，其范围内的数字个数会变成上一轮的10倍，比如个位数有9个，两位数有90个，三位数有900个。。。两位数对应的数字有90*2个，三位数有900*3个，所以可以通过这个规律先判断要找的序列数字是几位数。
+
+找出是几位数后，在通过对位数的除法得出数字是多少，比如如果n是12，那么先通过其大于9，小于90*2+9，得知是两位数，然后通过（12-9）/2 = 1得出其至少是9+1，也就是10或者10以后的数字，具体是10还是11，要看有没有余数，这里（12-9）%2=1，所以余数为1，也就是超过了10，是10的后一个数字的第一个数。其实这里很简单我们直接就可以知道是11中的第一个1。
+
+如果余数是0，说明就是当前找到的数字的最后一位，直接将该数字对10取余即可得到需要的个位数字。如果余数大于0，说明是下一个序列数字中的数，然后根据余数来判断是下个序列数字中的第几个数。要得到一个多位数中的某位数，有多种做法，一种是化为字符数组直接取，另一种我用的是先取余再做除法，比如要得到1245这个数字中的第三个数字4，先让其对100取余数得到45，然后对10做触发得到4。至于怎么知道是100和10，就可以通过是第几位来进行10的次方运算了，这个直接看到代码就可以明白，只是有点长，要想清楚。
+
+还有一点要注意的是，提交时我在一个很大的数上出了错，因为题目给的n的范围是小于2的31次方，这个数字在上述处理过程中可能会有大到超过int型变量范围的数字，因此不得不全部使用了long型变量表示数字。另外Math.pow()这个次方计算操作的两个参数必须是double型的，因此也不得不进行了强制转换又转换。
+
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int findNthDigit(int n) {
+        if (n <= 9) return n;
+        
+        long lastNum = 9;
+        long reduce = 9;
+        long num = 90;
+        long i = 2;
+        while (n > reduce + num * i) {
+            lastNum = lastNum + num;
+            reduce = reduce + num * i;
+            num = num * 10;
+            i++;
+        }
+        long over = (long)n - reduce;
+        System.out.println(lastNum + over / i);
+        long index = over / i;
+        long reste = over % i;
+        if (reste == 0) return (int)((lastNum + index) % 10);
+        else return (int)(((lastNum + index + 1) % (long)Math.pow(10.0, (double)(i - reste + 1))) / (long)Math.pow(10.0, (double)(i - reste)));
     }
 }
 ```
