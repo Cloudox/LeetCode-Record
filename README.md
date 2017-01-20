@@ -68,6 +68,7 @@ LeetCode笔记
  * [58. Length of Last Word](#58. Length of Last Word)
  * [203. Remove Linked List Elements](#203. Remove Linked List Elements)
  * [400. Nth Digit](#400. Nth Digit)
+ * [14. Longest Common Prefix](#14. Longest Common Prefix)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4883,6 +4884,79 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="14. Longest Common Prefix"/>14. Longest Common Prefix
+### 问题
+>Write a function to find the longest common prefix string amongst an array of strings.
+
+### 大意：
+>写一个函数来寻找一个数组的字符串中最长的相同前缀。
+
+### 思路：
+题目描述很简单只有一句话，导致我理解错了，以为是找到存在的任意两个字符串最长的相同前缀，还写了一份代码出来，自己测试的时候发现题目想要的结果不符合才发现，其实是找整个数组的字符串都有的相同的最长前缀，这就方便多了。
+
+我采用从第一个字符串的前头开始一个一个地增加前缀长度来判断后面所有的字符串是否有同样的前缀，然后返回结果。
+
+在这个过程中有很多特殊情况要注意，比如如果数组长度为0，直接返回空字符串；如果只有一个字符串，直接返回该字符串；如果存在某个字符串（包括第一个）就是“”这样的空字符串，直接返回“”；每次增加前缀长度的时候要判断第一个字符串是否够长，不够了就直接返回当前结果；只有当所有后面的字符串都存在前缀时才可以认为是相同的，只要有一个不相同就可以直接返回之前已经记录的前缀了等等。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0) return "";
+        else if (strs.length == 1) return strs[0];
+        
+        int end = 1;
+        String result = "";
+        String firstStr = strs[0];
+        if (firstStr.length() == 0) return "";
+        else {
+            String sub;
+            while (end <= firstStr.length()) {
+                sub = firstStr.substring(0, end);
+                for (int i = 1; i < strs.length; i++) {
+                    String nowStr = strs[i];
+                    if (nowStr.length() == 0) return "";
+                    else {
+                        if (nowStr.startsWith(sub, 0)) {
+                            if (i == strs.length-1) {
+                                result = sub;
+                                end ++;
+                            }
+                        } else return result;
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0) return "";
+        String pre = strs[0];
+        for (int i = 1; i < strs.length; i++)
+            while(strs[i].indexOf(pre) != 0) {
+                pre = pre.substring(0,pre.length()-1);
+                if (pre.length() == 0) return "";
+            }
+        return pre;
+    }
+}
+```
+
+这个做法是先用整个第一个字符串来当做前缀去判断每个字符串是否拥有该前缀，没有就将这个判断的前缀末尾字符去掉再比较，直到当前判断的字符串有这个前缀了，才去判断下一个字符串有没有，执行同样的操作。当任何时候前缀长度减少到0了，也可以直接返回了。这个做法会快一点，而且免去了很多特殊情况的判断，代码很简洁。
 
 [回到目录](#Catalogue)
 
