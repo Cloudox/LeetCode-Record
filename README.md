@@ -69,6 +69,7 @@ LeetCode笔记
  * [203. Remove Linked List Elements](#203. Remove Linked List Elements)
  * [400. Nth Digit](#400. Nth Digit)
  * [14. Longest Common Prefix](#14. Longest Common Prefix)
+ * [67. Add Binary](#67. Add Binary)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4957,6 +4958,89 @@ public class Solution {
 ```
 
 这个做法是先用整个第一个字符串来当做前缀去判断每个字符串是否拥有该前缀，没有就将这个判断的前缀末尾字符去掉再比较，直到当前判断的字符串有这个前缀了，才去判断下一个字符串有没有，执行同样的操作。当任何时候前缀长度减少到0了，也可以直接返回了。这个做法会快一点，而且免去了很多特殊情况的判断，代码很简洁。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="67. Add Binary"/>67. Add Binary
+### 问题：
+>Given two binary strings, return their sum (also a binary string).
+
+> For example,
+a = "11"
+b = "1"
+Return "100".
+
+### 大意：
+>给出两个二进制字符串，返回它们的和（同样是二进制字符串）。
+
+>例子：
+>a = "11"
+b = "1"
+返回 "100".
+
+### 思路：
+这其实就是一个模拟二进制加法的问题。如果某一位两个数都是0，结果的这一位也为0，有一个1就是1，如果都是1，这一位是0，还有进一位，所以上面三种情况还要考虑低位有没有进位。
+
+因为两个二进制数的长度可能不同，所以我们先要在一个循环中去加两个数的和，当任一个数处理完之后，再看剩下哪个，将其加到结果中去。
+
+这种做法速度还是很快的，只是代码比较多，也可以直接将短的那个加到长的那个上面去，但最后还是要根据进位遍历一遍长的剩余部分，节省不了太多东西。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String addBinary(String a, String b) {
+        int flag = 0;
+        char[] result = new char[a.length() > b.length() ? a.length() : b.length()]; 
+        int k = result.length - 1;
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        for (; i >= 0 && j >= 0; i--, j--, k--) {
+            if (a.charAt(i) == '1' && b.charAt(j) == '1') {
+                result[k] = flag == 1 ? '1' : '0';
+                flag = 1;
+            } else if (a.charAt(i) == '1' || b.charAt(j) == '1') {
+                result[k] = flag == 1 ? '0' : '1';
+                flag = flag == 1 ? 1 : 0;
+            } else {
+                result[k] = flag == 1 ? '1' : '0';
+                flag = 0;
+            }
+        }
+        if (i >= 0) {
+            for (; i >=0; i--, k--) {
+                if (a.charAt(i) == '1' && flag == 1) {
+                    result[k] = '0';
+                    flag = 1;
+                } else if (a.charAt(i) == '1' || flag == 1) {
+                    result[k] = '1';
+                    flag = 0;
+                } else {
+                    result[k] = '0';
+                    flag = 0;
+                }
+            }
+        }
+        if (j >= 0) {
+            for (; j >=0; j--, k--) {
+                if (b.charAt(j) == '1' && flag == 1) {
+                    result[k] = '0';
+                    flag = 1;
+                } else if (b.charAt(j) == '1' || flag == 1) {
+                    result[k] = '1';
+                    flag = 0;
+                } else {
+                    result[k] = '0';
+                    flag = 0;
+                }
+            }
+        }
+        return flag == 1 ? "1" + String.valueOf(result) : String.valueOf(result);
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
