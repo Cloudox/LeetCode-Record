@@ -5052,8 +5052,8 @@ public class Solution {
 >Write a program to find the node at which the intersection of two singly linked lists begins.
 
 >For example, the following two linked lists:
-![](http://img.blog.csdn.net/20161204145218088)
-begin to intersect at node c1.
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/160Image.png)
+>begin to intersect at node c1.
 
 >Notes:
 
@@ -5066,7 +5066,7 @@ begin to intersect at node c1.
 >写一个函数来寻找两个单链表开始交汇的节点。
 
 >比如，下面这两个链表：
->![](http://img.blog.csdn.net/20161204145218088)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/160Image.png)
 >从节点 c1 开始交汇
 
 > 注意：
