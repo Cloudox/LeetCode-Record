@@ -60,6 +60,17 @@ LeetCode笔记
  * [455. Assign Cookies](#455. Assign Cookies)
  * [459. Repeated Substring Pattern](#459. Repeated Substring Pattern)
  * [223. Rectangle Area](#223. Rectangle Area)
+ * [20. Valid Parentheses](#20. Valid Parentheses)
+ * [219. Contains Duplicate II](#219. Contains Duplicate II)
+ * [88. Merge Sorted Array](#88. Merge Sorted Array)
+ * [234. Palindrome Linked List](#234. Palindrome Linked List)
+ * [225. Implement Stack using Queues](#225. Implement Stack using Queues)
+ * [58. Length of Last Word](#58. Length of Last Word)
+ * [203. Remove Linked List Elements](#203. Remove Linked List Elements)
+ * [400. Nth Digit](#400. Nth Digit)
+ * [14. Longest Common Prefix](#14. Longest Common Prefix)
+ * [67. Add Binary](#67. Add Binary)
+ * [160. Intersection of Two Linked Lists](#160. Intersection of Two Linked Lists)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -4189,7 +4200,7 @@ public class Solution {
 
 >Each rectangle is defined by its bottom left corner and top right corner as shown in the figure.
 
->![](http://img.blog.csdn.net/20161121101542056)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/223Image.png)
 
 >Assume that the total area is never beyond the maximum possible value of int.
 
@@ -4198,7 +4209,7 @@ public class Solution {
 
 >每个矩形都由图中这种左下角和右上角的坐标来定义。
 
->![](http://img.blog.csdn.net/20161121101542056)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/223Image.png)
 
 >假设整体区域不会大于整型的最大值。
 
@@ -4276,6 +4287,886 @@ public class Solution {
 ```
 
 这个计算重复面积的方式很巧妙，简单多了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="20. Valid Parentheses"/>20. Valid Parentheses
+###问题：
+>Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+>The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+
+###大意：
+>给出一个只包含 '(', ')', '{', '}', '[' 和 ']' 的字符串，判断它的输入是否是有效的。
+
+>括号必须是以正确的顺序关闭的， "()" 和 "()[]{}" 都是有效的，但是 "(]" 和 "([)]" 是无效的。
+
+###思路：
+题目的要求说来也简单，就是判断括号是不是有效的，自己先用测试用例试了一下，括号中包含括号也是有效的。
+
+其实无效的情况也就几种，左括号匹配到了不一样的右括号、左括号多了、右括号多了，我用一个数组记录不同位置出现的括号的种类，出现新的右括号的时候判断是否匹配到了正确的括号，还要看是不是是多了的右括号，最后看有没有多出来的左括号。方法很笨，代码也写的很冗余，不过速度还可以。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public boolean isValid(String s) {
+        int[] markArr = new int[s.length()];// 1表示()，2表示[]，3表示{}
+        
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == '(') {
+                markArr[i] = 1;
+            } else if (arr[i] == ')') {
+                boolean hasMatched = false;
+                for (int j = i-1; j >= 0; j--) {
+                    if (markArr[j] > 0 && markArr[j] != 1) return false;
+                    else if (markArr[j] == 1) {
+                        markArr[j] = 0;
+                        hasMatched = true;
+                        break;
+                    }
+                }
+                if (!hasMatched) return false;
+            } else if (arr[i] == '[') {
+                markArr[i] = 2;
+            } else if (arr[i] == ']') {
+                boolean hasMatched = false;
+                for (int j = i-1; j >= 0; j--) {
+                    if (markArr[j] > 0 && markArr[j] != 2) return false;
+                    else if (markArr[j] == 2) {
+                        markArr[j] = 0;
+                        hasMatched = true;
+                        break;
+                    }
+                }
+                if (!hasMatched) return false;
+            } else if (arr[i] == '{') {
+                markArr[i] = 3;
+            } else if (arr[i] == '}') {
+                boolean hasMatched = false;
+                for (int j = i-1; j >= 0; j--) {
+                    if (markArr[j] > 0 && markArr[j] != 3) return false;
+                    else if (markArr[j] == 3) {
+                        markArr[j] = 0;
+                        hasMatched = true;
+                        break;
+                    }
+                }
+                if (!hasMatched) return false;
+            }
+        }
+        
+        for (int i = 0; i < markArr.length; i++) {
+            if (markArr[i] > 0) return false;
+        }
+        return true;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<Character>();
+        // Iterate through string until empty
+        for(int i = 0; i<s.length(); i++) {
+            // Push any open parentheses onto stack
+            if(s.charAt(i) == '(' || s.charAt(i) == '[' || s.charAt(i) == '{')
+                stack.push(s.charAt(i));
+            // Check stack for corresponding closing parentheses, false if not valid
+            else if(s.charAt(i) == ')' && !stack.empty() && stack.peek() == '(')
+                stack.pop();
+            else if(s.charAt(i) == ']' && !stack.empty() && stack.peek() == '[')
+                stack.pop();
+            else if(s.charAt(i) == '}' && !stack.empty() && stack.peek() == '{')
+                stack.pop();
+            else
+                return false;
+        }
+        // return true if no open parentheses left in stack
+        return stack.empty();
+    }
+}
+```
+
+这个做法用到了Stack栈这个类型，确实这道题很适合用栈来做，先进后出，遇到左括号的时候放进去，遇到右括号的时候从栈顶拿括号进行匹配，匹配失败就错了，全部匹配正确而且最后栈里没东西了就对了。代码简洁多了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="219. Contains Duplicate II"/>219. Contains Duplicate II
+###问题：
+>Given an array of integers and an integer k, find out whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the difference between i and j is at most k.
+
+###大意：
+>给出一个整型数组和一个整型数k，判断数组中是否任何两个不一样的位置i和j，如果 nums[i] = nums[j] ，i和j的距离不大于k。
+
+###思路：
+这道题看起来简单，不过有很多陷阱，比如如果k = 0，那么无论数组如何都是错的。如果数组中不存在一样的两个数，也是错的。如果数组中存在多个一样的同一个数，只要有最短的两个的距离小于等于k就可以了等等，我把代码缝缝补补后，还是在一个很长数组的测试用例下超时了。。。不过我用的是最直接的方法，看了看如果合理地使用一些数据结构，就会很方便，比如使用set，set集合的特性是里面不会出现两个不一样的数字，那么我们建立一个长度为k的set，用它来扫描整个数组，不断地判断新出现的数据能不能放进去，如果不能放进去，说明存在距离小于等于k的数据是有相等的，否则就可以放进去，当然set中的数据量如果超过k了就要同时把早先放进去的数据拿出来了，如果扫描过后都可以放进去和取出来，说明没找到小于等于k的相等的数，那就错了。
+
+这道题有个地方不一样在于，一般的题目都是碰到什么就返回false，都没有false才返回true。而这道题却是遇到什么则返回true，都没有true，才返回false。
+
+###他山之石：
+
+```java
+public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> set = new HashSet<Integer>();
+        for(int i = 0; i < nums.length; i++){
+            if(i > k) set.remove(nums[i-k-1]);
+            if(!set.add(nums[i])) return true;
+        }
+        return false;
+ }
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="88. Merge Sorted Array"/>88. Merge Sorted Array
+###问题：
+>Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+
+>Note:
+
+>You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2. The number of elements initialized in nums1 and nums2 are m and n respectively.
+
+###大意：
+>给出两个排序好了的整型数组 nums1 和 nums2，将 nums2 合并到 nums1 中去成为一个排好序的数组。
+
+>注意：
+
+>你可以假设 nums1 有足够的空间（尺寸大于等于 m + n）来添加从 nums2 来的额外的元素。nums1 和 nums2 中的元素个数分别为 m 和 n。
+
+###思路：
+这道题一开始并不想用最直接最笨的方法做，而是试图利用题目的条件来做。题目两个原本的数组都是排好序了的，题目没有返回值，因此只能在nums1中直接操作，不能放新的数组，题目额外给出了元素个数m和n，这都是暗示。不过最终也没做好，后来发现其实还是思路方向反了= =
+
+这里先说最直接的办法，空间换时间，直接创建一个新数组，然后一个个从两个数组中按照顺序拿元素去比较大小放回nums1中，就得到一个排好序的数组了。
+
+###代码（Java）：
+
+```java
+public class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        if (nums2.length == 0) return;
+        
+        int[] nums = Arrays.copyOfRange(nums1, 0, m);
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        while (i < nums.length && j < nums2.length) {
+            if (nums[i] <= nums2[j]) {
+                nums1[k] = nums[i];
+                i++;
+            } else {
+                nums1[k] = nums2[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < nums.length) {
+            nums1[k] = nums[i];
+            i++;
+            k++;
+        }
+        while (j < nums2.length) {
+            nums1[k] = nums2[j];
+            j++;
+            k++;
+        }
+        
+        return;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i=m-1, j=n-1, k=m+n-1;
+        while (i>-1 && j>-1) nums1[k--]= (nums1[i]>nums2[j]) ? nums1[i--] : nums2[j--];
+        while (j>-1)         nums1[k--]=nums2[j--];
+        
+        return;
+    }
+}
+```
+
+这个做法让我明白我的思路还是反了，之前一直想的还是顺序去找元素，还在想怎么处理原来位置的元素，这个方法直接从后面开始排，先放最后面的数，从大到小慢慢往前走，放的数一定不会覆盖原来nums1中的数，因为有足够的位置。如果nums2中的数先放完，那么剩下的nums1前面的数位置不用动，如果nums1的先放完，剩下还有一些nums2的数就直接放在前面去了。
+
+此外，这里为了精简代码，使用了i--这种先取值然后减一的特性。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="234. Palindrome Linked List"/>234. Palindrome Linked List
+###问题：
+>Given a singly linked list, determine if it is a palindrome.
+
+>Follow up:
+
+>Could you do it in O(n) time and O(1) space?
+
+###大意：
+>给出一个单链表，判断它是否是回文。
+
+>进阶：
+
+>你能在O（n）的时间复杂度和O（1）的空间复杂度下来做吗？
+
+###思路：
+回文的意思就是正着读反着读都是一样的。
+
+这道题我使用简单的思路，一个个遍历链表节点来倒序组成一个新链表，然后和旧链表一起遍历看节点是不是一样的，如果一样说明是回文，否则不是。这个方法很简单，时间复杂度是O（n），但是空间复杂度也是O（n），并不符合进阶的要求。
+
+###代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
+        
+        ListNode newHead = head;
+        ListNode lastNode = new ListNode(head.val);
+        while (newHead.next != null) {
+            newHead = newHead.next;
+            ListNode newNode = new ListNode(newHead.val);
+            newNode.next = lastNode;
+            lastNode = newNode;
+        }
+        
+        if (head.val != lastNode.val) return false;
+        while (head.next != null) {
+            head = head.next;
+            lastNode = lastNode.next;
+            if (head.val != lastNode.val) return false;
+        }
+        
+        return true;
+    }
+}
+```
+
+###他山之石：
+
+```java
+public class Solution {
+    public boolean isPalindrome(ListNode head) {
+        ListNode fast = head, slow = head;
+        Stack<ListNode> stack = new Stack<>();
+        while(fast != null && fast.next != null){
+            stack.push(slow);
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+// for odd list
+        if(fast != null){
+            slow = slow.next;
+        }
+        while(slow != null){
+            if(stack.pop().val != slow.val) return false;
+            slow = slow.next;
+        }
+        return true;
+    }
+}
+```
+
+这个做法跟我的不一样，使用了快慢两个标记，快的那个只有一个用处，就是以两倍速度遍历，引导慢的标记到达链表最中心，当然这里要根据链表个数是奇数还是偶数来分开判断，也是看fast是正好跑到最后面还是跑过了来判断。找到中心后，利用栈存放的数据先进后出的特性，从中间往两头一起遍历，看遍历的值是不是都一样，一样则是回文，否则不是。这个做法同样的时间复杂度是O（n），二空间复杂度是O（n），因为用到了一个栈。不过速度应该比我的要快一半
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="225. Implement Stack using Queues"/>225. Implement Stack using Queues
+## 问题：
+>Implement the following operations of a stack using queues.
+
+>* push(x) -- Push element x onto stack.
+* pop() -- Removes the element on top of the stack.
+* top() -- Get the top element.
+* empty() -- Return whether the stack is empty.
+
+>Notes:
+
+>* You must use only standard operations of a queue -- which means only push to back, peek/pop from front, size, and is empty operations are valid.
+* Depending on your language, queue may not be supported natively. You may simulate a queue by using a list or deque (double-ended queue), as long as you use only standard operations of a queue.
+* You may assume that all operations are valid (for example, no pop or top operations will be called on an empty stack).
+
+## 大意：
+>使用队列实现下面的栈操作：
+
+>* push（x）--将元素xpush到栈中去。
+>* pop（）--移除栈顶的元素。
+>* top（）--获取栈顶的元素。
+>* empty（）--返回栈是否为空。
+
+>注意：
+
+>* 你只能使用队列的标准操作——也就是只有push到队尾、从队首peek/pop、size和是否为empty操作是有效的。
+>* 根据你的语言，队列可能不是原生支持的。你可以使用list或者deque（双尾队列）模仿一个队列，只要你只使用队列的标准操作。
+>* 你可以假设所有的操作都是有效的（比如，不会pop或者top一个空栈）。
+
+## 思路：
+这道题和[232. Implement Queue using Stacks](http://blog.csdn.net/Cloudox_/article/details/52956764)很像，跟他是相反的要求。
+
+其实用队列实现栈无非就是一个出的顺序不一样，栈是后进先出，队列是先进先出，因此要么改变队列出的做法，全部出完直到最后一个才是作为栈需要出的；要么改入队的做法，每次入的时候都全部取出来一遍，将新元素入在队首去，这样出的时候就是第一个出的了。
+
+因为题目的代码要求有两个取元素操作，一个添加元素操作，所以我采用了第二种做法，改变入队方式，具体实现还是很简单的。
+
+## 代码（Java）：
+
+```java
+class MyStack {
+    Queue<Integer> q;
+    
+    public MyStack(){
+        q = new LinkedList<Integer>();
+        //temp = new LinkedList<Integer>();
+    }
+    
+    // Push element x onto stack.
+    public void push(int x) {
+        Queue<Integer> temp = new LinkedList<Integer>();
+        while (q.peek() != null) {
+            temp.add(q.poll());
+        }
+        q.add(x);
+        while (temp.peek() != null) {
+            q.add(temp.poll());
+        }
+    }
+
+    // Removes the element on top of the stack.
+    public void pop() {
+        q.remove();
+    }
+
+    // Get the top element.
+    public int top() {
+        return q.peek();
+    }
+
+    // Return whether the stack is empty.
+    public boolean empty() {
+        return q.peek() == null;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="58. Length of Last Word"/>58. Length of Last Word
+## 问题：
+>Given a string s consists of upper/lower-case alphabets and empty space characters ' ', return the length of last word in the string.
+
+>If the last word does not exist, return 0.
+
+>Note: A word is defined as a character sequence consists of non-space characters only.
+
+>For example, 
+Given s = "Hello World",
+return 5.
+
+##大意：
+>给出一个由大小写字母和空格组成的字符串s，返回其最后一个单词的长度。
+
+>如果最后一个单词不存在，返回0。
+
+>注意：单词是指仅有非空格字符组成的序列。
+
+>例子：
+>给出 s = "Hello World",
+>返回 5。
+
+##思路：
+题目并不难，只是要注意，我在用测试用例尝试的时候发现，如果给出的字符串最后是空格，也会取空格前最后一个单词的长度，也就是说即使最后是多个空格，只要前面还有单词，就将其视为最后一个单词。
+
+我的做法是遍历数组，遇到字符串第一个就是字母或者说字母前一个字符是空格时，就将其视为一个单词的开始，令结果回到1，重新计算长度，其余遇到字母就将结果加一，遇到空格就不管了。
+
+##代码（Java）：
+
+```java
+public class Solution {
+    public int lengthOfLastWord(String s) {
+        int length = 0;
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            if (i == 0) {
+                if (arr[i] != ' ') length ++;
+            } 
+            else if (arr[i-1] == ' ' && arr[i] != ' ') length = 1;
+            else if (arr[i] != ' ') length ++;
+        }
+        return length;
+    }
+}
+```
+
+##他山之石：
+
+```java
+public class Solution {
+	public int lengthOfLastWord(String s) {
+		int len = s.length();
+		int i = len -1;
+		int empty = 0;
+		if(s == null || len == 0)
+			return 0;
+		while(i>=0 && s.charAt(i)==' '){
+			i--;
+			empty++;
+		}
+		while(i>=0 && s.charAt(i)!=' ')
+			i--;
+		return len- empty - (i+1);
+	}
+}
+```
+
+这个做法是从后往前遍历字符串，末尾如果有空格，先把空格去除干净，然后取字母的长度，再次遇到空格打止，因为是从后往前遍历，不需要全部遍历完整个字符串，所以会快一点。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="203. Remove Linked List Elements"/>203. Remove Linked List Elements
+### 问题：
+>Remove all elements from a linked list of integers that have value val.
+
+>Example
+Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+Return: 1 --> 2 --> 3 --> 4 --> 5
+
+### 大意：
+>移除链表中素有值为val的元素。
+
+>例子：
+给出: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+返回: 1 --> 2 --> 3 --> 4 --> 5
+
+### 思路：
+这道题没什么特殊的，遍历链表遇到值跟val相同的就删除节点就好，链表删除节点的做法也比较固定了，只是要细心一点不要漏了什么特殊情况，比如删除节点时是最后一个节点的处理、链表头部连续出现要删除的节点时的处理等等，另外因为最终要返回的是头结点，所以这个节点要有一个变量去保留着最后返回。
+
+我的做法是先把头部的连续的目标节点都删掉，然后遍历链表，中间遇到了就删，当然遇到时要判断是不是最后一个节点了，是的话就next直接指向null了。在删头结点时，因为可能循环着遇到后面没节点了的情况，比如 1 --> 1 这种全部要删除的，所以在循环条件中利用 && 运算符的特性，先判断节点存在，然后再判断值，如果节点不存在，第一个判断条件就无效，那么就不会处理第二个判断条件，否则直接判断值有可能在无节点时报错。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return head;
+        
+        ListNode result = head;
+        while (result != null && result.val == val) result = result.next;
+        
+        while (head.next != null) {
+            if (head.next.val == val) {
+                if (head.next.next != null) head.next = head.next.next;
+                else head.next = null;
+            } else {
+                head = head.next;
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="400. Nth Digit"/>400. Nth Digit
+### 问题：
+>Find the nth digit of the infinite integer sequence 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...
+
+>Note:
+n is positive and will fit within the range of a 32-bit signed integer (n < 231).
+
+>Example 1:
+
+>>Input:
+3
+
+>>Output:
+3
+
+>Example 2:
+
+>>Input:
+11
+
+>>Output:
+0
+
+>>Explanation:
+The 11th digit of the sequence 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... is a 0, which is part of the number 10.
+
+### 大意：
+>在无限整数序列 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... 中找到第n个数字。
+
+>注意：
+>n是个正数而且会在32位范围内（n<2的31次方）
+
+>例1：
+
+>>输入：3
+>输出：3
+
+>例2：
+
+>>输入：11
+>输出：0
+>解释：序列 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... 的第11个数是数字10中的0。
+
+### 思路：
+开始没看到意思，后来明白了，当序列中的数字是两位数、三位数等等后，第n个数就不再是序列中的第n个数了，比如10中的1是第10个数字，0是第11个数字。
+
+这么一来，要找到第n个数，首先要知道这个数所在的序列中的数字是什么，我们只能先判断当前的是几位数，因为每多一位数，其范围内的数字个数会变成上一轮的10倍，比如个位数有9个，两位数有90个，三位数有900个。。。两位数对应的数字有90*2个，三位数有900*3个，所以可以通过这个规律先判断要找的序列数字是几位数。
+
+找出是几位数后，在通过对位数的除法得出数字是多少，比如如果n是12，那么先通过其大于9，小于90*2+9，得知是两位数，然后通过（12-9）/2 = 1得出其至少是9+1，也就是10或者10以后的数字，具体是10还是11，要看有没有余数，这里（12-9）%2=1，所以余数为1，也就是超过了10，是10的后一个数字的第一个数。其实这里很简单我们直接就可以知道是11中的第一个1。
+
+如果余数是0，说明就是当前找到的数字的最后一位，直接将该数字对10取余即可得到需要的个位数字。如果余数大于0，说明是下一个序列数字中的数，然后根据余数来判断是下个序列数字中的第几个数。要得到一个多位数中的某位数，有多种做法，一种是化为字符数组直接取，另一种我用的是先取余再做除法，比如要得到1245这个数字中的第三个数字4，先让其对100取余数得到45，然后对10做触发得到4。至于怎么知道是100和10，就可以通过是第几位来进行10的次方运算了，这个直接看到代码就可以明白，只是有点长，要想清楚。
+
+还有一点要注意的是，提交时我在一个很大的数上出了错，因为题目给的n的范围是小于2的31次方，这个数字在上述处理过程中可能会有大到超过int型变量范围的数字，因此不得不全部使用了long型变量表示数字。另外Math.pow()这个次方计算操作的两个参数必须是double型的，因此也不得不进行了强制转换又转换。
+
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int findNthDigit(int n) {
+        if (n <= 9) return n;
+        
+        long lastNum = 9;
+        long reduce = 9;
+        long num = 90;
+        long i = 2;
+        while (n > reduce + num * i) {
+            lastNum = lastNum + num;
+            reduce = reduce + num * i;
+            num = num * 10;
+            i++;
+        }
+        long over = (long)n - reduce;
+        System.out.println(lastNum + over / i);
+        long index = over / i;
+        long reste = over % i;
+        if (reste == 0) return (int)((lastNum + index) % 10);
+        else return (int)(((lastNum + index + 1) % (long)Math.pow(10.0, (double)(i - reste + 1))) / (long)Math.pow(10.0, (double)(i - reste)));
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="14. Longest Common Prefix"/>14. Longest Common Prefix
+### 问题
+>Write a function to find the longest common prefix string amongst an array of strings.
+
+### 大意：
+>写一个函数来寻找一个数组的字符串中最长的相同前缀。
+
+### 思路：
+题目描述很简单只有一句话，导致我理解错了，以为是找到存在的任意两个字符串最长的相同前缀，还写了一份代码出来，自己测试的时候发现题目想要的结果不符合才发现，其实是找整个数组的字符串都有的相同的最长前缀，这就方便多了。
+
+我采用从第一个字符串的前头开始一个一个地增加前缀长度来判断后面所有的字符串是否有同样的前缀，然后返回结果。
+
+在这个过程中有很多特殊情况要注意，比如如果数组长度为0，直接返回空字符串；如果只有一个字符串，直接返回该字符串；如果存在某个字符串（包括第一个）就是“”这样的空字符串，直接返回“”；每次增加前缀长度的时候要判断第一个字符串是否够长，不够了就直接返回当前结果；只有当所有后面的字符串都存在前缀时才可以认为是相同的，只要有一个不相同就可以直接返回之前已经记录的前缀了等等。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0) return "";
+        else if (strs.length == 1) return strs[0];
+        
+        int end = 1;
+        String result = "";
+        String firstStr = strs[0];
+        if (firstStr.length() == 0) return "";
+        else {
+            String sub;
+            while (end <= firstStr.length()) {
+                sub = firstStr.substring(0, end);
+                for (int i = 1; i < strs.length; i++) {
+                    String nowStr = strs[i];
+                    if (nowStr.length() == 0) return "";
+                    else {
+                        if (nowStr.startsWith(sub, 0)) {
+                            if (i == strs.length-1) {
+                                result = sub;
+                                end ++;
+                            }
+                        } else return result;
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0) return "";
+        String pre = strs[0];
+        for (int i = 1; i < strs.length; i++)
+            while(strs[i].indexOf(pre) != 0) {
+                pre = pre.substring(0,pre.length()-1);
+                if (pre.length() == 0) return "";
+            }
+        return pre;
+    }
+}
+```
+
+这个做法是先用整个第一个字符串来当做前缀去判断每个字符串是否拥有该前缀，没有就将这个判断的前缀末尾字符去掉再比较，直到当前判断的字符串有这个前缀了，才去判断下一个字符串有没有，执行同样的操作。当任何时候前缀长度减少到0了，也可以直接返回了。这个做法会快一点，而且免去了很多特殊情况的判断，代码很简洁。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="67. Add Binary"/>67. Add Binary
+### 问题：
+>Given two binary strings, return their sum (also a binary string).
+
+> For example,
+a = "11"
+b = "1"
+Return "100".
+
+### 大意：
+>给出两个二进制字符串，返回它们的和（同样是二进制字符串）。
+
+>例子：
+>a = "11"
+b = "1"
+返回 "100".
+
+### 思路：
+这其实就是一个模拟二进制加法的问题。如果某一位两个数都是0，结果的这一位也为0，有一个1就是1，如果都是1，这一位是0，还有进一位，所以上面三种情况还要考虑低位有没有进位。
+
+因为两个二进制数的长度可能不同，所以我们先要在一个循环中去加两个数的和，当任一个数处理完之后，再看剩下哪个，将其加到结果中去。
+
+这种做法速度还是很快的，只是代码比较多，也可以直接将短的那个加到长的那个上面去，但最后还是要根据进位遍历一遍长的剩余部分，节省不了太多东西。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String addBinary(String a, String b) {
+        int flag = 0;
+        char[] result = new char[a.length() > b.length() ? a.length() : b.length()]; 
+        int k = result.length - 1;
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        for (; i >= 0 && j >= 0; i--, j--, k--) {
+            if (a.charAt(i) == '1' && b.charAt(j) == '1') {
+                result[k] = flag == 1 ? '1' : '0';
+                flag = 1;
+            } else if (a.charAt(i) == '1' || b.charAt(j) == '1') {
+                result[k] = flag == 1 ? '0' : '1';
+                flag = flag == 1 ? 1 : 0;
+            } else {
+                result[k] = flag == 1 ? '1' : '0';
+                flag = 0;
+            }
+        }
+        if (i >= 0) {
+            for (; i >=0; i--, k--) {
+                if (a.charAt(i) == '1' && flag == 1) {
+                    result[k] = '0';
+                    flag = 1;
+                } else if (a.charAt(i) == '1' || flag == 1) {
+                    result[k] = '1';
+                    flag = 0;
+                } else {
+                    result[k] = '0';
+                    flag = 0;
+                }
+            }
+        }
+        if (j >= 0) {
+            for (; j >=0; j--, k--) {
+                if (b.charAt(j) == '1' && flag == 1) {
+                    result[k] = '0';
+                    flag = 1;
+                } else if (b.charAt(j) == '1' || flag == 1) {
+                    result[k] = '1';
+                    flag = 0;
+                } else {
+                    result[k] = '0';
+                    flag = 0;
+                }
+            }
+        }
+        return flag == 1 ? "1" + String.valueOf(result) : String.valueOf(result);
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="160. Intersection of Two Linked Lists"/>160. Intersection of Two Linked Lists
+### 问题：
+>Write a program to find the node at which the intersection of two singly linked lists begins.
+
+>For example, the following two linked lists:
+![](http://img.blog.csdn.net/20161204145218088)
+begin to intersect at node c1.
+
+>Notes:
+
+>* If the two linked lists have no intersection at all, return null.
+* The linked lists must retain their original structure after the function returns.
+* You may assume there are no cycles anywhere in the entire linked structure.
+* Your code should preferably run in O(n) time and use only O(1) memory.
+
+### 大意：
+>写一个函数来寻找两个单链表开始交汇的节点。
+
+>比如，下面这两个链表：
+>![](http://img.blog.csdn.net/20161204145218088)
+>从节点 c1 开始交汇
+
+> 注意：
+
+>* 如果两个链表完全不交汇，返回 null。
+* 函数返回后原链表必须保持初始结构。
+* 你可以假设整个链表结构都没有任何循环。
+* 你的代码应该在O(n)的时间和O(1)的内存中完成。
+
+### 思路：
+题目的难点在于在O(n)的时间内完成这个事情，那么普通地遍历去比对就不合适了，因为完全不知道链表会在哪个节点开始交汇，而且这个节点在两个链表中的位置也不一定是一样的，所以这里我利用堆栈。
+
+首先遍历两个链表将其中的节点都放入两个栈中，利用栈后进先出的特性来取节点。因为两个链表如果有交汇，后面的节点一定都是一样的，所以两个栈同时取节点进行比对，当出现不同节点时就表示上一个节点时交汇点。
+
+注意“==”这个等号表示比对两个对象的引用是否相等。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        boolean hasFind = false;
+        ListNode a = headA;
+        ListNode b = headB;
+        
+        Stack<ListNode> stackA = new Stack<ListNode>();
+        Stack<ListNode> stackB = new Stack<ListNode>();
+        
+        while (a != null) {
+            stackA.push(a);
+            a = a.next;
+        }
+        while (b != null) {
+            stackB.push(b);
+            b = b.next;
+        }
+        
+        if (stackA.empty() || stackB.empty()) return null;
+        
+        ListNode result = null;
+        while (!(stackA.empty() || stackB.empty())) {
+            if (stackA.peek() == stackB.peek()) {
+                result = stackA.peek();
+                stackA.pop();
+                stackB.pop();
+            } else {
+                return result;
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        //boundary check
+        if(headA == null || headB == null) return null;
+        
+        ListNode a = headA;
+        ListNode b = headB;
+        
+        //if a & b have different len, then we will stop the loop after second iteration
+        while( a != b){
+        	//for the end of first iteration, we just reset the pointer to the head of another linkedlist
+            a = a == null? headB : a.next;
+            b = b == null? headA : b.next;    
+        }
+        
+        return a;
+    }
+}
+```
+
+这个做法很巧妙的地方在于其循环体的内容，每轮循环都将两个链表的标记往后移动一个，当移动到末尾后就跳到另一个链表头再移动，循环的结束条件是两个标记相同。什么情况下会相同呢？两种情况，一是遇到了相同节点，另一个是完全没有相同节点，由于都会遍历一次两个链表，所以会在同时到达null，如果两个链表长度一直，那么不用跳，直接遍历一次没有交汇就都同时到null了。如果有交汇的，那一定是第一个交汇点。
 
 [回到目录](#Catalogue)
 
