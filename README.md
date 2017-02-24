@@ -70,6 +70,7 @@ LeetCode笔记
  * [400. Nth Digit](#400. Nth Digit)
  * [14. Longest Common Prefix](#14. Longest Common Prefix)
  * [67. Add Binary](#67. Add Binary)
+ * [160. Intersection of Two Linked Lists](#160. Intersection of Two Linked Lists)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5041,6 +5042,131 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="160. Intersection of Two Linked Lists"/>160. Intersection of Two Linked Lists
+### 问题：
+>Write a program to find the node at which the intersection of two singly linked lists begins.
+
+>For example, the following two linked lists:
+![](http://img.blog.csdn.net/20161204145218088)
+begin to intersect at node c1.
+
+>Notes:
+
+>* If the two linked lists have no intersection at all, return null.
+* The linked lists must retain their original structure after the function returns.
+* You may assume there are no cycles anywhere in the entire linked structure.
+* Your code should preferably run in O(n) time and use only O(1) memory.
+
+### 大意：
+>写一个函数来寻找两个单链表开始交汇的节点。
+
+>比如，下面这两个链表：
+>![](http://img.blog.csdn.net/20161204145218088)
+>从节点 c1 开始交汇
+
+> 注意：
+
+>* 如果两个链表完全不交汇，返回 null。
+* 函数返回后原链表必须保持初始结构。
+* 你可以假设整个链表结构都没有任何循环。
+* 你的代码应该在O(n)的时间和O(1)的内存中完成。
+
+### 思路：
+题目的难点在于在O(n)的时间内完成这个事情，那么普通地遍历去比对就不合适了，因为完全不知道链表会在哪个节点开始交汇，而且这个节点在两个链表中的位置也不一定是一样的，所以这里我利用堆栈。
+
+首先遍历两个链表将其中的节点都放入两个栈中，利用栈后进先出的特性来取节点。因为两个链表如果有交汇，后面的节点一定都是一样的，所以两个栈同时取节点进行比对，当出现不同节点时就表示上一个节点时交汇点。
+
+注意“==”这个等号表示比对两个对象的引用是否相等。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        boolean hasFind = false;
+        ListNode a = headA;
+        ListNode b = headB;
+        
+        Stack<ListNode> stackA = new Stack<ListNode>();
+        Stack<ListNode> stackB = new Stack<ListNode>();
+        
+        while (a != null) {
+            stackA.push(a);
+            a = a.next;
+        }
+        while (b != null) {
+            stackB.push(b);
+            b = b.next;
+        }
+        
+        if (stackA.empty() || stackB.empty()) return null;
+        
+        ListNode result = null;
+        while (!(stackA.empty() || stackB.empty())) {
+            if (stackA.peek() == stackB.peek()) {
+                result = stackA.peek();
+                stackA.pop();
+                stackB.pop();
+            } else {
+                return result;
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        //boundary check
+        if(headA == null || headB == null) return null;
+        
+        ListNode a = headA;
+        ListNode b = headB;
+        
+        //if a & b have different len, then we will stop the loop after second iteration
+        while( a != b){
+        	//for the end of first iteration, we just reset the pointer to the head of another linkedlist
+            a = a == null? headB : a.next;
+            b = b == null? headA : b.next;    
+        }
+        
+        return a;
+    }
+}
+```
+
+这个做法很巧妙的地方在于其循环体的内容，每轮循环都将两个链表的标记往后移动一个，当移动到末尾后就跳到另一个链表头再移动，循环的结束条件是两个标记相同。什么情况下会相同呢？两种情况，一是遇到了相同节点，另一个是完全没有相同节点，由于都会遍历一次两个链表，所以会在同时到达null，如果两个链表长度一直，那么不用跳，直接遍历一次没有交汇就都同时到null了。如果有交汇的，那一定是第一个交汇点。
 
 [回到目录](#Catalogue)
 
