@@ -71,6 +71,7 @@ LeetCode笔记
  * [14. Longest Common Prefix](#14. Longest Common Prefix)
  * [67. Add Binary](#67. Add Binary)
  * [160. Intersection of Two Linked Lists](#160. Intersection of Two Linked Lists)
+ * [396. Rotate Function](#396. Rotate Function)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5171,6 +5172,133 @@ public class Solution {
 ```
 
 这个做法很巧妙的地方在于其循环体的内容，每轮循环都将两个链表的标记往后移动一个，当移动到末尾后就跳到另一个链表头再移动，循环的结束条件是两个标记相同。什么情况下会相同呢？两种情况，一是遇到了相同节点，另一个是完全没有相同节点，由于都会遍历一次两个链表，所以会在同时到达null，如果两个链表长度一直，那么不用跳，直接遍历一次没有交汇就都同时到null了。如果有交汇的，那一定是第一个交汇点。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="396. Rotate Function"/>396. Rotate Function
+### 问题：
+>Given an array of integers A and let n to be its length.
+
+>Assume Bk to be an array obtained by rotating the array A k positions clock-wise, we define a "rotation function" F on A as follow:
+
+>F(k) = 0 * Bk[0] + 1 * Bk[1] + ... + (n-1) * Bk[n-1].
+
+>Calculate the maximum value of F(0), F(1), ..., F(n-1).
+
+>Note:
+n is guaranteed to be less than 105.
+
+>Example:
+
+>>A = [4, 3, 2, 6]
+
+>>F(0) = (0 * 4) + (1 * 3) + (2 * 2) + (3 * 6) = 0 + 3 + 4 + 18 = 25
+F(1) = (0 * 6) + (1 * 4) + (2 * 3) + (3 * 2) = 0 + 4 + 6 + 6 = 16
+F(2) = (0 * 2) + (1 * 6) + (2 * 4) + (3 * 3) = 0 + 6 + 8 + 9 = 23
+F(3) = (0 * 3) + (1 * 2) + (2 * 6) + (3 * 4) = 0 + 2 + 12 + 12 = 26
+
+>>So the maximum value of F(0), F(1), F(2), F(3) is F(3) = 26.
+
+### 大意：
+>给出一个整型数组A，设n为其长度。
+
+>假设Bk是将A进行k此顺时针旋转后的数组，我们定义一个A的“旋转函数”F，如下：
+
+>F(k) = 0 * Bk[0] + 1 * Bk[1] + ... + (n-1) * Bk[n-1].
+
+>注意：
+>n保证不会超过10的5次方
+
+>例子：
+
+>>A = [4, 3, 2, 6]
+
+>>F(0) = (0 * 4) + (1 * 3) + (2 * 2) + (3 * 6) = 0 + 3 + 4 + 18 = 25
+F(1) = (0 * 6) + (1 * 4) + (2 * 3) + (3 * 2) = 0 + 4 + 6 + 6 = 16
+F(2) = (0 * 2) + (1 * 6) + (2 * 4) + (3 * 3) = 0 + 6 + 8 + 9 = 23
+F(3) = (0 * 3) + (1 * 2) + (2 * 6) + (3 * 4) = 0 + 2 + 12 + 12 = 26
+
+>>所以 F(0), F(1), F(2), F(3) 中最大的值为 F(3) = 26.
+
+### 思路：
+这个题目的意思就是对A进行旋转求多项式，每次旋转系数移动一次，旋转一次求出一个结果，看哪个最大就返回哪个。
+
+我的做法是直接进行每一个的计算然后找最大的，代码挺简单，时间复杂度是O（n平方），很长。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int maxRotateFunction(int[] A) {
+        if (A.length == 0) return 0;
+        int result = -2147483648;
+        for (int i = 0; i < A.length; i++) {
+            int sum = sum(A, A.length - i);
+            if (sum > result) result = sum;
+        }
+        return result;
+    }
+    
+    public int sum(int[] A, int index) {
+        int sum = 0;
+        for (int i = 0; i < A.length; i++) {
+            if (index >= A.length) index = 0;
+            sum += i * A[index];
+            index ++;
+        }
+        return sum;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public int maxRotateFunction(int[] A) {
+		int allSum = 0;
+		int len = A.length;
+		int F = 0;
+		for (int i = 0; i < len; i++) {
+		    F += i * A[i];
+		    allSum += A[i];
+		}
+		int max = F;
+		for (int i = len - 1; i >= 1; i--) {
+		    F = F + allSum - len * A[i];
+		    max = Math.max(F, max);
+		}
+		return max; 
+    }
+}
+```
+
+这个做法的好处在于只需要O（n）的时间，快很多。他对题目的要求进行了一些数学计算，然后得出了一个方便计算的式子，过程如下：
+
+F(k) = 0 * Bk[0] + 1 * Bk[1] + ... + (n-1) * Bk[n-1]
+F(k-1) = 0 * Bk-1[0] + 1 * Bk-1[1] + ... + (n-1) * Bk-1[n-1]
+　　　= 0 * Bk[1] + 1 * Bk[2] + ... + (n-2) * Bk[n-1] + (n-1) * Bk[0]
+
+那么，
+
+F(k) - F(k-1) = Bk[1] + Bk[2] + ... + Bk[n-1] + (1-n)Bk[0]
+　　　　　　= (Bk[0] + ... + Bk[n-1]) - nBk[0]
+　　　　　　= sum - nBk[0]
+
+因此，
+
+F(k) = F(k-1) + sum - nBk[0]
+
+那Bk[0]是什么呢？
+
+k = 0; B[0] = A[0];
+k = 1; B[0] = A[len-1];
+k = 2; B[0] = A[len-2];
+...
+
+这样，也就有了上面的代码了。
 
 [回到目录](#Catalogue)
 
