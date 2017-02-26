@@ -72,6 +72,7 @@ LeetCode笔记
  * [67. Add Binary](#67. Add Binary)
  * [160. Intersection of Two Linked Lists](#160. Intersection of Two Linked Lists)
  * [396. Rotate Function](#396. Rotate Function)
+ * [190. Reverse Bits](#190. Reverse Bits)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5299,6 +5300,52 @@ k = 2; B[0] = A[len-2];
 ...
 
 这样，也就有了上面的代码了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="190. Reverse Bits"/>190. Reverse Bits
+### 问题：
+>Reverse bits of a given 32 bits unsigned integer.
+
+>For example, given input 43261596 (represented in binary as 00000010100101000001111010011100), return 964176192 (represented in binary as 00111001011110000010100101000000).
+
+>Follow up:
+If this function is called many times, how would you optimize it?
+
+### 大意：
+>翻转32位无符号整型数。
+
+>比如给出输入为 43261596 （二进制表示为 00000010100101000001111010011100），返回 964176192 （二进制表示为 00111001011110000010100101000000）。
+
+>进阶：
+>如果这个函数被频繁调用，你怎么优化它？
+
+### 思路：
+一开始用笨办法先一位位转化成代表二进制数的数组然后重新计算出结果，但是题目给出的是32位无符号数，也就是说大于int型的范围了，很麻烦。
+
+后来看了看发现根本不需要这么麻烦，直接进行位移运算，因为是要翻转过来，所以一边向右位移输入的数字，一边根据右移后原数字跟1的与操作结果来将结果数字左移，最后直接返回就完了，完全不需要转成二进制又转回来，都是一样的。
+
+不过这里要注意右移时要使用无符号右移。
+
+### 他山之石：
+
+```java
+public class Solution {
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        int result = 0;
+        for (int i = 0; i < 32; i++) {
+            result += n & 1;
+            n >>>= 1;   // 必须进行无符号位移
+            if (i < 31) // 最后一次不需要进行位移
+                result <<= 1;
+        }
+        return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
