@@ -73,6 +73,7 @@ LeetCode笔记
  * [160. Intersection of Two Linked Lists](#160. Intersection of Two Linked Lists)
  * [396. Rotate Function](#396. Rotate Function)
  * [190. Reverse Bits](#190. Reverse Bits)
+ * [1. Two Sum](#1. Two Sum)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5341,6 +5342,62 @@ public class Solution {
             n >>>= 1;   // 必须进行无符号位移
             if (i < 31) // 最后一次不需要进行位移
                 result <<= 1;
+        }
+        return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="1. Two Sum"/>1. Two Sum
+### 问题：
+>Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+
+>You may assume that each input would have exactly one solution.
+
+>Example:
+
+>>Given nums = [2, 7, 11, 15], target = 9,
+
+>>Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+
+### 大意：
+>给出一个整型数组，返回其中两个可以相加得出目的数字的数字的位置。
+
+>你可以假设所有输入都有一个解决方案。
+
+>例子：
+
+>>给出 nums = [2, 7, 11, 15], target = 9,
+
+>>因为 nums[0] + nums[1] = 2 + 7 = 9,
+>返回 [0, 1]。
+
+### 思路：
+一开始我的做法是用一个长度为目的数字的数组来记录给出的数组中所有小于目的数的数字所在的位置，然后遍历这个数组来看有没有能相加等于目的数的，最后取出其位置。但是当发现给出的数组中可能有负数时，这个做法就崩了。
+
+重新分析一下要求，其实我们有两个需求，一是记录出现过的数字，由于可能有负数，因此已经无法缩小要记录的数字的范围了，二是要记录数字所在的位置，不能做个排序然后位置就不知道了。基于这两个要求，其实HashMap很符合我们的需要。
+
+我们用一个HashMap来记录遍历过程中每次出现的数字及其位置，数值是key，位置是值，同时判断之前有没有记录过正好与当前数字相加等于目的数的数字，有就取出这两个数字的位置，如果遍历完了还没有那就是没有了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int[] result = new int[2];
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(target - nums[i])) {
+                result[0] = map.get(target - nums[i]);
+                result[1] = i;
+                return result;
+            }
+            map.put(nums[i], i);
         }
         return result;
     }
