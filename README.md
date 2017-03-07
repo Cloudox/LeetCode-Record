@@ -74,6 +74,7 @@ LeetCode笔记
  * [396. Rotate Function](#396. Rotate Function)
  * [190. Reverse Bits](#190. Reverse Bits)
  * [1. Two Sum](#1. Two Sum)
+ * [28. Implement strStr()](#28. Implement strStr())
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5403,6 +5404,73 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="28. Implement strStr()"/>28. Implement strStr()
+### 问题：
+> Implement strStr().
+
+>Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+### 大意：
+> 实现 strStr()。
+
+>返回 haystack 中第一次出现 needle 的位置，如果 needle 不是 haystack 的一部分则返回 -1。
+
+### 思路：
+最简单的做法就是遍历 haystack ，发现和 needle 第一个字符相同的元素，就开始逐个比较，如果全部比完发现一样，那么返回之前那个开始位置就可以了，如果中途有不一样的，那么就要从之前的位置的下一个位置开始继续遍历寻找。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int strStr(String haystack, String needle) {
+        if (needle.equals("")) return 0;
+        
+        char[] haystackArr = haystack.toCharArray();
+        char[] needleArr = needle.toCharArray();
+        int i = 0;
+        int j = 0;
+        for (; i < haystackArr.length;i++) {
+            if (haystackArr[i] == needleArr[j]) {
+                for (int k = i; k < haystackArr.length && j < needleArr.length; k++, j++) {
+                    if (haystackArr[k] != needleArr[j]) break;
+                }
+                if (j == needleArr.length) return i;
+                else j = 0;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public int strStr(String haystack, String needle) {
+        int l1 = haystack.length(), l2 = needle.length();
+        if (l1 < l2) {
+            return -1;
+        } else if (l2 == 0) {
+            return 0;
+        }
+        int threshold = l1 - l2;
+        for (int i = 0; i <= threshold; ++i) {
+            if (haystack.substring(i,i+l2).equals(needle)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+之前的做法耗时很长，因为遇到一样的之后都要进行逐个比较。这个做法就比较简单了，先把集中特殊情况处理了，然后直接比较子字符串是否相等，除去了单个字符比较的麻烦，时间省了很多。
 
 [回到目录](#Catalogue)
 
