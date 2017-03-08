@@ -75,6 +75,7 @@ LeetCode笔记
  * [190. Reverse Bits](#190. Reverse Bits)
  * [1. Two Sum](#1. Two Sum)
  * [28. Implement strStr()](#28. Implement strStr())
+ * [414. Third Maximum Number](#414. Third Maximum Number)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5471,6 +5472,95 @@ public class Solution {
 ```
 
 之前的做法耗时很长，因为遇到一样的之后都要进行逐个比较。这个做法就比较简单了，先把集中特殊情况处理了，然后直接比较子字符串是否相等，除去了单个字符比较的麻烦，时间省了很多。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="414. Third Maximum Number"/>414. Third Maximum Number
+### 问题：
+> Given a non-empty array of integers, return the third maximum number in this array. If it does not exist, return the maximum number. The time complexity must be in O(n).
+
+>Example 1:
+>>Input: [3, 2, 1]
+
+>>Output: 1
+
+>>Explanation: The third maximum is 1.
+
+>Example 2:
+>>Input: [1, 2]
+
+>>Output: 2
+
+>>Explanation: The third maximum does not exist, so the maximum (2) is returned instead.
+
+>Example 3:
+>>Input: [2, 2, 3, 1]
+
+>>Output: 1
+
+>>Explanation: Note that the third maximum here means the third maximum distinct number.
+Both numbers with value 2 are both considered as second maximum.
+
+### 大意：
+>给出一个非空整型数组，返回数组中第三大的数。如果不存在，就返回最大的数。时间复杂度必须为O（n）。
+
+>例1：
+>>输入：[3, 2, 1]
+
+>>输出：1
+
+>>解释：第三大的数为1。
+
+>例2：
+>>输入：[1, 2]
+
+>>输出：2
+
+>>解释：不存在第三大的数，所以要用最大的数 2 来代替。
+
+>例3：
+>>输入：[2, 2, 3, 1]
+
+>>输出：1
+
+>>解释：注意这里第三大的数是指区分的数字。两个 2 都被视为第二大的数。
+
+### 思路：
+题目要求时间复杂度为O（n），所以排除使用先排序的方法来做，排序后基本时间复杂度就超了。
+
+所以只能遍历一遍来记录第三大的数，我们用三个整型变量来记录，由于题目没说有没有负数，所以我们没法定义一个绝对小于数组中所有数字的初始值，只能以数组中第一个数字来作为初始值，然后遍历一个一个数字去比较看应该替代三个数字中哪个数字，注意如果比第一个数字大，那么原本第一个数字的值要移动到第二个，原本第二个数字的值要移动到第三个，如果替代的是第二个数字，同样要把原本第二个数字的值移动到第三个，道理很简单。由于我们是用第一个数字作为初始值的，因此在替换数字时还有一个原因就是如果第二个和第三个数字还是初始值，而出现了与初始值不同的数字，那就不要求比原数字大了，直接替换并后移，否则如果第一个数字最大，那即使有第三大数字也不会记录下来。
+
+由于题目说了是非空数组，所以不用考虑空数组特殊情况。
+
+最后要判断三个数字是不是不一样，不一样才返回第三大数字，否则就要返回最大的数字。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int thirdMax(int[] nums) {
+        int first = nums[0];
+        int second = nums[0];
+        int third = nums[0];
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > first) {
+                third = second;
+                second = first;
+                first = nums[i];
+            } else if (nums[i] != first && (nums[i] > second || second == first)) {
+                third = second;
+                second = nums[i];
+            } else if ((nums[i] != first && nums[i] != second) && (nums[i] > third || third == second || third == first)) {
+                third = nums[i];
+            }
+        }
+        if (first > second && second > third) return third;
+        else return first;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
