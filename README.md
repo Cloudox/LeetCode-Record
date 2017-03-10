@@ -76,6 +76,7 @@ LeetCode笔记
  * [1. Two Sum](#1. Two Sum)
  * [28. Implement strStr()](#28. Implement strStr())
  * [414. Third Maximum Number](#414. Third Maximum Number)
+ * [303. Range Sum Query - Immutable](#303. Range Sum Query - Immutable)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5558,6 +5559,81 @@ public class Solution {
         }
         if (first > second && second > third) return third;
         else return first;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="303. Range Sum Query - Immutable"/>303. Range Sum Query - Immutable
+### 问题：
+>Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
+
+>Example:
+>>Given nums = [-2, 0, 3, -5, 2, -1]
+
+>>sumRange(0, 2) -> 1
+sumRange(2, 5) -> -1
+sumRange(0, 5) -> -3
+
+>Note:
+
+>1. You may assume that the array does not change.
+>2. There are many calls to sumRange function.
+
+### 大意：
+>给出一个整型数组 nums，寻找其中位置 i 与 j 之间元素的和，包括 i 与 j 元素。
+
+>例子：
+>>给出 nums = [-2, 0, 3, -5, 2, -1]
+
+>>sumRange(0, 2) -> 1
+sumRange(2, 5) -> -1
+sumRange(0, 5) -> -3
+
+>注意：
+
+>1. 你可以假设数组不会变。
+>2. 会多次调用 sumRange 函数。
+
+### 思路：
+这道题其实不是考某种算法，而是考实现的方式。题目给出了一个初始化函数一个计算和的函数，如下：
+
+```java
+public class NumArray {
+    
+    public NumArray(int[] nums) {
+        
+    }
+
+    public int sumRange(int i, int j) {
+        
+    }
+}
+```
+
+一般的实现方法很直接，定义一个变量 nums 数组，在初始化函数中赋值，在求和函数中直接遍历计算就行了很简单。但是如果直接这样做，答案会超时。题目明确指出求和函数会被多次调用，因此这里应该尽量简化求和函数，而把复杂度放在初始化时。
+
+我们在初始化时，直接将每个元素的值改为从第一个元素到当前元素的和，这样在初始化时遍历计算一次。然后在求和时，只需要很简单地用两个位置的值相减就可以得出中间元素的和了。
+
+### 代码（Java）：
+
+```java
+public class NumArray {
+    int[] nums;
+    
+    public NumArray(int[] nums) {
+        for (int i = 1; i < nums.length; i++)
+            nums[i] += nums[i-1];
+        
+        this.nums = nums;
+    }
+
+    public int sumRange(int i, int j) {
+        if (i == 0) return nums[j];
+        else return nums[j] - nums[i-1];
     }
 }
 ```
