@@ -77,6 +77,7 @@ LeetCode笔记
  * [28. Implement strStr()](#28. Implement strStr())
  * [414. Third Maximum Number](#414. Third Maximum Number)
  * [303. Range Sum Query - Immutable](#303. Range Sum Query - Immutable)
+ * [204. Count Primes](#204. Count Primes)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5637,6 +5638,76 @@ public class NumArray {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="204. Count Primes"/>204. Count Primes
+### 问题：
+>Count the number of prime numbers less than a non-negative number, n.
+
+### 大意：
+>计算小于非负数n的质数个数。
+
+### 思路：
+题目很简短，就是个找质数的问题。
+
+我们知道最简单的质数就是2，3，5。。。那怎么计算往后的质数呢？质数的定义是除了自己以外没有任何因子，也就是不被任何数整除，也就是说，不会被这个数前面的任何质数和非质数整除，其实非质数也可以被质数整除，比如4被2整除，所以问题可以归结为：没遇到一个数，判断它是否能被前面的某一个质数整除。
+
+要达到这个条件，我们需要记录在遍历过程中遇到的质数，所以弄了一个数组来记录遇到过的质数，当然2、3、5是一开始就要放进来的，我们遍历时也应该从2开始，因为0和1不是质数。然后没遇到质数都记录下来，同时遇到的每个数都去试一试能不能被前面的质数整除。
+
+这种做法在数字不大的情况下是奏效的，但是当数字大了以后，就会**超时**了。还是先看代码吧。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int countPrimes(int n) {
+        int result = 0;
+        int num = 3;
+        int[] prime = new int[n+3];
+        prime[0] = 2;
+        prime[1] = 3;
+        prime[2] = 5;
+        for (int i = 2; i < n; i++) {
+            if (i < 6 && i != 4) result ++;
+            boolean isPrime = true;
+            for (int j = 0; j < num; j++) {
+                if (i % prime[j] == 0) isPrime = false;
+            }
+            if (isPrime) {
+                result++;
+                prime[num] = i;
+                num++;
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public int countPrimes(int n) {
+        int result = 0;
+        boolean[] notPrime = new boolean[n];
+        for (int i = 2; i < n; i++) {
+            if (notPrime[i] == false) {
+                result ++;
+                for (int j = 2; j*i < n; j++) {
+                    notPrime[j*i] = true;
+                }
+            }
+        }
+        return result;
+    }
+}
+```
+
+这里其实还是那个思路，但是加快了速度，为什么呢？因为只需要在每次遇到质数时，将其小于n的倍数都设为非质数，这样就避免了每次遇到一个数都要用之前所有质数去除一遍，大大降低了时间复杂度。
 
 [回到目录](#Catalogue)
 
