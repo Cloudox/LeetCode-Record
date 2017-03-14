@@ -5719,38 +5719,58 @@ public class Solution {
 >Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
 
 >* push(x) -- Push element x onto stack.
+
 >* pop() -- Removes the element on top of the stack.
+
 >* top() -- Get the top element.
+
 >* getMin() -- Retrieve the minimum element in the stack.
 
 >Example:
 
 >>MinStack minStack = new MinStack();
+
 >>minStack.push(-2);
+
 >>minStack.push(0);
+
 >>minStack.push(-3);
+
 >>minStack.getMin();   --> Returns -3.
+
 >>minStack.pop();
+
 >>minStack.top();      --> Returns 0.
+
 >>minStack.getMin();   --> Returns -2.
 
 ### 大意：
 >设计一个栈，支持push、pop、top以及在固定时间内检索最小元素。
 
 >* push(x) -- 将元素x放入栈中。
+
 >* pop() -- 从栈的顶端移除元素。
+
 >* top() -- 获取栈顶元素。
->* getMin() -- 检索栈中的最小元素
+
+>* getMin() -- 检索栈中的最小元素。
 
 >例子:
 
 >>MinStack minStack = new MinStack();
+
 >>minStack.push(-2);
+
 >>minStack.push(0);
+
 >>minStack.push(-3);
+
 >>minStack.getMin();   --> Returns -3.
+
 >>minStack.pop();
+
 >>minStack.top();      --> Returns 0.
+
 >>minStack.getMin();   --> Returns -2.
 
 ### 思路：
