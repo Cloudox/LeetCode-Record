@@ -78,6 +78,7 @@ LeetCode笔记
  * [414. Third Maximum Number](#414. Third Maximum Number)
  * [303. Range Sum Query - Immutable](#303. Range Sum Query - Immutable)
  * [204. Count Primes](#204. Count Primes)
+ * [155. Min Stack](#155. Min Stack)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5708,6 +5709,108 @@ public class Solution {
 ```
 
 这里其实还是那个思路，但是加快了速度，为什么呢？因为只需要在每次遇到质数时，将其小于n的倍数都设为非质数，这样就避免了每次遇到一个数都要用之前所有质数去除一遍，大大降低了时间复杂度。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="155. Min Stack"/>155. Min Stack
+### 问题：
+>Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+>* push(x) -- Push element x onto stack.
+* pop() -- Removes the element on top of the stack.
+* top() -- Get the top element.
+* getMin() -- Retrieve the minimum element in the stack.
+
+>Example:
+
+>>MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> Returns -3.
+minStack.pop();
+minStack.top();      --> Returns 0.
+minStack.getMin();   --> Returns -2.
+
+### 大意：
+>设计一个栈，支持push、pop、top以及在固定时间内检索最小元素。
+
+>* push(x) -- 将元素x放入栈中。
+* pop() -- 从栈的顶端移除元素。
+* top() -- 获取栈顶元素。
+* getMin() -- 检索栈中的最小元素
+
+>例子:
+
+>>MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> Returns -3.
+minStack.pop();
+minStack.top();      --> Returns 0.
+minStack.getMin();   --> Returns -2.
+
+### 思路：
+这道题对于栈的操作本身都不难，并不是要用队列或者别的数据结构来模拟一个栈，直接就允许用栈来做。真正难的在于检索最小元素，并且还要再固定时间内。
+
+要在入栈以及出栈的同时不停地计算最小元素，首先栈本身是不支持的，如果用数组之类的来记录，那么每次有新元素进来都需要排个序，非常耗时。
+
+因此，这种方法巧妙地在每次入栈、出栈时进行简单的加减操作，达到可以直接获取最小元素的结果。在入栈时，入的不是实际的元素值，而是与当前记录的最小值的差值，如果新入的更小，就将其设为最小值，此时就保证了随时可以获取最小值。出栈时，要修改最小值。获取栈顶元素时，因为栈中记录的并不是原始值，所以要与记录的最小值进行操作来还原。
+
+由于题目在submit时会用超过int范围的大数来测试，所以只能用long来操作。
+
+### 他山之石（Java）：
+
+```java
+public class MinStack {
+    Stack<Long> stack;
+    long min;
+
+    /** initialize your data structure here. */
+    public MinStack() {
+        stack=new Stack<Long>();
+    }
+    
+    public void push(int x) {
+        if (stack.isEmpty()) {
+            stack.push(0L);
+            min = x;
+        } else {
+            stack.push(x - min);
+            if (x < min) min = x;
+        }
+    }
+    
+    public void pop() {
+        if (stack.isEmpty()) return;
+        
+        long pop = stack.pop();
+        if (pop < 0) min = min - pop;
+    }
+    
+    public int top() {
+        long top = stack.peek();
+        if (top < 0) return (int)min;
+        else return (int)(min + top);
+    }
+    
+    public int getMin() {
+        return (int)min;
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
+```
 
 [回到目录](#Catalogue)
 
