@@ -80,10 +80,9 @@ LeetCode笔记
  * [204. Count Primes](#204. Count Primes)
  * [155. Min Stack](#155. Min Stack)
  * [6. ZigZag Conversion](#6. ZigZag Conversion)
-
-
+ 
 ## <a name="292.Nim Game"/>292.Nim Game
-###问题：
+### 问题：
 
 > You are playing the following Nim Game with your friend: There is a heap of stones on the table, each time one of you take turns to remove 1 to 3 stones. The one who removes the last stone will be the winner. You will take the first turn to remove the stones.
 
@@ -91,13 +90,13 @@ LeetCode笔记
 
 >For example, if there are 4 stones in the heap, then you will never win the game: no matter 1, 2, or 3 stones you remove, the last stone will always be removed by your friend.
 
-###大意：
+### 大意：
 
 > 你和你的一个朋友玩一个游戏：在一个桌子上有一堆石头，每个人每次可以从中拿1个或2个或3个石头，你和你朋友两个人轮流拿，谁拿走的桌上最后一波石头，谁就赢了。你先拿。
 > 假设你和你的朋友都会采取最佳策略。写一个函数来判断对于给出的一个数量的石头，你会不会赢。
 > 比如说，如果桌上有4个石头，那么你肯定输，无论你先拿1个还是2个还是3个，最后一波石头总是被你朋友拿走的。
 
-###思路：
+### 思路：
 乍一看好像不递归不可能判断出来，但其实演算一下，发现是有规律可行的。
 
 1. 首先当石头数量是3个以下时，你肯定会赢。
@@ -109,7 +108,7 @@ LeetCode笔记
 
 这样分析一下，规律就出来了，只要你面对的石头数量是4的倍数，那你就一定会输，此外，你全都可以赢，赢面还是很大啊哈哈。代码也呼之欲出了。
 
-###代码（C++）：
+### 代码（C++）：
 
 ```C++
 class Solution {
@@ -127,7 +126,7 @@ public:
 -------------------------
 
 ## <a name="258.Add Digits"/>258.Add Digits
-###问题：
+### 问题：
 
 > Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.
 
@@ -138,7 +137,7 @@ public:
 >Follow up:
 >Could you do it without any loop/recursion in O(1) runtime?
 
-###大意：
+### 大意：
 >给一个非负数，重复地加其中的数字知道最后只有一个数字。
 >比如说：
 >给出数字38，过程类似于：3+8=11,1+1=2.直到2只有一个数字了，就返回它。
@@ -148,7 +147,7 @@ public:
 ###思路一：
 首先想到的就是循环，对于一个数字，循环将其除以10的余数加起来，直到其是个位数。加完一次后判断是不是只有一个数字，也就是是不是小于10，如果还大于，说明还有多个数字，那就再进行同样的操作。这个方法我自己测试倒是对的，不过leetcode总是说我超时，而且是在11这个数时就超时。。
 
-###代码一（c++）：
+### 代码一（c++）：
 
 ```c++
 class Solution {
@@ -169,8 +168,8 @@ public:
     }
 };
 ```
-
-###思路二：
+ 
+### 思路二：
 既然题目里也鼓励我们继续思考不用循环的方式，那就一定是有规律可循。我们可以简单地列一下：
 
 数字 | 结果
@@ -200,7 +199,7 @@ public:
 
 就列这么多了，我们可以发现，结果除了第一个0以外，都在1~9之间循环。而且可以发现，其除以9的余数，为0时，对应的结果是9，而不为0时，余数等于对应的结果，那么代码就呼之欲出啦~
 
-###代码二（c++）：
+### 代码二（c++）：
 
 ```c++
 class Solution {
@@ -218,12 +217,12 @@ public:
 -------------------------
 
 ## <a name="104.Maximum Depth of Binary Tree"/>104.Maximum Depth of Binary Tree
-###问题：
+### 问题：
 >Given a binary tree, find its maximum depth.
 
 >The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
 
-###大意：
+### 大意：
 >给出一个二叉树，找到其最大的深度。
 >最大深度是指从根节点到最远的叶子节点的最长距离的节点数。
 
@@ -233,7 +232,7 @@ public:
 然后，我们定义两个变量，一个左节点深度，一个右节点深度。我们分别判断其有无左节点和右节点，两种节点中的做法都是一样的，假设没有左节点，那么就左节点深度变量就是1，有左节点的话，左节点深度变量就是对左节点调用此函数返回的结果加1；对右节点也做同样的操作。
 最后比较左节点深度和右节点深度，判断谁比较大，就返回哪个变量。这样就能一层一层地递归获取最大深度了。
 
-###代码（Java）：
+### 代码（Java）：
 
 ```java
 /**
@@ -299,7 +298,7 @@ public class Solution {
 -------------------------
 
 ## <a name="226. Invert Binary Tree"/>226. Invert Binary Tree
-###问题：
+### 问题：
 
 > Invert a binary tree.
 >![](http://img.blog.csdn.net/20160326150503290)
@@ -309,7 +308,7 @@ public class Solution {
 >Trivia:
 >Google: 90% of our engineers use the software you wrote (Homebrew), >but you can’t invert a binary tree on a whiteboard so fuck off.
 
-###大意：
+### 大意：
 
 > 反转一个二叉树。
 > 从
@@ -320,10 +319,10 @@ public class Solution {
 > 琐事：
 > Google表示如果你连反转二叉树都做不到就滚吧。
 
-###思路：
+### 思路：
 对于二叉树的每个子节点的左右节点都要反转，我们还是用递归，对每个节点都调用函数，这样就都可以反转了。就同置换变量的数字一样，我们可以创建两个新的节点对象，然后分别等同于其左右子节点，然后将其左节点变成其右节点的新对象，将其右节点变成其左节点的新对象，就可以了。同时我们对每个子节点都要进行同样的操作。还有一点很重要不要忘记了，我们一开始要先判断此节点是否为null，不为null才进行操作。
 
-###代码（Java）：
+### 代码（Java）：
 
 ```java
 /**
@@ -361,7 +360,7 @@ public class Solution {
 }
 ```
 
-###精简代码（Java）：
+### 精简代码（Java）：
 我们在处理其子节点时，也判断了是否是null的情况，但其实我们函数中对本节点就会进行一次判断，也就是说如果子节点为null，那么函数本身就会返回null，用不着特意处理了。所以可以精简一下：
 
 ```java
@@ -393,7 +392,7 @@ public class Solution {
 -------------------------
 
 ## <a name="283. Move Zeroes"/>283. Move Zeroes
-###题目：
+### 题目：
 
 > Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
 
@@ -403,17 +402,17 @@ public class Solution {
 >You must do this in-place without making a copy of the array.
 >Minimize the total number of operations.
 
-###大意：
+### 大意：
 >给出一个数字数组，写一个函数来移动其中的所有“0”到末尾，并保持其他非零元素的相对顺序不变。
 >比如说，给出数组 nums = [0, 1, 0, 3, 12]，调用你的函数之后，nums应该变成[1, 3, 12, 0, 0]。
 >注意：
 >你必须在不复制数组的情况下做。
 >使操作数尽可能地少。
 
-###思路1：
+### 思路1：
 首先想到了一个比较笨的方法，就是循环从头开始遍历数组中的每个数，遇到“0”，就将后面的所有数的位置往前移动一个，然后把最后一个数置为“0”，当进行完这样一次操作后，还要检测一下移动到前面来的下一位数是不是为“0”，如果是的话就再来一次同样的操作，否则就往下走。但是这样会遇到一个问题，那就是如果我后面的数都是“0”了，那我就会永远停留在某个位置循环，因为我移来移去当前位置的数都是“0”，所以在每次移动完后，就要检测一下后面的数是不是都是“0”了，只有当后面的数不都为“0”时，我才继续进行这种大挪移操作。
 
-###代码（Java）：
+### 代码（Java）：
 
 ```java
 public class Solution {
@@ -443,7 +442,7 @@ public class Solution {
 
 这个代码的运行时间为25ms，明显有可以精简的地方，那就是当检测到后面的数字都是“0”时，就已经没必要再循环下去了，此时的数组已经符合要求了，直接结束就好，所以可以立马做出精简：
 
-###精简代码1（Java）：
+### 精简代码1（Java）：
 
 ```java
 public class Solution {
@@ -474,7 +473,7 @@ public class Solution {
 
 这个代码的运行时间为23ms，减少了2ms，有一点效果，再观察一下，其实后面那个检查后面的数是否都为0的操作，明明可以放在那个移动数字的循环中去做，在移动数字时，同样也要对后面的所有数字进行操作，所以可以在同一个循环中进行，没必要循环两次，应该可以进一步缩减时间了，所以继续精简如下：
 
-###精简代码2（Java）：
+### 精简代码2（Java）：
 
 ```java
 public class Solution {
@@ -499,10 +498,10 @@ public class Solution {
 
 *这样一精简，运行时间反而变成了45ms，运行了几次基本都稳定在这个附近，这就无法理解了，明明应该缩减了一半的工作量，但时间反而加倍了，实在是无法想明白，请教一下大家这是为什么呢？？？*
 
-###思路2：
+### 思路2：
 之前那条路已经走不到了一个奇怪的境况中，而且感觉这种一下子移动一堆数字也不是个好办法，那么就思考另一种方法。我们可以只移动一个啊。还是从数组的第一个数开始循环，当发现“0”以后，立马在它后面找到第一个不为“0”的数字，然后交换这两个数字的位置，其余的数字都不用动，这样应该简单一些。同时，我们还是要在每次都检测后面的数字是否都为“0”，如果都为“0”了，那也没必要继续往下走了，可以直接结束。
 
-###代码2（Java）：
+### 代码2（Java）：
 
 ```java
 public class Solution {
@@ -531,7 +530,7 @@ public class Solution {
 
 这个代码的运行时间为18ms，就少了挺多了。
 
-###他山之石：
+### 他山之石：
 在Disguss中看到排名第一的答案，其代码如下：
 
 ```java
@@ -558,13 +557,13 @@ public class Solution {
 -------------------------
 
 ## <a name="237. Delete Node in a Linked List"/>237. Delete Node in a Linked List
-###题目：
+### 题目：
 
 > Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
 
 >Supposed the linked list is 1 -> 2 -> 3 -> 4 and you are given the third node with value 3, the linked list should become 1 -> 2 -> 4 after calling your function.
 
-###大意：
+### 大意：
 
 > 写一个函数来删除一个简单链表中的一个节点（除了尾节点），只给出这个节点。
 > 假设有一个链表 1->2->3->4，并给你第三个值为3的节点，在调用你的函数之后这个链表应该变成1->2->4。
@@ -572,7 +571,7 @@ public class Solution {
 ###思路：
 一般我们删除一个链表节点，直接将其上一个节点的next指向其下一个节点就可以了，但是这里只给出了该节点本身，也就是说你只能获取到该节点本身以及其下一个节点。那么就只能将该节点直接变成下一个节点了，将其值设为下一个节点的值，将其next指向下一个节点的next，就可以了。
 
-###代码（Java）：
+### 代码（Java）：
 
 ```
 /**
@@ -591,7 +590,7 @@ public class Solution {
 }
 ```
 
-###代码（C++）：
+### 代码（C++）：
 
 ```c++
 /**
@@ -609,7 +608,7 @@ public class Solution {
 }
 ```
 
-###疑问：
+### 疑问：
 用Java像C++那样，直接将 node = node.next 将不能ac，必须对其val和next分别设置，这是为什么呢？希望高手帮忙解答一下~
 
 [回到目录](#Catalogue)
@@ -617,20 +616,20 @@ public class Solution {
 -------------------------
 
 ## <a name="100. Same Tree"/>100. Same Tree
-###题目：
+### 题目：
 >Given two binary trees, write a function to check if they are equal or not.
 
 >Two binary trees are considered equal if they are structurally identical and the nodes have the same value.
 
-###大意：
+### 大意：
 >给出两个二叉树，写一个函数来检查两者是否相等。
 >所谓相等，是指他们结构相同且节点有同样的值。
 
-###思路：
+### 思路：
 这个思路还比较直接，考虑全面一点就好了。首先考虑节点为空的情况，如果两个都为空，那么直接相等；如果一个为空一个不为空，那么不相等；如果两个都不为空，那么继续进行深层次的判断。
 首先看两个节点的值是否相等，不相等则二叉树不等，然后判断其子节点，这时候使用递归就可以了，对两个节点的左节点和右节点分别调用这个函数，只有都返回相等时，才表示两个节点完全相同，由于递归，其子节点也就一层层地判断下去了，整个二叉树就会遍历完成。
 
-###代码（Java）：
+### 代码（Java）：
 
 ```java
 /**
@@ -660,7 +659,7 @@ public class Solution {
 
 其实还可以进一步精简代码，可以看下Discuss最火的代码，思路是一致的，只是精简到了极致，确实很赞：
 
-###精简代码（Java）：
+### 精简代码（Java）：
 ```java
 /**
  * Definition for a binary tree node.
@@ -687,7 +686,7 @@ public class Solution {
 -------------------------
 
 ## <a name="242. Valid Anagram"/>242. Valid Anagram
-###题目：
+### 题目：
 
 > Given two strings s and t, write a function to determine if t is an anagram of s.
 
@@ -701,7 +700,7 @@ You may assume the string contains only lowercase alphabets.
 >Follow up:
 What if the inputs contain unicode characters? How would you adapt your solution to such case?
 
-###大意：
+### 大意：
 
 > 给出两个字符串s和t，写一个函数来判断t是否是s的易位构词。
 > 比如说：
@@ -712,11 +711,11 @@ What if the inputs contain unicode characters? How would you adapt your solution
 > 进一步：
 > 如果输入包含unicode字符呢？你如何调整你的代码来适应这种情况？
 
-###思路：
+### 思路：
 一开始，想了一个现在看来很笨的办法，这道题无非就是要检查两个字符串中的字母是否全部一致，我就遍历其中一个字符串，在每一个字符中，从另一个字符串找到第一个相同的字符，然后删掉字符串中的这个字符，继续遍历，直到有一个字符在另一个字符串中找不到了，说明没有这个字符或者数量少一些，就返回false，如果全部遍历完了都找得到，且另一个字符串也被删完了，那就返回true。这个办法我提交之后，很悲剧的超时了。。。想想也是，时间复杂度是n的平方了，还是很大的。
 后来想到了另一个方法，我弄两个int数组，初始各自包含26个"0"，用来记录两个字符串中各个字母出现的次数，然后分别遍历两个数组，记录其各个字母出现的次数，最后比较两个int数组是否完全一致就可以了，一遍ac，耗时5ms，打败了85%的提交者，哈哈哈。
 
-###代码（Java）：
+### 代码（Java）：
 
 ```java
 public class Solution {
@@ -750,7 +749,7 @@ public class Solution {
 
 代码还是有点长，理所当然应该是可以精简的，然后我去看了看Discuss中最hot的答案，发现思路跟我是一样的，不过处理起来真的机智的不行：
 
-###精简代码（Java）：
+### 精简代码（Java）：
 
 ```java
 public class Solution {
@@ -771,7 +770,7 @@ public class Solution {
 -------------------------
 
 ## <a name="171. Excel Sheet Column Number"/>171. Excel Sheet Column Number
-###题目：
+### 题目：
 
 > Related to question Excel Sheet Column Title
 
@@ -787,7 +786,7 @@ public class Solution {
     AA -> 27
     AB -> 28 
 
-###大意：
+### 大意：
 
 > 与题目Excel Sheet Column Title相关
 > 给一个像Excel中显示的列标题，返回其对应的列数。
@@ -800,7 +799,7 @@ public class Solution {
     AA -> 27
     AB -> 28 
 
-###思路：
+### 思路：
 首先最简单的，A~Z分别是1~26。然后AA到AZ是27~(26+26)。AAA到AAZ是26*26+1 ~ 26*26 + 26。
 N位字母，前面位数的字母对应的数量总和为26^(n-1)，可以总结出一个公式来。加上我们当前计算一个n位字母的列数，其前面位数的字母数量总和为26^(n-1)，设其为startCount，从当前位数的字母开始计算，计算方法为：
 ```
@@ -808,7 +807,7 @@ startCount + ('A' - 65)*26^(n-1) + ('A' - 65)*26^(n-2) + ... + ('A' - 65) + 1
 ```
 这样就可以总结为代码，分两步计算，第一步计算前面位数的字母数量总和，第二部计算当前位数的数量：
 
-###代码（Java）：
+### 代码（Java）：
 ```java
 public class Solution {
     public int titleToNumber(String s) {
@@ -833,7 +832,7 @@ public class Solution {
 }
 ```
 
-###他山之石：
+### 他山之石：
 最Hot的一个解决方法，只需要三行代码，把计算公式进行了化简，得出了一个特别简单的计算过程：
 ```java
 int result = 0;
@@ -847,18 +846,18 @@ return result;
 -------------------------
 
 ## <a name="217. Contains Duplicate"/>217. Contains Duplicate
-###题目：
+### 题目：
 >Given an array of integers, find if the array contains any duplicates. Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
 
-###大意：
+### 大意：
 >给出一个int型的数组，判断数组是否包含了重复的数。如果有任何的数值在函数中出现过至少两次，你的数组就应该返回true，如果每个数值都是单一的，那么就返回false。
 
-###思路：
+### 思路：
 一开始我采用之前一个判断字母数的同样的思路，用一个10位的数组记录0~9的出现次数，后来运行说还有负数。。。于是加上了-9~-1的9个数字，将数组改成19位，运行又发现还有极大的数。。。而不是我想的单一的个位数，这就超过数组的承受能力了，一开始又不说清楚= =。
 于是换了一种思路，先将数组中的数字进行排序，排序之后数组中的内容就是按顺序排列的，如果有相同的数值，那一定是相邻排列的，所以只要遍历数组检查是否有相邻的两个数值相等就可以啦。这次终于ac了，看了一下Discuss的最Hot的方法，跟我的思路一样，太开心了。
 关于排序有很多种方法，Java的数组自带有排序函数，也可以采用一些排序算法，可以参考这个博客：[http://blog.csdn.net/fengyifei11228/article/details/2623980](http://blog.csdn.net/fengyifei11228/article/details/2623980)，写的还蛮全的。
 
-###代码（Java）：
+### 代码（Java）：
 
 ```java
 public class Solution {
@@ -877,19 +876,19 @@ public class Solution {
 -------------------------
 
 ## <a name="169. Majority Element"/>169. Majority Element
-###题目：
+### 题目：
 >Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.
 
 >You may assume that the array is non-empty and the majority element always exist in the array.
 
-###大意：
+### 大意：
 >给出一个尺寸为n的数组，找到主要的元素。所谓主要的元素是指出现次数超过n/2的元素。
 >你可以假设数组不为空且主要元素一定存在。
 
-###思路：
+### 思路：
 第一直觉是先排序把相同的元素都放到一起再说，因为主要元素的出现次数大于n/2，那么排序后最中间的元素一定是主要元素，不管怎么移动位置，最中间的都一定是它，所以可以很简单地完成代码啦。
 
-###代码（Java）：
+### 代码（Java）：
 
 ```java
 public class Solution {
@@ -900,7 +899,7 @@ public class Solution {
 }
 ```
 
-###他山之石：
+### 他山之石：
 现在让我们看看Discuss最hot的答案，我的做法并不是最快的，因为排序需要时间，他说他的时间复杂度为O(1)，看了一下代码，他的做法是：用一个变量记录主要元素，初始化为第一个元素，一个变量记录出现次数，初始化为1，遍历数组中的元素，与当前记录的主要元素相同的话，次数就加1，不同就减1，如果次数减到0，那就将主要元素换成新遍历到的元素，这样遍历完一轮得到最后记录的主要元素，就是我们要的结果。因为主要元素出现的次数大于n/2，所以可以想见最后留下来的一定会是主要元素。别的元素即使记录过也会因为次数归零抛弃掉的。这个方法只需要遍历一次数组就可以了，确实不容易想到。代码如下：
 
 ```java
@@ -927,16 +926,16 @@ public class Solution {
 -------------------------
 
 ## <a name="206. Reverse Linked List"/>206. Reverse Linked List
-###题目：
+### 题目：
 > Reverse a singly linked list.
 
-###大意：
+### 大意：
 > 反转一个简单链表。
 
-###思路：
+### 思路：
 题目的意思就是给出一个链表，本来是从头指向尾的，现在要你做成从尾指向头，并且返回原来的尾，现在的头。这个肯定是要用递归或者迭代来做。只要屡清楚过程，会比较绕。大体的流程就是，把下一个节点的next指向自己，一个个迭代、递归下去，最后返回最后的原来的尾节点
 
-###他山之石：
+### 他山之石：
 这里给出Discuss中最火的方法。
 迭代实现：
 ```java
