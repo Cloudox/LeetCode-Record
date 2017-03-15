@@ -5874,7 +5874,7 @@ public class MinStack {
 ### 思路：
 这道题的意思就题目来看其实不太好理解，这里借用别人画的一张图就能一目了然了：
 
-![](http://img.blog.csdn.net/20161216103218631?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/6Image.png)
 
 如图，行数就是给出的数字，按照图中的数字顺序将原本的字符串中一个个字符去按照循环对角的结构放置。
 
