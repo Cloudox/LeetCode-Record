@@ -79,6 +79,7 @@ LeetCode笔记
  * [303. Range Sum Query - Immutable](#303. Range Sum Query - Immutable)
  * [204. Count Primes](#204. Count Primes)
  * [155. Min Stack](#155. Min Stack)
+ * [6. ZigZag Conversion](#6. ZigZag Conversion)
 
 
 ## <a name="292.Nim Game"/>292.Nim Game
@@ -5830,6 +5831,79 @@ public class MinStack {
  * int param_3 = obj.top();
  * int param_4 = obj.getMin();
  */
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="6. ZigZag Conversion"/>6. ZigZag Conversion
+### 问题：
+>The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+
+>>P   A   H   N
+
+>>A P L S I I G
+
+>>Y   I   R
+
+>And then read line by line: "PAHNAPLSIIGYIR"
+
+>Write the code that will take a string and make this conversion given a number of rows:
+
+>>string convert(string text, int nRows);
+
+>convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
+
+### 大意：
+>字符串 "PAYPALISHIRING" 被根据给出的数字以 zigzag 模式写成了下面的样子：（你可能想要用固定的字形来达到更好的可读性）
+
+>>P   A   H   N
+
+>>A P L S I I G
+
+>>Y   I   R
+
+> 一行行读起来就是："PAHNAPLSIIGYIR"
+
+>写代码获取字符串并根据给出的行数作出这种转换：
+
+>>string convert(string text, int nRows);
+
+>convert("PAYPALISHIRING", 3) 应该 return "PAHNAPLSIIGYIR".
+
+### 思路：
+这道题的意思就题目来看其实不太好理解，这里借用别人画的一张图就能一目了然了：
+
+![](http://img.blog.csdn.net/20161216103218631?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+如图，行数就是给出的数字，按照图中的数字顺序将原本的字符串中一个个字符去按照循环对角的结构放置。
+
+而题目要求返回一行行读下来的字符串。
+
+如果找规律去找各个字符所在的位置还比较难的，比较好的方法是根据行数创建多个字符串，然后将给出的字符串中的字符按照顺序去一个个放置，这里就循环地利用两个循环，一个是竖着下来，一个是斜着上去。最后再将这些字符串一个个拼接成一个完整的字符串，就出来了。
+
+代码中我用的是直接 + 的方式来拼接字符串，这个效率其实比较低，如果要提高速度，建议使用StringBuffer来做，但是为了代码可读性，还是用 + 来展示，这个点知道就好了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String convert(String s, int numRows) {
+        String[] row = new String[numRows];
+        for (int k = 0; k < numRows; k++) row[k] = "";
+        int i = 0;
+        int j = 0;
+        int gap = numRows-2;
+        while (i < s.length()) {
+            for (j = 0; j < numRows && i < s.length(); j++) row[j] += s.charAt(i++);
+            for (j = gap; j > 0 && i < s.length(); j--) row[j] += s.charAt(i++);
+        }
+        String result = "";
+        for (int k = 0; k < numRows; k++) result += row[k];
+        return result;
+    }
+}
 ```
 
 [回到目录](#Catalogue)
