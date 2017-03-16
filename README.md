@@ -80,6 +80,7 @@ LeetCode笔记
   * [204. Count Primes](#204. Count Primes)
   * [155. Min Stack](#155. Min Stack)
   * [6. ZigZag Conversion](#6. ZigZag Conversion)
+  * [125. Valid Palindrome](#125. Valid Palindrome)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -5901,6 +5902,82 @@ public class Solution {
         String result = "";
         for (int k = 0; k < numRows; k++) result += row[k];
         return result;
+    }
+}
+```
+ 
+ [回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="125. Valid Palindrome"/>125. Valid Palindrome
+### 问题：
+>Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+>For example,
+
+>"A man, a plan, a canal: Panama" is a palindrome.
+
+>"race a car" is not a palindrome.
+
+>Note:
+
+>Have you consider that the string might be empty? This is a good question to ask during an interview.
+
+>For the purpose of this problem, we define empty string as valid palindrome.
+
+### 大意：
+>给出一个字符串，判断它是不是回文，只考虑大小写字母和数字，忽略大小写。
+
+>例子：
+
+>"A man, a plan, a canal: Panama" 是回文。
+
+>"race a car" 不是回文。
+
+>注意：
+
+>你有考虑字符串可能为空吗？这是面试时的一个好问题。
+
+>对于这道题的目的，我们假设空字符串也是有效的回文。
+
+### 思路：
+又是一道判断回文的题目，不同的是这道题只判断字符串中的大小写字母和数字，从例子中也可以看出，空格和其他标点符号都跟没看到一样，也就是在做的时候要忽略，另外大小写字母忽略，看做是相同的，这也就意味着在判断是否相同时要将大小写字母转为同一个格式。
+
+由于要先判断一个字符是不是数字或者大小写字母，我们做一个方法来专门检测这个事情，避免主体代码太冗长。
+
+在主体代码中，我们用两个指针，一个从头开始遍历，一个从末尾开始遍历，当头尾都找到字母或者数字后，就进行对比是否是相同的，有不同说明不是回文，否则就是回文，在比较时我们将大写字母都转化成小写来对比，当然也可以反过来。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public boolean isLetterOrDigit(char test) {
+        if ((test - '0' >= 0 && test - '0' <= 9) || (test - 'a' >= 0 && test - 'a' <= 25) || (test - 'A' >= 0 && test - 'A' <= 25)) return true;
+        else return false;
+    }
+    
+    public boolean isPalindrome(String s) {
+        if (s.length() == 0) return true;
+        
+        int i = 0;
+        int k = s.length() - 1;
+        
+        while (i <= k) {
+            char tempI = s.charAt(i);
+            char tempK = s.charAt(k);
+            
+            if (!isLetterOrDigit(tempI)) i++;
+            else if (!isLetterOrDigit(tempK)) k--;
+            else {
+                if (Character.toLowerCase(tempI) != Character.toLowerCase(tempK)) return false;
+                else {
+                    i++;
+                    k--;
+                }
+            }
+        }
+        return true;
     }
 }
 ```
