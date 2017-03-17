@@ -81,6 +81,7 @@ LeetCode笔记
   * [155. Min Stack](#155. Min Stack)
   * [6. ZigZag Conversion](#6. ZigZag Conversion)
   * [125. Valid Palindrome](#125. Valid Palindrome)
+  * [168. Excel Sheet Column Title](#168. Excel Sheet Column Title)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -5982,6 +5983,65 @@ public class Solution {
 }
 ```
  
+ [回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="168. Excel Sheet Column Title"/>168. Excel Sheet Column Title
+### 问题：
+>Given a positive integer, return its corresponding column title as appear in an Excel sheet.
+
+>For example:
+
+>>    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+
+### 大意：
+>给出一个正整数，返回它对应的Excel表格中的列标题。
+
+>例子：
+
+>>    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+
+### 思路：
+我们找一下规律，一个字母的有26列，两个字母的从AA到ZZ总共有26*26列，三个字母的总共有26*26*26列。因此我们要找出对应的列标题，只需要根据给出的数字来一位一位地找对应的字母就可以了。
+
+比如给出的数字对26取余数得到的数字，就是列标题的最后一个字母的序号。将给出的数字除以26，再取余，就可以得到倒数第二位的字母序号，一直到什么时候为止呢，到除以26为0打止，这时候已经没有更高位的字母了。
+
+**其实可以理解为将一个十进制的数字转换成一个26进制的数字**，跟转换成二进制是一个道理。
+
+注意我们要得到数字需要使用ASCII对应的数字来进行转换，A对应的码是65，所以我们每次转换时都要将余数+65来转换成字符，但是如果是对应的Z，其实除以26是没有余数的，因此在每次取余之前，都要将n减一。
+
+同样的，在字符串拼接时使用 + 拼接是很慢的，换成StringBuffer来拼接会快很多。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String convertToTitle(int n) {
+        String result = "";
+        while (n > 0) {
+            n--;
+            result = String.valueOf((char)(n%26 + 65)) + result;
+            n = n / 26;
+        }
+        
+        return result;
+    }
+}
+```
+
 [回到目录](#Catalogue)
 
 -------------------------
