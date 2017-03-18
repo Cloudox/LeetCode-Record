@@ -82,6 +82,7 @@ LeetCode笔记
   * [6. ZigZag Conversion](#6. ZigZag Conversion)
   * [125. Valid Palindrome](#125. Valid Palindrome)
   * [168. Excel Sheet Column Title](#168. Excel Sheet Column Title)
+  * [278. First Bad Version](#278. First Bad Version)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6038,6 +6039,59 @@ public class Solution {
         }
         
         return result;
+    }
+}
+```
+
+ [回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="278. First Bad Version"/>278. First Bad Version
+### 问题：
+>You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+
+>Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, which causes all the following ones to be bad.
+
+>You are given an APIwhich will return whether version is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+
+### 大意：
+>你是一个产品经理，现在领导一个小组来开发一个新产品。不幸的是，你产品最近的版本没通过质检。每个版本都是基于前一个版本开发的，在坏的版本后的所有版本都是坏的。
+
+>假设你有n个版本 [1, 2, ..., n] 并且想要找到第一个坏的，也就是导致后面都坏的那个。
+
+>给你一个API， bool isBadVersion(version) ，可以返回一个版本是不是坏的。实现一个函数来找到最开始IDE坏版本。你应该最小化API的调用次数。
+
+### 思路：
+说了这么多，归根结底就是个快速查找的问题。
+
+快速查找的方法很多，这里使用二分法最简单。
+
+因为每个坏的版本后面一定都是坏的，所以可以通过判断中间的版本是不是好的来决定是要继续检查前面一半还是后面一半。如果检查中间的版本是坏的，就在前面一半继续检查中间的版本，否则在后面一半继续检查。
+
+这里我用递归做，也可以用循环来做，都需要创建一个开始和一个结束的变量，才能进行二分法。
+
+注意在查看坏的之后，要判断它前一个版本是否是好的，这样才能找到第一个坏的，但是还要注意如果这是第一个版本，直接就要返回了，因为没有更早的版本了。
+
+注意题目的测试用例会用大超过int的大数，所以我使用了long。
+
+### 代码（Java）：
+
+```java
+/* The isBadVersion API is defined in the parent class VersionControl.
+      boolean isBadVersion(int version); */
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        return (int)findBad(1l, (long)n);
+    }
+    
+    public long findBad(long start, long end) {
+        if (start == end) return start;
+        if (isBadVersion((int)((start+end)/2))) {// 当前查找的是坏的，检查前面的一个数是不是好的，或者当前数是否为1
+            if ((start+end)/2 == 1 || !isBadVersion((int)((start+end)/2-1))) return (start+end)/2;
+            else return findBad(start, (start+end)/2-1);
+        } else return findBad((start+end)/2+1, end);
     }
 }
 ```
