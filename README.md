@@ -83,6 +83,7 @@ LeetCode笔记
   * [125. Valid Palindrome](#125. Valid Palindrome)
   * [168. Excel Sheet Column Title](#168. Excel Sheet Column Title)
   * [278. First Bad Version](#278. First Bad Version)
+  * [7. Reverse Integer](#7. Reverse Integer)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6095,6 +6096,86 @@ public class Solution extends VersionControl {
     }
 }
 ```
+
+ [回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="7. Reverse Integer"/>7. Reverse Integer
+### 问题：
+>Reverse digits of an integer.
+
+>Example1: x = 123, return 321
+
+>Example2: x = -123, return -321
+
+### 大意：
+>反转一个整型数的数字。
+
+>例1：x = 123, return 321
+
+>例2：x = -123, return -321
+
+### 思路：
+题目很简洁，注意是有负数的。
+
+我的方法比较直接，先转成String，有负号就保留负号，然后一个从尾部往前取数字，从新字符串的头部往后放，就反转过来了。最后再转成int型返回。
+
+这里使用了StringBuffer来加快拼接字符串的速度，不过依然没有别人的方法快。
+
+注意题目很无聊的会传超出int范围的数字给你测试，明明参数写明了是int型的还给超大数，那就只能做一个try-catch，如果是超大数转换失败，那就直接返回0。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int reverse(int x) {
+        String xStr = String.valueOf(x);
+        String reverse = "";
+        int start = 0;
+        if (xStr.charAt(0) == '-') {
+            reverse = "-";
+            start = 1;
+        }
+        StringBuffer reverseBuffer = new StringBuffer(reverse);
+        for (int i = xStr.length()-1; i >= start; i--) {
+            reverseBuffer.append(xStr.charAt(i));
+            reverse = reverse + xStr.charAt(i);
+        }
+        reverse = reverseBuffer.toString();
+        try {
+            return Integer.valueOf(reverse).intValue();
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+	public int reverse(int x)
+	{
+	    int result = 0;
+	
+	    while (x != 0)
+	    {
+	        int tail = x % 10;
+	        int newResult = result * 10 + tail;
+	        if ((newResult - tail) / 10 != result)
+	        { return 0; }
+	        result = newResult;
+	        x = x / 10;
+	    }
+	
+	    return result;
+	}
+}
+```
+
+这个做法是直接左数字计算，每次取余得到最末尾的数字，取出来之后原数字除以10，取出来的数字加到新数字末尾去，不过新数字要先乘以10，也就是所有数字提高一位。他中间有个判断 (newResult - tail) / 10 != result ，其实也是为了防止超大数溢出，如果溢出了就返回0。
 
 [回到目录](#Catalogue)
 
