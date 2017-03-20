@@ -84,6 +84,7 @@ LeetCode笔记
   * [168. Excel Sheet Column Title](#168. Excel Sheet Column Title)
   * [278. First Bad Version](#278. First Bad Version)
   * [7. Reverse Integer](#7. Reverse Integer)
+  * [189. Rotate Array](#189. Rotate Array)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6176,6 +6177,82 @@ public class Solution {
 ```
 
 这个做法是直接左数字计算，每次取余得到最末尾的数字，取出来之后原数字除以10，取出来的数字加到新数字末尾去，不过新数字要先乘以10，也就是所有数字提高一位。他中间有个判断 (newResult - tail) / 10 != result ，其实也是为了防止超大数溢出，如果溢出了就返回0。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="189. Rotate Array"/>189. Rotate Array
+### 问题：
+>Rotate an array of n elements to the right by k steps.
+
+>For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4].
+
+### 大意：
+>旋转一个有n个元素的数组，右移k步。
+
+>比如，n = 7，k = 3，数组 [1,2,3,4,5,6,7] 就被旋转为 [5,6,7,1,2,3,4]。
+
+### 思路：
+旋转本身没太多特别好说的，我的做法是用另一个数组来记录旋转后的内容，然后复制回原数组。当然记录时是从第nums.length-k个元素开始记录，记录到末尾后再去从头开始记录到刚才那个元素。
+
+需要注意的是这里并非返回一个数组，程序会直接读取原数组位置的内容来检查，所以需要把旋转后的结果一个个复制回去。
+
+还有，给出的k可能会大于数组长度，这时候就要对原数组长度取模，才会得出真正需要旋转的个数。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public void rotate(int[] nums, int k) {
+        k %= nums.length;
+        int[] rotateNums = new int[nums.length];
+        int index = 0;
+        for (int i = nums.length-k; i < nums.length; i++) {
+            rotateNums[index] = nums[i];
+            index++;
+        }
+        for (int i = 0; i < nums.length-k; i++) {
+            rotateNums[index] = nums[i];
+            index++;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = rotateNums[i];
+        }
+        return;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public void rotate(int[] nums, int k) {
+
+    if(nums == null || nums.length < 2){
+        return;
+    }
+    
+    k = k % nums.length;
+    reverse(nums, 0, nums.length - k - 1);
+    reverse(nums, nums.length - k, nums.length - 1);
+    reverse(nums, 0, nums.length - 1);
+    
+}
+
+private void reverse(int[] nums, int i, int j){
+    int tmp = 0;       
+    while(i < j){
+        tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+        i++;
+        j--;
+    }
+}
+```
+
+这里他用了三次不同的翻转函数，先翻转第一到要旋转的元素之前的元素，然后翻转要旋转的那些元素，最后翻转所有元素。这么一个过程之后就神奇地得到了正确的结果。
 
 [回到目录](#Catalogue)
 
