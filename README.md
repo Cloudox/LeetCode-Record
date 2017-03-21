@@ -85,6 +85,7 @@ LeetCode笔记
   * [278. First Bad Version](#278. First Bad Version)
   * [7. Reverse Integer](#7. Reverse Integer)
   * [189. Rotate Array](#189. Rotate Array)
+  * [165. Compare Version Numbers](#165. Compare Version Numbers)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6253,6 +6254,97 @@ private void reverse(int[] nums, int i, int j){
 ```
 
 这里他用了三次不同的翻转函数，先翻转第一到要旋转的元素之前的元素，然后翻转要旋转的那些元素，最后翻转所有元素。这么一个过程之后就神奇地得到了正确的结果。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="165. Compare Version Numbers"/>165. Compare Version Numbers
+### 问题：
+>Compare two version numbers version1 and version2.
+
+>If version1 > version2 return 1, if version1 < version2 return -1, otherwise return 0.
+
+>You may assume that the version strings are non-empty and contain only digits and the . character.
+
+>The . character does not represent a decimal point and is used to separate number sequences.
+
+>For instance, 2.5 is not "two and a half" or "half way to version three", it is the fifth second-level revision of the second first-level revision.
+
+>Here is an example of version numbers ordering:
+
+>>0.1 < 1.1 < 1.2 < 13.37
+
+### 大意：
+>比较两个版本号 version1 和 version2。
+
+> 如果 version1 > version2 就返回 ，如果 version1 < version2 就返回 -1，否则返回0。
+
+>你可以假设版本字符串是非空的而且只包含数字和 “.” 字符。
+
+>“.”字符不表示小数点，是用来区分数字序号的。
+
+>比如说，2.5不是指超过2一半或者还有一半到版本3，而是第二个版本的第五次迭代。
+
+>这里是一个版本号顺序的例子：
+
+>>0.1 < 1.1 < 1.2 < 13.37
+
+### 思路：
+比较版本号实在系统开发中经常用到的东西，题目中的例子给的其实有点不靠谱，版本号真正特殊的地方在于会存在多个小数点，也就是会有 1.3.2 这种版本号存在，真正要判断大小的也是这类版本。
+
+我们首先把两个版本号字符串用 split 函数根据小数点分割成数组，注意要根据小数点区分不能直接只写小数点，还要用转义符，否则无法分割，具体看下面的代码。
+
+然后依次比较每位数字的大小，只要出现同一个位置上某一方更大，就可以直接返回结果了。需要注意的是不能直接比较字符串，需要转成int去比较，因为题目会给出“000”这种多个0的情况，字符串直接比较不了，转成int后就都是0了。
+
+当某个版本号的数字全部比较完后，看看另一个版本号还有没有内容，有的话也不能急着判断是另一个大，因为存在 1.0 这种情况，它和 1 是一样大的，就是多一位0，那是不是只用判断下一位是不是0呢，也不是，还有 1.0.1 的情况，它就比 1 大。所以，当某个版本号还有剩余的时候，我们要看看剩余的部分有没有不是0的部分，这里同样必须转成int去和0比较，字符串无法全部囊括。
+
+自己测试下面几个用例就差不多了：
+
+* 1.1 和 1.2 
+* 1 和 1.0 
+* 1 和 1.0.1
+* 1.00.0 和 1.0
+* 1 和 1.00
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int compareVersion(String version1, String version2) {
+        String[] arr1 = version1.split("\\.");
+        String[] arr2 = version2.split("\\.");
+        // System.out.println(arr1.length + " " + arr2.length);
+        int i = 0;
+        while (i < arr1.length && i < arr2.length) {
+            // System.out.println(arr1[i] + " " + arr2[i]);
+            int a = Integer.valueOf(arr1[i]).intValue();
+            int b = Integer.valueOf(arr2[i]).intValue();
+            if (a > b) return 1;
+            else if (a < b) return -1;
+            
+            i++;
+        }
+        if (i < arr1.length) {
+            while (i < arr1.length) {
+                int version = Integer.valueOf(arr1[i]).intValue();
+                if (version != 0) return 1;
+                i++;
+            }
+            return 0;
+        } 
+        else if ( i < arr2.length) {
+            while (i < arr2.length) {
+                int version = Integer.valueOf(arr2[i]).intValue();
+                if (version != 0) return -1;
+                i++;
+            }
+            return 0;
+        }
+        else return 0;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
