@@ -86,6 +86,7 @@ LeetCode笔记
   * [7. Reverse Integer](#7. Reverse Integer)
   * [189. Rotate Array](#189. Rotate Array)
   * [165. Compare Version Numbers](#165. Compare Version Numbers)
+  * [8. String to Integer (atoi)](#8. String to Integer (atoi))
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6342,6 +6343,79 @@ public class Solution {
             return 0;
         }
         else return 0;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="8. String to Integer (atoi)"/>8. String to Integer (atoi)
+###问题：
+
+>Implement atoi to convert a string to an integer.
+
+>Hint: Carefully consider all possible input cases. If you want a challenge, please do not see below and ask yourself what are the possible input cases.
+
+>Notes: It is intended for this problem to be specified vaguely (ie, no given input specs). You are responsible to gather all the input requirements up front.
+
+###大意：
+
+>实现 atoi 来将一个字符串转为一个整型。
+
+>暗示：小心考虑所有可能的输入案例。如果你想要挑战，请不要看下面的内容并问问你自己有哪些可能的输入案例。
+
+>注意：这个问题特意说的比较模糊（比如，没有给出输入规则）。你需要收集所有输入需求。
+
+###思路：
+
+字符串转换成整型本身不难，麻烦的在于考虑到所有可能的情况并作出处理。
+
+可能有的情况有：
+
+* 开头的负数
+* 开头的正数
+* 0 开头的数字
+* 空格开始的数字
+* 数字直接开头
+* 除了以上的情况外其余开头的都返回0
+* 数字中间夹了其余非数字字符的话就不考虑后面的内容了
+* 基于以上考虑，我的代码考虑了很多情况并进行处理。
+
+###代码（Java）：
+
+```objective-c
+public class Solution {
+    public int myAtoi(String str) {
+        String intStr = "";
+        char[] tempArr = str.toCharArray();
+        char[] arr = new char[tempArr.length];
+        int num = 0;
+        int j = 0;
+        boolean ok = false;
+        for (; num < tempArr.length; num++) {
+            if (ok || tempArr[num] - ' ' != 0) {
+                ok = true;
+                arr[j] = tempArr[num];
+                j++;
+            }
+        }
+
+        if (arr.length == 0 || !((arr[0] - '0' <= 9 && arr[0] - '0' >= 0) || arr[0] - '-' == 0 || arr[0] - '+' == 0)) return 0;
+        int i = 0;
+        if (arr[0] - '+' == 0) i = 1;
+        for (; i < arr.length; i++) {
+            if ((arr[i] - '0' <= 9 && arr[i] - '0' >= 0) || (i == 0 && arr[i] - '-' == 0)) {
+                intStr = intStr + arr[i];
+            } else break;
+        }
+        if (intStr.length() == 0) return 0;
+        else if (intStr.equals("-")) return 0;
+        else if (i > 11) return intStr.charAt(0) - '-' == 0 ? -2147483648 : 2147483647;
+        else if (Long.parseLong(intStr) > 2147483647) return 2147483647;
+        else if (Long.parseLong(intStr) < -2147483648) return -2147483648;
+        else return Integer.valueOf(intStr).intValue();
     }
 }
 ```
