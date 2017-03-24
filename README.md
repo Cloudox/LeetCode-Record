@@ -6436,13 +6436,13 @@ public class Solution {
 
 > Example:
 
->>![](http://img.blog.csdn.net/20161225153506164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/419Image1.png)
 
 >In the above board there are 2 battleships.
 
 >Invalid Example:
 
->>![](http://img.blog.csdn.net/20161225153520389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/419Image2.png)
 
 > This is an invalid board that you will not receive - as battleships will always have a cell separating between them.
 
@@ -6458,13 +6458,13 @@ Could you do it in one-pass, using only O(1) extra memory and without modifying 
 
 >例子：
 
->>![](http://img.blog.csdn.net/20161225153506164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/419Image1.png)
 
 >上面的面板上有两艘战舰。
 
 >无效的例子：
 
->>![](http://img.blog.csdn.net/20161225153520389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/419Image2.png)
 
 >这是一个无效的面板，你不会接受到 - 因为两艘战舰一定会有空白的点。
 
