@@ -80,6 +80,15 @@ LeetCode笔记
   * [204. Count Primes](#204. Count Primes)
   * [155. Min Stack](#155. Min Stack)
   * [6. ZigZag Conversion](#6. ZigZag Conversion)
+  * [125. Valid Palindrome](#125. Valid Palindrome)
+  * [168. Excel Sheet Column Title](#168. Excel Sheet Column Title)
+  * [278. First Bad Version](#278. First Bad Version)
+  * [7. Reverse Integer](#7. Reverse Integer)
+  * [189. Rotate Array](#189. Rotate Array)
+  * [165. Compare Version Numbers](#165. Compare Version Numbers)
+  * [8. String to Integer (atoi)](#8. String to Integer (atoi))
+* Medium
+  * [419. Battleships in a Board](#419. Battleships in a Board)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -5874,7 +5883,7 @@ public class MinStack {
 ### 思路：
 这道题的意思就题目来看其实不太好理解，这里借用别人画的一张图就能一目了然了：
 
-![](http://img.blog.csdn.net/20161216103218631?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/6Image.png)
 
 如图，行数就是给出的数字，按照图中的数字顺序将原本的字符串中一个个字符去按照循环对角的结构放置。
 
@@ -5905,6 +5914,634 @@ public class Solution {
 }
 ```
  
+ [回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="125. Valid Palindrome"/>125. Valid Palindrome
+### 问题：
+>Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+
+>For example,
+
+>"A man, a plan, a canal: Panama" is a palindrome.
+
+>"race a car" is not a palindrome.
+
+>Note:
+
+>Have you consider that the string might be empty? This is a good question to ask during an interview.
+
+>For the purpose of this problem, we define empty string as valid palindrome.
+
+### 大意：
+>给出一个字符串，判断它是不是回文，只考虑大小写字母和数字，忽略大小写。
+
+>例子：
+
+>"A man, a plan, a canal: Panama" 是回文。
+
+>"race a car" 不是回文。
+
+>注意：
+
+>你有考虑字符串可能为空吗？这是面试时的一个好问题。
+
+>对于这道题的目的，我们假设空字符串也是有效的回文。
+
+### 思路：
+又是一道判断回文的题目，不同的是这道题只判断字符串中的大小写字母和数字，从例子中也可以看出，空格和其他标点符号都跟没看到一样，也就是在做的时候要忽略，另外大小写字母忽略，看做是相同的，这也就意味着在判断是否相同时要将大小写字母转为同一个格式。
+
+由于要先判断一个字符是不是数字或者大小写字母，我们做一个方法来专门检测这个事情，避免主体代码太冗长。
+
+在主体代码中，我们用两个指针，一个从头开始遍历，一个从末尾开始遍历，当头尾都找到字母或者数字后，就进行对比是否是相同的，有不同说明不是回文，否则就是回文，在比较时我们将大写字母都转化成小写来对比，当然也可以反过来。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public boolean isLetterOrDigit(char test) {
+        if ((test - '0' >= 0 && test - '0' <= 9) || (test - 'a' >= 0 && test - 'a' <= 25) || (test - 'A' >= 0 && test - 'A' <= 25)) return true;
+        else return false;
+    }
+    
+    public boolean isPalindrome(String s) {
+        if (s.length() == 0) return true;
+        
+        int i = 0;
+        int k = s.length() - 1;
+        
+        while (i <= k) {
+            char tempI = s.charAt(i);
+            char tempK = s.charAt(k);
+            
+            if (!isLetterOrDigit(tempI)) i++;
+            else if (!isLetterOrDigit(tempK)) k--;
+            else {
+                if (Character.toLowerCase(tempI) != Character.toLowerCase(tempK)) return false;
+                else {
+                    i++;
+                    k--;
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+ 
+ [回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="168. Excel Sheet Column Title"/>168. Excel Sheet Column Title
+### 问题：
+>Given a positive integer, return its corresponding column title as appear in an Excel sheet.
+
+>For example:
+
+>>    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+
+### 大意：
+>给出一个正整数，返回它对应的Excel表格中的列标题。
+
+>例子：
+
+>>    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+
+### 思路：
+我们找一下规律，一个字母的有26列，两个字母的从AA到ZZ总共有26*26列，三个字母的总共有26*26*26列。因此我们要找出对应的列标题，只需要根据给出的数字来一位一位地找对应的字母就可以了。
+
+比如给出的数字对26取余数得到的数字，就是列标题的最后一个字母的序号。将给出的数字除以26，再取余，就可以得到倒数第二位的字母序号，一直到什么时候为止呢，到除以26为0打止，这时候已经没有更高位的字母了。
+
+**其实可以理解为将一个十进制的数字转换成一个26进制的数字**，跟转换成二进制是一个道理。
+
+注意我们要得到数字需要使用ASCII对应的数字来进行转换，A对应的码是65，所以我们每次转换时都要将余数+65来转换成字符，但是如果是对应的Z，其实除以26是没有余数的，因此在每次取余之前，都要将n减一。
+
+同样的，在字符串拼接时使用 + 拼接是很慢的，换成StringBuffer来拼接会快很多。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String convertToTitle(int n) {
+        String result = "";
+        while (n > 0) {
+            n--;
+            result = String.valueOf((char)(n%26 + 65)) + result;
+            n = n / 26;
+        }
+        
+        return result;
+    }
+}
+```
+
+ [回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="278. First Bad Version"/>278. First Bad Version
+### 问题：
+>You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+
+>Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, which causes all the following ones to be bad.
+
+>You are given an APIwhich will return whether version is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+
+### 大意：
+>你是一个产品经理，现在领导一个小组来开发一个新产品。不幸的是，你产品最近的版本没通过质检。每个版本都是基于前一个版本开发的，在坏的版本后的所有版本都是坏的。
+
+>假设你有n个版本 [1, 2, ..., n] 并且想要找到第一个坏的，也就是导致后面都坏的那个。
+
+>给你一个API， bool isBadVersion(version) ，可以返回一个版本是不是坏的。实现一个函数来找到最开始IDE坏版本。你应该最小化API的调用次数。
+
+### 思路：
+说了这么多，归根结底就是个快速查找的问题。
+
+快速查找的方法很多，这里使用二分法最简单。
+
+因为每个坏的版本后面一定都是坏的，所以可以通过判断中间的版本是不是好的来决定是要继续检查前面一半还是后面一半。如果检查中间的版本是坏的，就在前面一半继续检查中间的版本，否则在后面一半继续检查。
+
+这里我用递归做，也可以用循环来做，都需要创建一个开始和一个结束的变量，才能进行二分法。
+
+注意在查看坏的之后，要判断它前一个版本是否是好的，这样才能找到第一个坏的，但是还要注意如果这是第一个版本，直接就要返回了，因为没有更早的版本了。
+
+注意题目的测试用例会用大超过int的大数，所以我使用了long。
+
+### 代码（Java）：
+
+```java
+/* The isBadVersion API is defined in the parent class VersionControl.
+      boolean isBadVersion(int version); */
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        return (int)findBad(1l, (long)n);
+    }
+    
+    public long findBad(long start, long end) {
+        if (start == end) return start;
+        if (isBadVersion((int)((start+end)/2))) {// 当前查找的是坏的，检查前面的一个数是不是好的，或者当前数是否为1
+            if ((start+end)/2 == 1 || !isBadVersion((int)((start+end)/2-1))) return (start+end)/2;
+            else return findBad(start, (start+end)/2-1);
+        } else return findBad((start+end)/2+1, end);
+    }
+}
+```
+
+ [回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="7. Reverse Integer"/>7. Reverse Integer
+### 问题：
+>Reverse digits of an integer.
+
+>Example1: x = 123, return 321
+
+>Example2: x = -123, return -321
+
+### 大意：
+>反转一个整型数的数字。
+
+>例1：x = 123, return 321
+
+>例2：x = -123, return -321
+
+### 思路：
+题目很简洁，注意是有负数的。
+
+我的方法比较直接，先转成String，有负号就保留负号，然后一个从尾部往前取数字，从新字符串的头部往后放，就反转过来了。最后再转成int型返回。
+
+这里使用了StringBuffer来加快拼接字符串的速度，不过依然没有别人的方法快。
+
+注意题目很无聊的会传超出int范围的数字给你测试，明明参数写明了是int型的还给超大数，那就只能做一个try-catch，如果是超大数转换失败，那就直接返回0。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int reverse(int x) {
+        String xStr = String.valueOf(x);
+        String reverse = "";
+        int start = 0;
+        if (xStr.charAt(0) == '-') {
+            reverse = "-";
+            start = 1;
+        }
+        StringBuffer reverseBuffer = new StringBuffer(reverse);
+        for (int i = xStr.length()-1; i >= start; i--) {
+            reverseBuffer.append(xStr.charAt(i));
+            reverse = reverse + xStr.charAt(i);
+        }
+        reverse = reverseBuffer.toString();
+        try {
+            return Integer.valueOf(reverse).intValue();
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+	public int reverse(int x)
+	{
+	    int result = 0;
+	
+	    while (x != 0)
+	    {
+	        int tail = x % 10;
+	        int newResult = result * 10 + tail;
+	        if ((newResult - tail) / 10 != result)
+	        { return 0; }
+	        result = newResult;
+	        x = x / 10;
+	    }
+	
+	    return result;
+	}
+}
+```
+
+这个做法是直接左数字计算，每次取余得到最末尾的数字，取出来之后原数字除以10，取出来的数字加到新数字末尾去，不过新数字要先乘以10，也就是所有数字提高一位。他中间有个判断 (newResult - tail) / 10 != result ，其实也是为了防止超大数溢出，如果溢出了就返回0。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="189. Rotate Array"/>189. Rotate Array
+### 问题：
+>Rotate an array of n elements to the right by k steps.
+
+>For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4].
+
+### 大意：
+>旋转一个有n个元素的数组，右移k步。
+
+>比如，n = 7，k = 3，数组 [1,2,3,4,5,6,7] 就被旋转为 [5,6,7,1,2,3,4]。
+
+### 思路：
+旋转本身没太多特别好说的，我的做法是用另一个数组来记录旋转后的内容，然后复制回原数组。当然记录时是从第nums.length-k个元素开始记录，记录到末尾后再去从头开始记录到刚才那个元素。
+
+需要注意的是这里并非返回一个数组，程序会直接读取原数组位置的内容来检查，所以需要把旋转后的结果一个个复制回去。
+
+还有，给出的k可能会大于数组长度，这时候就要对原数组长度取模，才会得出真正需要旋转的个数。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public void rotate(int[] nums, int k) {
+        k %= nums.length;
+        int[] rotateNums = new int[nums.length];
+        int index = 0;
+        for (int i = nums.length-k; i < nums.length; i++) {
+            rotateNums[index] = nums[i];
+            index++;
+        }
+        for (int i = 0; i < nums.length-k; i++) {
+            rotateNums[index] = nums[i];
+            index++;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = rotateNums[i];
+        }
+        return;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public void rotate(int[] nums, int k) {
+
+    if(nums == null || nums.length < 2){
+        return;
+    }
+    
+    k = k % nums.length;
+    reverse(nums, 0, nums.length - k - 1);
+    reverse(nums, nums.length - k, nums.length - 1);
+    reverse(nums, 0, nums.length - 1);
+    
+}
+
+private void reverse(int[] nums, int i, int j){
+    int tmp = 0;       
+    while(i < j){
+        tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+        i++;
+        j--;
+    }
+}
+```
+
+这里他用了三次不同的翻转函数，先翻转第一到要旋转的元素之前的元素，然后翻转要旋转的那些元素，最后翻转所有元素。这么一个过程之后就神奇地得到了正确的结果。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="165. Compare Version Numbers"/>165. Compare Version Numbers
+### 问题：
+>Compare two version numbers version1 and version2.
+
+>If version1 > version2 return 1, if version1 < version2 return -1, otherwise return 0.
+
+>You may assume that the version strings are non-empty and contain only digits and the . character.
+
+>The . character does not represent a decimal point and is used to separate number sequences.
+
+>For instance, 2.5 is not "two and a half" or "half way to version three", it is the fifth second-level revision of the second first-level revision.
+
+>Here is an example of version numbers ordering:
+
+>>0.1 < 1.1 < 1.2 < 13.37
+
+### 大意：
+>比较两个版本号 version1 和 version2。
+
+> 如果 version1 > version2 就返回 ，如果 version1 < version2 就返回 -1，否则返回0。
+
+>你可以假设版本字符串是非空的而且只包含数字和 “.” 字符。
+
+>“.”字符不表示小数点，是用来区分数字序号的。
+
+>比如说，2.5不是指超过2一半或者还有一半到版本3，而是第二个版本的第五次迭代。
+
+>这里是一个版本号顺序的例子：
+
+>>0.1 < 1.1 < 1.2 < 13.37
+
+### 思路：
+比较版本号实在系统开发中经常用到的东西，题目中的例子给的其实有点不靠谱，版本号真正特殊的地方在于会存在多个小数点，也就是会有 1.3.2 这种版本号存在，真正要判断大小的也是这类版本。
+
+我们首先把两个版本号字符串用 split 函数根据小数点分割成数组，注意要根据小数点区分不能直接只写小数点，还要用转义符，否则无法分割，具体看下面的代码。
+
+然后依次比较每位数字的大小，只要出现同一个位置上某一方更大，就可以直接返回结果了。需要注意的是不能直接比较字符串，需要转成int去比较，因为题目会给出“000”这种多个0的情况，字符串直接比较不了，转成int后就都是0了。
+
+当某个版本号的数字全部比较完后，看看另一个版本号还有没有内容，有的话也不能急着判断是另一个大，因为存在 1.0 这种情况，它和 1 是一样大的，就是多一位0，那是不是只用判断下一位是不是0呢，也不是，还有 1.0.1 的情况，它就比 1 大。所以，当某个版本号还有剩余的时候，我们要看看剩余的部分有没有不是0的部分，这里同样必须转成int去和0比较，字符串无法全部囊括。
+
+自己测试下面几个用例就差不多了：
+
+* 1.1 和 1.2 
+* 1 和 1.0 
+* 1 和 1.0.1
+* 1.00.0 和 1.0
+* 1 和 1.00
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int compareVersion(String version1, String version2) {
+        String[] arr1 = version1.split("\\.");
+        String[] arr2 = version2.split("\\.");
+        // System.out.println(arr1.length + " " + arr2.length);
+        int i = 0;
+        while (i < arr1.length && i < arr2.length) {
+            // System.out.println(arr1[i] + " " + arr2[i]);
+            int a = Integer.valueOf(arr1[i]).intValue();
+            int b = Integer.valueOf(arr2[i]).intValue();
+            if (a > b) return 1;
+            else if (a < b) return -1;
+            
+            i++;
+        }
+        if (i < arr1.length) {
+            while (i < arr1.length) {
+                int version = Integer.valueOf(arr1[i]).intValue();
+                if (version != 0) return 1;
+                i++;
+            }
+            return 0;
+        } 
+        else if ( i < arr2.length) {
+            while (i < arr2.length) {
+                int version = Integer.valueOf(arr2[i]).intValue();
+                if (version != 0) return -1;
+                i++;
+            }
+            return 0;
+        }
+        else return 0;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="8. String to Integer (atoi)"/>8. String to Integer (atoi)
+###问题：
+
+>Implement atoi to convert a string to an integer.
+
+>Hint: Carefully consider all possible input cases. If you want a challenge, please do not see below and ask yourself what are the possible input cases.
+
+>Notes: It is intended for this problem to be specified vaguely (ie, no given input specs). You are responsible to gather all the input requirements up front.
+
+###大意：
+
+>实现 atoi 来将一个字符串转为一个整型。
+
+>暗示：小心考虑所有可能的输入案例。如果你想要挑战，请不要看下面的内容并问问你自己有哪些可能的输入案例。
+
+>注意：这个问题特意说的比较模糊（比如，没有给出输入规则）。你需要收集所有输入需求。
+
+###思路：
+
+字符串转换成整型本身不难，麻烦的在于考虑到所有可能的情况并作出处理。
+
+可能有的情况有：
+
+* -开头的负数
+* +开头的正数
+* 0 开头的数字
+* 空格开始的数字
+* 数字直接开头
+* 除了以上的情况外其余开头的都返回0
+* 数字中间夹了其余非数字字符的话就不考虑后面的内容了
+* 基于以上考虑，我的代码考虑了很多情况并进行处理。
+
+###代码（Java）：
+
+```objective-c
+public class Solution {
+    public int myAtoi(String str) {
+        String intStr = "";
+        char[] tempArr = str.toCharArray();
+        char[] arr = new char[tempArr.length];
+        int num = 0;
+        int j = 0;
+        boolean ok = false;
+        for (; num < tempArr.length; num++) {
+            if (ok || tempArr[num] - ' ' != 0) {
+                ok = true;
+                arr[j] = tempArr[num];
+                j++;
+            }
+        }
+
+        if (arr.length == 0 || !((arr[0] - '0' <= 9 && arr[0] - '0' >= 0) || arr[0] - '-' == 0 || arr[0] - '+' == 0)) return 0;
+        int i = 0;
+        if (arr[0] - '+' == 0) i = 1;
+        for (; i < arr.length; i++) {
+            if ((arr[i] - '0' <= 9 && arr[i] - '0' >= 0) || (i == 0 && arr[i] - '-' == 0)) {
+                intStr = intStr + arr[i];
+            } else break;
+        }
+        if (intStr.length() == 0) return 0;
+        else if (intStr.equals("-")) return 0;
+        else if (i > 11) return intStr.charAt(0) - '-' == 0 ? -2147483648 : 2147483647;
+        else if (Long.parseLong(intStr) > 2147483647) return 2147483647;
+        else if (Long.parseLong(intStr) < -2147483648) return -2147483648;
+        else return Integer.valueOf(intStr).intValue();
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="419. Battleships in a Board"/>419. Battleships in a Board
+### 问题：
+>Given an 2D board, count how many different battleships are in it. The battleships are represented with 'X's, empty slots are represented with '.'s. You may assume the following rules:
+
+>* You receive a valid board, made of only battleships or empty slots.
+* Battleships can only be placed horizontally or vertically. In other words, they can only be made of the shape 1xN (1 row, N columns) or Nx1 (N rows, 1 column), where N can be of any size.
+* At least one horizontal or vertical cell separates between two battleships - there are no adjacent battleships.
+
+> Example:
+
+>>![](http://img.blog.csdn.net/20161225153506164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>In the above board there are 2 battleships.
+
+>Invalid Example:
+
+>>![](http://img.blog.csdn.net/20161225153520389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+> This is an invalid board that you will not receive - as battleships will always have a cell separating between them.
+
+>Follow up:
+Could you do it in one-pass, using only O(1) extra memory and without modifying the value of the board?
+
+### 大意：
+>给出一个2D面板，计算其中有多少不同的战舰。战舰由‘X’表示，空地由‘.’表示。你可以假设满足下面的规则：
+
+>* 你会接受到一个有效的面板，只由战舰和空地组成。
+>* 战舰只能是水平的或者垂直的。也就是说，只能是 1xN（一行N列）或者 Nx1（N行一列）的形状，N可以是任何尺寸。
+>* 两个战舰之间至少有一个空地 - 没有相连的战舰。
+
+>例子：
+
+>>![](http://img.blog.csdn.net/20161225153506164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>上面的面板上有两艘战舰。
+
+>无效的例子：
+
+>>![](http://img.blog.csdn.net/20161225153520389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>这是一个无效的面板，你不会接受到 - 因为两艘战舰一定会有空白的点。
+
+>进阶：
+>你能不能使用O（1）的内存，并且不修改面板的值来完成？
+
+### 思路：
+这道题的情景很像我们玩的战船游戏，所以做起来也很有意思。
+
+我们最好从左上角开始，遍历每个点，如果有X，就看它往右和往下有没有相邻的X，有的话也算做一艘战舰。已经检查过的点我们就不检查了，所以用一个二维数组来记录检查过的点。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int countBattleships(char[][] board) {
+        int result = 0;
+        // 用来记录有没有判断过
+        int[][] tempBoard = new int[board.length][board[0].length];
+        for (int i = 0; i < tempBoard.length; i++) {
+            for (int j = 0; j < tempBoard[0].length; j++) tempBoard[i][j] = 0;
+        }
+        
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (tempBoard[i][j] == 0) {
+                    if (board[i][j] - 'X' == 0) {
+                        System.out.println(i + " " + j);
+                        if (j+1 < board[0].length && board[i][j+1] - 'X' == 0) {// 竖向战舰
+                            for (int k = j+1; k < board[0].length; k++) {
+                                if (board[i][k] - 'X' == 0) tempBoard[i][k] = 1;
+                                else break;
+                            }
+                        } else if (i+1 < board.length && board[i+1][j] - 'X' == 0) {// 横向战舰
+                            for (int k = i+1; k < board.length; k++) {
+                                if (board[k][j] - 'X' == 0) tempBoard[k][j] = 1;
+                                else break;
+                            }
+                        }
+                        
+                        tempBoard[i][j] = 1;
+                        result ++;
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+    public int countBattleships(char[][] board) {
+        int m = board.length;
+        if (m==0) return 0;
+        int n = board[0].length;
+        
+        int count=0;
+        
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                if (board[i][j] == '.') continue;
+                if (i > 0 && board[i-1][j] == 'X') continue;
+                if (j > 0 && board[i][j-1] == 'X') continue;
+                count++;
+            }
+        }
+        
+        return count;
+    }
+```
+
+上面我的做法其实用了O（n）的内存，而且要进行多次循环，很耗时，这个就简单多了，每次遇到一个坐标，如果它既不是空地，他的上面和左边也没有X，那就说明这是一个新战舰，只记录这种新战舰的个数，很节省空间和时间。
+
 [回到目录](#Catalogue)
 
 -------------------------
