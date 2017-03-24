@@ -87,6 +87,8 @@ LeetCode笔记
   * [189. Rotate Array](#189. Rotate Array)
   * [165. Compare Version Numbers](#165. Compare Version Numbers)
   * [8. String to Integer (atoi)](#8. String to Integer (atoi))
+* Medium
+  * [419. Battleships in a Board](#419. Battleships in a Board)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6419,6 +6421,126 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="419. Battleships in a Board"/>419. Battleships in a Board
+### 问题：
+>Given an 2D board, count how many different battleships are in it. The battleships are represented with 'X's, empty slots are represented with '.'s. You may assume the following rules:
+
+>* You receive a valid board, made of only battleships or empty slots.
+* Battleships can only be placed horizontally or vertically. In other words, they can only be made of the shape 1xN (1 row, N columns) or Nx1 (N rows, 1 column), where N can be of any size.
+* At least one horizontal or vertical cell separates between two battleships - there are no adjacent battleships.
+
+> Example:
+
+>>![](http://img.blog.csdn.net/20161225153506164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>In the above board there are 2 battleships.
+
+>Invalid Example:
+
+>>![](http://img.blog.csdn.net/20161225153520389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+> This is an invalid board that you will not receive - as battleships will always have a cell separating between them.
+
+>Follow up:
+Could you do it in one-pass, using only O(1) extra memory and without modifying the value of the board?
+
+### 大意：
+>给出一个2D面板，计算其中有多少不同的战舰。战舰由‘X’表示，空地由‘.’表示。你可以假设满足下面的规则：
+
+>* 你会接受到一个有效的面板，只由战舰和空地组成。
+>* 战舰只能是水平的或者垂直的。也就是说，只能是 1xN（一行N列）或者 Nx1（N行一列）的形状，N可以是任何尺寸。
+>* 两个战舰之间至少有一个空地 - 没有相连的战舰。
+
+>例子：
+
+>>![](http://img.blog.csdn.net/20161225153506164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>上面的面板上有两艘战舰。
+
+>无效的例子：
+
+>>![](http://img.blog.csdn.net/20161225153520389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>这是一个无效的面板，你不会接受到 - 因为两艘战舰一定会有空白的点。
+
+>进阶：
+>你能不能使用O（1）的内存，并且不修改面板的值来完成？
+
+### 思路：
+这道题的情景很像我们玩的战船游戏，所以做起来也很有意思。
+
+我们最好从左上角开始，遍历每个点，如果有X，就看它往右和往下有没有相邻的X，有的话也算做一艘战舰。已经检查过的点我们就不检查了，所以用一个二维数组来记录检查过的点。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int countBattleships(char[][] board) {
+        int result = 0;
+        // 用来记录有没有判断过
+        int[][] tempBoard = new int[board.length][board[0].length];
+        for (int i = 0; i < tempBoard.length; i++) {
+            for (int j = 0; j < tempBoard[0].length; j++) tempBoard[i][j] = 0;
+        }
+        
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (tempBoard[i][j] == 0) {
+                    if (board[i][j] - 'X' == 0) {
+                        System.out.println(i + " " + j);
+                        if (j+1 < board[0].length && board[i][j+1] - 'X' == 0) {// 竖向战舰
+                            for (int k = j+1; k < board[0].length; k++) {
+                                if (board[i][k] - 'X' == 0) tempBoard[i][k] = 1;
+                                else break;
+                            }
+                        } else if (i+1 < board.length && board[i+1][j] - 'X' == 0) {// 横向战舰
+                            for (int k = i+1; k < board.length; k++) {
+                                if (board[k][j] - 'X' == 0) tempBoard[k][j] = 1;
+                                else break;
+                            }
+                        }
+                        
+                        tempBoard[i][j] = 1;
+                        result ++;
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+    public int countBattleships(char[][] board) {
+        int m = board.length;
+        if (m==0) return 0;
+        int n = board[0].length;
+        
+        int count=0;
+        
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                if (board[i][j] == '.') continue;
+                if (i > 0 && board[i-1][j] == 'X') continue;
+                if (j > 0 && board[i][j-1] == 'X') continue;
+                count++;
+            }
+        }
+        
+        return count;
+    }
+```
+
+上面我的做法其实用了O（n）的内存，而且要进行多次循环，很耗时，这个就简单多了，每次遇到一个坐标，如果它既不是空地，他的上面和左边也没有X，那就说明这是一个新战舰，只记录这种新战舰的个数，很节省空间和时间。
 
 [回到目录](#Catalogue)
 
