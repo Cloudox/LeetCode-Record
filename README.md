@@ -89,6 +89,7 @@ LeetCode笔记
   * [8. String to Integer (atoi)](#8. String to Integer (atoi))
 * Medium
   * [419. Battleships in a Board](#419. Battleships in a Board)
+  * [338. Counting Bits](#338. Counting Bits)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6541,6 +6542,81 @@ public class Solution {
 ```
 
 上面我的做法其实用了O（n）的内存，而且要进行多次循环，很耗时，这个就简单多了，每次遇到一个坐标，如果它既不是空地，他的上面和左边也没有X，那就说明这是一个新战舰，只记录这种新战舰的个数，很节省空间和时间。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="338. Counting Bits"/>338. Counting Bits
+### 问题：
+>Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1's in their binary representation and return them as an array.
+
+>Example:
+For num = 5 you should return [0,1,1,2,1,2].
+
+>Follow up:
+
+>* It is very easy to come up with a solution with run time O(n*sizeof(integer)). But can you do it in linear time O(n) /possibly in a single pass?
+* Space complexity should be O(n).
+* Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.
+
+### 大意：
+>给出一个非负整数num。对于 0 ≤ i ≤ num 范围的每个数计算它们二进制表示的数中的1的个数，并返回它们组成的数组。
+
+>例子：
+>对 num = 5 你应该返回 [0,1,1,2,1,2]。
+
+>进阶：
+
+>* 很容易找到时间复杂度为 O(n*sizeof(integer))的解决方案。但你能不能在线性时间复杂度O（n）中解决呢？
+>* 康健复杂度需要是O（n）。
+>你能不能像一个boss一样做？不要使用像c++中 __builtin_popcount 一样的内置的函数去做。
+
+### 思路：
+把0~7的二进制表示法的数字列出来，数其中的1的个数，找到一个规律，0对应的数是0，1、2对应的是1个1。往上走只用计算不断除以2一直除到1后，存在余数为1的次数，加上最后的1，就是该数二进制表示法中1的个数。
+
+注意初始化结果数组的时候容量为 num+1，不是 num。
+
+我的做法时间复杂度应该是O（nlogn）。
+
+初始化int型数组后，数组所有元素默认为0，所以对0的判断处理可以略去。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] countBits(int num) {
+        int[] result = new int[num+1];
+        for (int i = 0; i <= num; i++) {
+            if (i == 0) result[i] = 0;
+            else if (i <= 2) result[i] = 1;
+            else {
+                int numberOfOne = 1;
+                int number = i;
+                while (number > 1) {
+                    numberOfOne += number % 2;
+                    number = number / 2;
+                }
+                result[i] = numberOfOne;
+            }
+        }
+        return result;
+
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public int[] countBits(int num) {
+    int[] f = new int[num + 1];
+    for (int i=1; i<=num; i++) f[i] = f[i >> 1] + (i & 1);
+    return f;
+}
+```
+
+这个做法把上面的思想简化了很多，i&1其实就是看最后一位有没有1，也就是取余为1。然后加上 f[i >> 1]，这个其实就是当前数字除以2后对应的数字的1的个数，所以可以看出我的做法做了很多无用功，因为没有利用到已经得出的结果，而这个做法的时间复杂度就是O（n）了。
 
 [回到目录](#Catalogue)
 
