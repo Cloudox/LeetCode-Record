@@ -90,6 +90,7 @@ LeetCode笔记
 * Medium
   * [419. Battleships in a Board](#419. Battleships in a Board)
   * [338. Counting Bits](#338. Counting Bits)
+  * [406. Queue Reconstruction by Height](#406. Queue Reconstruction by Height)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6617,6 +6618,65 @@ public int[] countBits(int num) {
 ```
 
 这个做法把上面的思想简化了很多，i&1其实就是看最后一位有没有1，也就是取余为1。然后加上 f[i >> 1]，这个其实就是当前数字除以2后对应的数字的1的个数，所以可以看出我的做法做了很多无用功，因为没有利用到已经得出的结果，而这个做法的时间复杂度就是O（n）了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="406. Queue Reconstruction by Height"/>406. Queue Reconstruction by Height
+### 问题：
+>Suppose you have a random list of people standing in a queue. Each person is described by a pair of integers (h, k), where h is the height of the person and k is the number of people in front of this person who have a height greater than or equal to h. Write an algorithm to reconstruct the queue.
+
+>Note:
+The number of people is less than 1,100.
+
+>Example
+
+>>Input:
+[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+>>Output:
+[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+
+### 大意：
+>假设你有一个随机顺序的人站在队列中。每个人都被一对整数 (h, k) 描述，h 是人的高度，k 是站在他前面的人中高度大于等于他的数量。写一个算法来重构队列。
+
+>注意：
+>人的数量少于1100。
+
+>例子：
+
+>>输入：
+>[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+>>输出：
+>[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+
+### 思路：
+这个需求中其实主要要抓到最大的规律。
+
+首先我们将人全部从高到低排个序，如果一样高，就看谁的 k 大谁就拍前面。这时我们得到了一堆从高到低的，等高中 k 大在前的人。
+
+现在，遍历这个排序后的数组，按照每个人的 k 的值将其一个个插入到对应的位置。相同位置的，后插入的一定小于先插入的，所以在前面，而越后插入的人，已经插过的所有人都比他高，它插在任何位置，前面的人都比他高，高的个数就正好是他的 k 值。即使后面又在他前面插了人，也比他矮。
+
+PS：List 的 add 方法如果带有两个参数，第一个整型参数是指插入的位置。
+
+### 他山之石：
+
+```java
+public class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people,new Comparator<int[]>(){
+           public int compare(int[] p1, int[] p2){
+               return p1[0]!=p2[0]?Integer.compare(p2[0],p1[0]): Integer.compare(p1[1],p2[1]);
+           }
+        });
+        List<int[]> list = new LinkedList();
+        for (int[] ppl: people) list.add(ppl[1], ppl);
+        return list.toArray(new int[people.length][] );
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
