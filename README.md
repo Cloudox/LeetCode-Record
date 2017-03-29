@@ -91,6 +91,7 @@ LeetCode笔记
   * [419. Battleships in a Board](#419. Battleships in a Board)
   * [338. Counting Bits](#338. Counting Bits)
   * [406. Queue Reconstruction by Height](#406. Queue Reconstruction by Height)
+  * [413. Arithmetic Slices](#413. Arithmetic Slices)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6677,6 +6678,98 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="413. Arithmetic Slices"/>413. Arithmetic Slices
+### 问题：
+>A sequence of number is called arithmetic if it consists of at least three elements and if the difference between any two consecutive elements is the same.
+
+>For example, these are arithmetic sequence:
+
+>>1, 3, 5, 7, 9
+7, 7, 7, 7
+3, -1, -5, -9
+
+>The following sequence is not arithmetic.
+
+>>1, 1, 2, 5, 7
+
+>A zero-indexed array A consisting of N numbers is given. A slice of that array is any pair of integers (P, Q) such that 0 <= P < Q < N.
+
+>A slice (P, Q) of array A is called arithmetic if the sequence:
+A[P], A[p + 1], ..., A[Q - 1], A[Q] is arithmetic. In particular, this means that P + 1 < Q.
+
+>The function should return the number of arithmetic slices in the array A.
+
+
+>Example:
+
+>>A = [1, 2, 3, 4]
+
+>>return: 3, for 3 arithmetic slices in A: [1, 2, 3], [2, 3, 4] and [1, 2, 3, 4] itself.
+
+### 大意：
+>如果一序列的数字至少由三个数字组成且每两个相邻的数字间的差值都一样，就称该序列为 arithmetic 。
+
+>比如，下面这些是 arithmetic 序列：
+>>1, 3, 5, 7, 9
+7, 7, 7, 7
+3, -1, -5, -9
+
+>而下面的序列不是 arithmetic 序列：
+>>1, 1, 2, 5, 7
+
+>一个零索引的数组A由N个数字组成。其中的一截数字 （P，Q）， 0 <= P < Q < N。
+
+>如果序列 A[P], A[p + 1], ..., A[Q - 1], A[Q] 是arithmetic，就称数组的一截数字（P，Q）是 arithmetic。尤其是，这意味着 P + 1 < Q。
+
+>函数需要返回数组A中 arithmetic 截的数量。
+
+>例子：
+>>A = [1, 2, 3, 4]
+>返回 3，因为A中有三截arithmetic ： [1, 2, 3], [2, 3, 4] 和 [1, 2, 3, 4] （它自己）。
+
+### 思路：
+题目的意思就是找数组中有多少节三个数以上组成的等差数列。我的做法一个个数开始往后遍历，对每个数都看能找几节，从3个数一截开始判断，如果是就算一节，然后长度加一再判断，知道数组末尾。对每个数都这样判断一次。至于怎么判断等差数列就很简单了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int numberOfArithmeticSlices(int[] A) {
+        int result = 0;
+        for (int i = 0; i < A.length - 2; i++) {
+            int gap = A[i+1] - A[i];
+            for (int j = i+2; j < A.length; j++) {
+                if (A[j] - A[j-1] == gap) result ++;
+                else break;
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public int numberOfArithmeticSlices(int[] A) {
+    int curr = 0, sum = 0;
+    for (int i=2; i<A.length; i++)
+        if (A[i]-A[i-1] == A[i-1]-A[i-2]) {
+            curr += 1;
+            sum += curr;
+        } else {
+            curr = 0;
+        }
+    return sum;
+}
+```
+
+这个做法只需要遍历一次，他发现了一个规律，就是每找到更长的一节，其实就代表其内还包含了很多节，而这个数量也是递增的。
 
 [回到目录](#Catalogue)
 
