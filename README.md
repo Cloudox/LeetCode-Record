@@ -6690,8 +6690,10 @@ public class Solution {
 >For example, these are arithmetic sequence:
 
 >>1, 3, 5, 7, 9
-7, 7, 7, 7
-3, -1, -5, -9
+
+>>7, 7, 7, 7
+
+>>3, -1, -5, -9
 
 >The following sequence is not arithmetic.
 
@@ -6716,8 +6718,10 @@ A[P], A[p + 1], ..., A[Q - 1], A[Q] is arithmetic. In particular, this means tha
 
 >比如，下面这些是 arithmetic 序列：
 >>1, 3, 5, 7, 9
-7, 7, 7, 7
-3, -1, -5, -9
+
+>>7, 7, 7, 7
+
+>>3, -1, -5, -9
 
 >而下面的序列不是 arithmetic 序列：
 >>1, 1, 2, 5, 7
