@@ -93,6 +93,7 @@ LeetCode笔记
   * [406. Queue Reconstruction by Height](#406. Queue Reconstruction by Height)
   * [413. Arithmetic Slices](#413. Arithmetic Slices)
   * [462. Minimum Moves to Equal Array Elements II](#462. Minimum Moves to Equal Array Elements II)
+  * [451. Sort Characters By Frequency](#451. Sort Characters By Frequency)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6863,6 +6864,287 @@ public class Solution {
 ```
 
 同样的思路，这种做法理想情况下会快一半。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="451. Sort Characters By Frequency"/>451. Sort Characters By Frequency
+### 问题：
+>Given a string, sort it in decreasing order based on the frequency of characters.
+
+>Example 1:
+
+>>Input:
+
+>>"tree"
+
+>>Output:
+
+>>"eert"
+
+>>Explanation:
+
+>>'e' appears twice while 'r' and 't' both appear once.
+
+>>So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+
+>Example 2:
+
+>>Input:
+
+>>"cccaaa"
+
+>>Output:
+
+>>"cccaaa"
+
+>>Explanation:
+
+>>Both 'c' and 'a' appear three times, so "aaaccc" is also a valid answer.
+
+>>Note that "cacaca" is incorrect, as the same characters must be together.
+
+>Example 3:
+
+>>Input:
+
+>>"Aabb"
+
+>>Output:
+
+>>"bbAa"
+
+>>Explanation:
+
+>>"bbaA" is also a valid answer, but "Aabb" is incorrect.
+
+>>Note that 'A' and 'a' are treated as two different characters.
+
+### 大意：
+>给出一个字符串，基于其中字符出现的次数按照降序排列。
+
+>例1：
+
+>>输入：
+
+>"tree"
+
+>>输出：
+
+>"eert"
+
+>>解释：
+
+>‘e’出现了两次，‘r’和‘t’都只出现了一次。
+
+>所以‘e’要在‘r’和‘t’的前面。因此“eetr”也是对的。
+
+>例2：
+
+>>输入：
+
+>"cccaaa"
+
+>>输出：
+
+>"cccaaa"
+
+>>解释：
+
+>‘c’和‘a’都出现了三次，所以“aaaccc”也是对的。
+
+>注意“cacaca”是错的，因为同样的字符必须在一起。
+
+>例3：
+
+>>输入：
+
+>"Aabb"
+
+>>输出：
+
+>"bbAa"
+
+>>解释：
+
+>“bbaA”也是对的，但“Aabb”不对。
+
+>注意‘A’和‘a’被视为两个不同的字符。
+
+### 思路：
+题目的要求是将字符按照出现次数排序，注意是区分大小写的，而且并没有说只有字母。
+
+其实整个过程可以分为几步：
+
+1. 遍历收集不同字符出现的次数；
+2. 按照次数排序
+3. 组成结果数组，每个字符要出现对应的次数。
+
+我用二维数组来记录字符和出现的次数，然后用冒泡法排序，最后组成数组。
+
+这个做法能实现，但是时间复杂度太高了，在超长输入的测试用例中超时了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        char[] arr = s.toCharArray();
+        String[][] record = new String[arr.length][2];
+        int num = 0;
+        // 将字符串中的不同字符及其数量记录到二维数组中
+        for (int i = 0; i < arr.length; i++) {
+            int j = 0;
+            boolean hasFind = false;
+            for (; j < num; j++) {
+                if (arr[i] - record[j][0].charAt(0) == 0) {
+                    hasFind = true;
+                    int temp = Integer.parseInt(record[j][1]) + 1;
+                    record[j][1] = Integer.toString(temp);
+                    break;
+                }
+            }
+            if (!hasFind) {
+                record[j][0] = String.valueOf(arr[i]);
+                record[j][1] = "1";
+                num ++;
+            }
+        }
+        
+        // 对二维数组按第二列排序
+        for (int i = 0; i < num; i++) {
+            for (int j = 0; j < num-1; j++) {
+                String[] temp = new String[2];
+                if (Integer.parseInt(record[j][1]) - Integer.parseInt(record[j+1][1]) > 0) {
+                    temp = record[j];
+                    record[j] = record[j+1];
+                    record[j+1] = temp;
+                }
+            }
+        }
+        // 结果
+        System.out.println(num);
+        String result = "";
+        for (int i = num-1; i >= 0; i--) {
+            System.out.println(record[i][1]);
+            System.out.println(record[i][0]);
+            for (int j = 0; j < Integer.parseInt(record[i][1]); j++) {
+                result = result + record[i][0];
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 改进：
+其实想了想ASCII码表总共就126个字符，可以像对待纯字母一样用一个数组来记录次数，同时用一个字符数组来记录对应位置的字符，在排序时跟着一起变就行了。
+
+但是依然会超时，看来主要还是排序方式太慢了。
+
+### 改进代码（Java）：
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        char[] arr = s.toCharArray();
+        int[] map = new int[126];
+        char[] c = new char[126];
+        // 将字符串中的不同字符及其数量记录到数组中
+        for (char ch : s.toCharArray()) {
+            map[ch]++;
+        }
+        
+        // 对应字符
+        for (int i = 0; i < 126; i++) {
+            c[i] = (char)i;
+        }
+        
+        // 对次数排序
+        for (int i = 0; i < 126; i++) {
+            for (int j = 0; j < 125; j++) {
+                if (map[j] - map[j+1] > 0) {
+                    // 次数移动
+                    int tempNum = map[j];
+                    map[j] = map[j+1];
+                    map[j+1] = tempNum;
+                    
+                    // 对应字符移动
+                    char tempChar = c[j];
+                    c[j] = c[j+1];
+                    c[j+1] = tempChar;
+                }
+            }
+        }
+        // 结果
+        String result = "";
+        for (int i = 125; i >= 0; i--) {
+            if (map[i] > 0) {
+                for (int j = 0; j < map[i]; j++) {
+                    result = result + c[i];
+                }
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        if (s == null) {
+            return null;
+        }
+        Map<Character, Integer> map = new HashMap();
+        char[] charArray = s.toCharArray();
+        int max = 0;
+        for (Character c : charArray) {
+            if (!map.containsKey(c)) {
+                map.put(c, 0);
+            }
+            map.put(c, map.get(c) + 1);
+            max = Math.max(max, map.get(c));
+        }
+    
+        List<Character>[] array = buildArray(map, max);
+    
+        return buildString(array);
+    }
+    
+    private List<Character>[] buildArray(Map<Character, Integer> map, int maxCount) {
+        List<Character>[] array = new List[maxCount + 1];
+        for (Character c : map.keySet()) {
+            int count = map.get(c);
+            if (array[count] == null) {
+                array[count] = new ArrayList();
+            }
+            array[count].add(c);
+        }
+        return array;
+    }
+    
+    private String buildString(List<Character>[] array) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = array.length - 1; i > 0; i--) {
+            List<Character> list = array[i];
+            if (list != null) {
+                for (Character c : list) {
+                    for (int j = 0; j < i; j++) {
+                        sb.append(c);
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+这个做法用map来记录字符出现的次数，比我的方法要快一些。然后创建数组，用序号来表示其出现的次数，省去了排序的过程，最后反过来得出结果就可以了。速度回快一些，但是属于空间换时间，在字符数量很大时会浪费很多空间。
 
 [回到目录](#Catalogue)
 
