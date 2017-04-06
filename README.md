@@ -94,6 +94,7 @@ LeetCode笔记
   * [413. Arithmetic Slices](#413. Arithmetic Slices)
   * [462. Minimum Moves to Equal Array Elements II](#462. Minimum Moves to Equal Array Elements II)
   * [451. Sort Characters By Frequency](#451. Sort Characters By Frequency)
+  * [260. Single Number III](#260. Single Number III)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7145,6 +7146,103 @@ public class Solution {
 ```
 
 这个做法用map来记录字符出现的次数，比我的方法要快一些。然后创建数组，用序号来表示其出现的次数，省去了排序的过程，最后反过来得出结果就可以了。速度回快一些，但是属于空间换时间，在字符数量很大时会浪费很多空间。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="260. Single Number III"/>260. Single Number III
+### 问题：
+>Given an array of numbers nums, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once.
+
+>For example:
+
+>Given nums = [1, 2, 1, 3, 2, 5], return [3, 5].
+
+>Note:
+>1. The order of the result is not important. So in the above example, [5, 3] is also correct.
+>2. Your algorithm should run in linear runtime complexity. Could you implement it using only constant space complexity?
+
+### 大意：
+>给出一个数字数组 nums，其中只有两个元素只出现过一次，其余的都出现了两次。找到只出现了一次的两个元素。
+
+>例子：
+
+>给出 nums = [1, 2, 1, 3, 2, 5], 返回 [3, 5].
+
+>注意：
+>1. 结果的顺序不重要，所以上面的例子中 [5, 3] 也是对的。
+>2. 你的算法应该为线性的时间复杂度。你能不能只用恒定的空间复杂度？
+
+### 思路：
+最简单的方法就是排序后，依次检查相邻两个数是否相等，当然遇到相等的就要跳一个数字再进行检查，遇到不相等的就记录下来是结果，注意如果单个的元素排序后在最末尾，要单独处理。
+
+这个做法排序是需要时间和空间的，并不完全符合题目的要求。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] singleNumber(int[] nums) {
+        Arrays.sort(nums);
+        
+        int[] result = new int[2];
+        int index = 0;
+        
+        int i = 0;
+        for (; i < nums.length-1; i++) {
+            if (nums[i] != nums[i+1]) {
+                result[index] = nums[i];
+                index ++;
+            }
+            else i++;
+        }
+        if (i < nums.length) result[index] = nums[i];
+        
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public int[] singleNumber(int[] nums) {
+        // Pass 1 : 
+        // Get the XOR of the two numbers we need to find
+        int diff = 0;
+        for (int num : nums) {
+            diff ^= num;
+        }
+        // Get its last set bit
+        diff &= -diff;
+        
+        // Pass 2 :
+        int[] rets = {0, 0}; // this array stores the two numbers we will return
+        for (int num : nums)
+        {
+            if ((num & diff) == 0) // the bit is not set
+            {
+                rets[0] ^= num;
+            }
+            else // the bit is set
+            {
+                rets[1] ^= num;
+            }
+        }
+        return rets;
+    }
+}
+```
+
+好的，这是一个完全符合题目要求的做法，用到了按位异或和与的操作，是什么意思呢？
+
+首先我们要知道异或的操作是指两个数同一位上相等时结果为0，不等时结果为1。如果是两个相同的数字异或，结果自然为0，而0与一个数异或，结果也是那个数，按照我们数组的特性，遍历异或后的结果将会是两个唯一的元素的异或结果。
+
+得到两个数的异或结果后，我们要知道，这个结果中为0的位上说明两个数字相同，为1的位上说明两个数字不同，对于这一位，将数组中所有数字和其相与，必然会得到为0和为1两个结果阵营，而我们要的两个数就在两个阵营之中，那怎么分别在两个阵营中找出两个数呢？还是上面用过的手法，遍历异或。因为相同的两个数一定会进入同一个阵营，异或后又变成0了，最后就会凸显出要找的两个数了。
+
+上面我们说要将第一次异或后的结果中找出某一位为1的值，怎么找呢？办法很多，这里的做法是将其与自己的负数相与，就会得出一个唯一一位为1的数了。
 
 [回到目录](#Catalogue)
 
