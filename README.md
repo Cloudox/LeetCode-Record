@@ -95,6 +95,7 @@ LeetCode笔记
   * [462. Minimum Moves to Equal Array Elements II](#462. Minimum Moves to Equal Array Elements II)
   * [451. Sort Characters By Frequency](#451. Sort Characters By Frequency)
   * [260. Single Number III](#260. Single Number III)
+  * [167. Two Sum II - Input array is sorted](#167. Two Sum II - Input array is sorted)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7243,6 +7244,60 @@ public class Solution {
 得到两个数的异或结果后，我们要知道，这个结果中为0的位上说明两个数字相同，为1的位上说明两个数字不同，对于这一位，将数组中所有数字和其相与，必然会得到为0和为1两个结果阵营，而我们要的两个数就在两个阵营之中，那怎么分别在两个阵营中找出两个数呢？还是上面用过的手法，遍历异或。因为相同的两个数一定会进入同一个阵营，异或后又变成0了，最后就会凸显出要找的两个数了。
 
 上面我们说要将第一次异或后的结果中找出某一位为1的值，怎么找呢？办法很多，这里的做法是将其与自己的负数相与，就会得出一个唯一一位为1的数了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="167. Two Sum II - Input array is sorted"/>167. Two Sum II - Input array is sorted
+### 问题：
+>Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.
+
+>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.
+
+>You may assume that each input would have exactly one solution.
+
+>Input: numbers={2, 7, 11, 15}, target=9
+>Output: index1=1, index2=2
+
+### 大意：
+>给出一个递增排好序的整型数组，找出两个数组相加等于目标数字。
+
+>函数 twoSum 应该返回两个数字的索引，index1 必须小于 index2。请注意你返回的结果（index1 和 index2）不是基于0开始的。
+
+>你可以假设每个输入都有一个结果。
+
+>输入：numbers={2, 7, 11, 15}, target=9
+>输出：index1=1, index2=2
+
+### 思路：
+最直接的方法是遍历每一个数，然后看它后面的每个数与它相加能不能等于目标数字，但是这样太慢了。
+
+要利用好数组已经排好序的条件，两个数相加一定是一大一小相加得出目标数字，那么我们可以用两个游标，一个从数组头开始遍历，一个从数组尾开始遍历，如果数组头的数字小于目标数字减去数组尾的数字，则数组头的游标往后移动一格，否则数组尾的游标往前移动一格。如果两个数字相加正好等于目标数字，那么结束循环将结果返回，注意索引要求从1开始，所以我们要将得出得的两个索引号都加一。
+
+举个例子，数组为 [1,2,3,4]，目标数字为6，i 和 j 分别一开始在1和4两个数字，因为1小于6-4，所以数组头的游标指向2，数组尾的游标不变，此时2+4正好等于6，返回结果索引为2和4，而不是1和3。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        int[] result = new int[2];
+        int i = 0;
+        int j = numbers.length-1;
+        while (i < j) {
+            if (numbers[i] + numbers[j] == target) {
+                result[0] = i+1;
+                result[1] = j+1;
+                break;
+            }
+            if (numbers[i] < target - numbers[j]) i++;
+            else j--;
+        }
+        return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
