@@ -96,6 +96,7 @@ LeetCode笔记
   * [451. Sort Characters By Frequency](#451. Sort Characters By Frequency)
   * [260. Single Number III](#260. Single Number III)
   * [167. Two Sum II - Input array is sorted](#167. Two Sum II - Input array is sorted)
+  * [442. Find All Duplicates in an Array](#442. Find All Duplicates in an Array)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7298,6 +7299,88 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="442. Find All Duplicates in an Array"/>442. Find All Duplicates in an Array
+### 问题：
+>Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+
+>Find all the elements that appear twice in this array.
+
+>Could you do it without extra space and in O(n) runtime?
+
+>Example:
+
+>>Input:
+>>[4,3,2,7,8,2,3,1]
+
+>>Output:
+>>[2,3]
+
+### 大意：
+>给出一个整型数组， 1 ≤ a[i] ≤ n （n为数组的尺寸），一些元素出现了两次，另一些只出现一次。
+
+>找到所有数组中出现了两次的元素。
+
+>你能不能不使用额外的空间，在O（n）时间内完成？
+
+>例子：
+
+>>输入：
+>>[4,3,2,7,8,2,3,1]
+
+>>输出：
+>>[2,3]
+
+### 思路：
+题目说明了数组中元素的范围，那么可以依此创建一个长度为n的新整型数组，其每个位置的值大小表示对应数字出现的次数，遍历原数组，遇到那个数字就将新数组对应值的位置的元素值加一，就记录下每个数字出现的次数了，之后找出出现次数为2的添加到结果List中即可。
+
+这个做法使用了额外的O（n）的空间，并不符合要求。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> result = new ArrayList<Integer>();
+        int[] count = new int[nums.length+1];
+        for (int i = 0; i < nums.length; i++) {
+            count[nums[i]]++;
+        }
+        for (int i = 1; i < count.length; i++) {
+            if (count[i] == 2) result.add(i);
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    // when find a number i, flip the number at position i-1 to negative. 
+    // if the number at position i-1 is already negative, i is the number that occurs twice.
+    
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums.length; ++i) {
+            int index = Math.abs(nums[i])-1;
+            if (nums[index] < 0)
+                res.add(Math.abs(index+1));
+            nums[index] = -nums[index];
+        }
+        return res;
+    }
+}
+```
+
+这个做法在注释中也解释了，遍历数组，没遇到一个元素，将其值对应的位置上的那个元素取负数，当然因为元素的值是从1开始的，所以变成位置的时候都要减一，每次换成位置时都要用绝对值来算，因为出现了两次的元素，在之前就已经被变成负数了，所以借此可以判断，如果该位置的元素是个负数，说明之前出现过一次，就记录下来。
+
+这个做法就没有用额外的空间，时间复杂度也是O（n）。
 
 [回到目录](#Catalogue)
 
