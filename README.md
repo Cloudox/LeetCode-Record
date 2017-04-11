@@ -97,6 +97,7 @@ LeetCode笔记
   * [260. Single Number III](#260. Single Number III)
   * [167. Two Sum II - Input array is sorted](#167. Two Sum II - Input array is sorted)
   * [442. Find All Duplicates in an Array](#442. Find All Duplicates in an Array)
+  * [238. Product of Array Except Self](#238. Product of Array Except Self)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7381,6 +7382,64 @@ public class Solution {
 这个做法在注释中也解释了，遍历数组，没遇到一个元素，将其值对应的位置上的那个元素取负数，当然因为元素的值是从1开始的，所以变成位置的时候都要减一，每次换成位置时都要用绝对值来算，因为出现了两次的元素，在之前就已经被变成负数了，所以借此可以判断，如果该位置的元素是个负数，说明之前出现过一次，就记录下来。
 
 这个做法就没有用额外的空间，时间复杂度也是O（n）。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="238. Product of Array Except Self"/>238. Product of Array Except Self
+### 问题：
+>Given an array of n integers where n > 1, nums, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+
+>Solve it without division and in O(n).
+
+>For example, given [1,2,3,4], return [24,12,8,6].
+
+>Follow up:
+>Could you solve it with constant space complexity? (Note: The output array does not count as extra space for the purpose of space complexity analysis.)
+
+### 大意：
+>给出一个有n（n>1）个整数的数组nums，返回一个output数组，output[i]等于除了nums[i]外其余所有元素的乘积。
+
+>不使用除法且在O（n）时间内完成。
+
+>比如，给出 [1,2,3,4]，返回 [24,12,8,6]。
+
+>进阶：
+>你能使用固定的空间复杂度吗？（注意：output数组不算做额外的空间。）
+
+### 思路：
+如果用除法就简单了，直接全部乘起来，然后每个位置对应除以nums[i]的元素就可以了。
+
+不用除法的话，我们要用两次遍历，先正着遍历一遍，在结果数组上每个元素都算到累乘至nums数组中对应位置的前面所有的元素，比如第三个元素的值为nums中前连个元素的乘积。
+
+第二次遍历，反着遍历，用一个变量记录从后到前的累乘，同时结果数组中乘以这个变量。
+
+这样对每一个位置来说，其刚好在第一次遍历中取得了它前面所有元素的乘积，第二次遍历中又乘以了它后面所有元素的乘积，唯独不算它自己在内。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int[] result = new int[nums.length];
+        
+        for (int i = 0; i < result.length; i++) result[i] = 1;
+        
+        for (int i = 1; i < nums.length; i++) {// 先正着来一遍，只乘到前一个元素
+            result[i] = result[i-1] * nums[i-1];
+        }
+        
+        int behind = 1;
+        for (int i = nums.length-1; i >= 0; i--) {// 再倒着来一遍，乘以后面的数
+            result[i] = result[i] * behind;
+            behind = behind * nums[i];
+        }
+        
+        return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
