@@ -98,6 +98,7 @@ LeetCode笔记
   * [167. Two Sum II - Input array is sorted](#167. Two Sum II - Input array is sorted)
   * [442. Find All Duplicates in an Array](#442. Find All Duplicates in an Array)
   * [238. Product of Array Except Self](#238. Product of Array Except Self)
+  * [445. Add Two Numbers II](#445. Add Two Numbers II)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7440,6 +7441,171 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="445. Add Two Numbers II"/>445. Add Two Numbers II
+### 问题：
+>You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+>You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+>Follow up:
+>What if you cannot modify the input lists? In other words, reversing the lists is not allowed.
+
+>Example:
+
+>>Input: (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
+>>Output: 7 -> 8 -> 0 -> 7
+
+### 大意：
+>给出两个非空的链表表示的非负整数。最高位的数在第一个，每个节点都只包含一个数字。将两个数相加并作为链表返回。
+
+>你可以假设两个数字不包含0开头的数字，除非就是0。
+
+>进阶：
+>你能不改变原有链表吗？也就是说不反转链表。
+
+>例子：
+>>输入： (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
+>输出： 7 -> 8 -> 0 -> 7
+
+### 思路：
+这道题的意思就是由链表表示的两个大数字相加得出结果，比如例子中就是 7243 + 564 = 7807 
+
+我们相加两个数字必须要从最低位开始加，所以肯定得先遍历链表知道分别有多少位，还得一位位的往高位加起来，所以我们用两个数组分别记录两个链表各个位的数字和两个链表的位数，然后都从最后一位往前一位位的做加法，注意会有进位，加法过程中还要注意存在某个数位数更多，没有加完的情况，当然也要考虑最后有没有最高一位进位的情况。
+
+在计算结果的时候还是要用数组一位位的记录，最后再换成链表。
+
+这种做法的时间复杂度是O(n)，还是比较快的，不过是以空间的消耗为代价。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int[] arr1 = new int[100];
+        int index = 0;
+        ListNode newl = l1;
+        while (newl != null) {
+            arr1[index] = newl.val;
+            newl = newl.next;
+            index ++;
+        }
+        arr1 = Arrays.copyOfRange(arr1, 0, index);
+        
+        int[] arr2 = new int[100];
+        index = 0;
+        newl = l2;
+        while (newl != null) {
+            arr2[index] = newl.val;
+            newl = newl.next;
+            index ++;
+        } 
+        arr2 = Arrays.copyOfRange(arr2, 0, index);
+        
+        int n1 = arr1.length-1;
+        int n2 = arr2.length-1;
+        int[] result = new int[100];
+        index = 0;
+        int flag = 0;
+        while (n1 >= 0 && n2 >= 0) {
+            int sum = arr1[n1] + arr2[n2] + flag;
+            if (sum > 9) {
+                flag = 1;
+                sum = sum % 10;
+            } else flag = 0;
+            
+            result[index] = sum;
+            index ++;
+            n1 --;
+            n2 --;
+        }
+        while (n1 >= 0) {
+            int sum = arr1[n1] + flag;
+            if (sum > 9) {
+                flag = 1;
+                sum = sum % 10;
+            } else flag = 0;
+            
+            result[index] = sum;
+            index ++;
+            n1 --;
+        }
+        while (n2 >= 0) {
+            int sum = arr2[n2] + flag;
+            if (sum > 9) {
+                flag = 1;
+                sum = sum % 10;
+            } else flag = 0;
+            
+            result[index] = sum;
+            index ++;
+            n2 --;
+        }
+        if (flag == 1) result[index] = 1;
+        else index --;
+        
+        if (index == -1) return null;
+        ListNode head = new ListNode(result[index]);
+        ListNode nextNode = head;
+        while (index > 0) {
+            index --;
+            ListNode newNext = new ListNode(result[index]);
+            nextNode.next = newNext;
+            nextNode = newNext;
+        }
+        
+        return head;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> s1 = new Stack<Integer>();
+        Stack<Integer> s2 = new Stack<Integer>();
+        
+        while(l1 != null) {
+            s1.push(l1.val);
+            l1 = l1.next;
+        };
+        while(l2 != null) {
+            s2.push(l2.val);
+            l2 = l2.next;
+        }
+        
+        int sum = 0;
+        ListNode list = new ListNode(0);
+        while (!s1.empty() || !s2.empty()) {
+            if (!s1.empty()) sum += s1.pop();
+            if (!s2.empty()) sum += s2.pop();
+            list.val = sum % 10;
+            ListNode head = new ListNode(sum / 10);
+            head.next = list;
+            list = head;
+            sum /= 10;
+        }
+        
+        return list.val == 0 ? list.next : list;
+    }
+}
+```
+
+这个做法差不多，不过是把数组的存储换成栈的存储，刚好符合从最后一位开始加的情况，比要多预留位数的数组更节省空间。
 
 [回到目录](#Catalogue)
 
