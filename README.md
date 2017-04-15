@@ -99,6 +99,7 @@ LeetCode笔记
   * [442. Find All Duplicates in an Array](#442. Find All Duplicates in an Array)
   * [238. Product of Array Except Self](#238. Product of Array Except Self)
   * [445. Add Two Numbers II](#445. Add Two Numbers II)
+  * [347. Top K Frequent Elements](#347. Top K Frequent Elements)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7606,6 +7607,89 @@ public class Solution {
 ```
 
 这个做法差不多，不过是把数组的存储换成栈的存储，刚好符合从最后一位开始加的情况，比要多预留位数的数组更节省空间。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="347. Top K Frequent Elements"/>347. Top K Frequent Elements
+### 问题：
+>Given a non-empty array of integers, return the k most frequent elements.
+
+>For example,
+>Given [1,1,1,2,2,3] and k = 2, return [1,2].
+
+>Note: 
+>* You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
+>* Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+
+### 大意：
+>给出一个非空的整型数组，返回最频繁的k个元素。
+
+>例子：
+>给出 [1,1,1,2,2,3] 和 k = 2，返回 [1,2]。
+
+>注意：
+>* 你可以假设k始终是有效的，1 ≤ k ≤ 不同的元素数。
+>* 你的算法时间复杂度要少于O(nlogn)，n是数组的尺寸。
+
+### 思路：
+我们要知道哪些数字出现的最多，以及对应的次数，肯定要先遍历一遍并记录下各个数字出现的次数，这里我们用一个HashMap来记录，数字为key，值为它们出现的次数。
+
+接着循环查找出现的最多、次多...的数字，并添加到结果中去。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {// 记录过
+                String numStr = map.get(nums[i]);
+                int num = Integer.valueOf(numStr).intValue();
+                num ++;
+                map.put(nums[i], String.valueOf(num));
+            } else {// 没记录过
+                map.put(nums[i], "1");
+            }
+        }
+        
+        int[] keyArr = new int[map.size()];
+        int[] valueArr = new int[map.size()];
+        int[] used = new int[map.size()];
+        int index = 0;
+        for (Integer key : map.keySet()) {  
+            keyArr[index] = key;
+            System.out.println(key);
+            valueArr[index] = Integer.valueOf(map.get(key)).intValue();
+            System.out.println(map.get(key));
+            index ++;
+        }  
+        
+        List<Integer> result = new ArrayList<Integer>();
+        while (k > 0) {
+            int biggest = 0;
+            for (int i = 0; i < used.length; i++) {
+                if (used[i] != 1) {
+                    biggest = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < valueArr.length; i++) {
+                if (valueArr[i] > valueArr[biggest] && used[i] != 1) biggest = i;
+            }
+            result.add(keyArr[biggest]);
+            k --;
+            used[biggest] = 1;
+        }
+        
+        return result;
+        
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
