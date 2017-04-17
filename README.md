@@ -100,6 +100,7 @@ LeetCode笔记
   * [238. Product of Array Except Self](#238. Product of Array Except Self)
   * [445. Add Two Numbers II](#445. Add Two Numbers II)
   * [347. Top K Frequent Elements](#347. Top K Frequent Elements)
+  * [122. Best Time to Buy and Sell Stock II](#122. Best Time to Buy and Sell Stock II)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7690,6 +7691,70 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="122. Best Time to Buy and Sell Stock II"/>122. Best Time to Buy and Sell Stock II
+### 问题：
+>Say you have an array for which the ith element is the price of a given stock on day i.
+
+>Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times). However, you may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+
+### 大意：
+>说你有这么一个表示一只股票每日股价的数组。
+
+>设计一个算法寻找最大收益。你可以随便完成多少次交易（比如，多次买入卖出）。然而你不能一次进行多次交易（在再次买入前你必须卖出股票）。
+
+### 思路：
+这等于是把股票以后的走向告诉你，让你躺着赚钱，那最大收益当然是低价买进高价卖出了，只不过还是要按照时间顺序，而且每次也只能买一股。
+
+我们遍历股价，遇到不断下降的趋势，我们就等到降到最低了再买，然后等他开始上涨涨到最高点的时候卖出，以此往复，每次的收益累计就是最大收益了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length < 1) return 0;
+        
+        int last = prices[0];
+        int result = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if (prices[i] < last) last = prices[i];
+            else if (prices[i] > last) {
+                int big = prices[i];
+                i ++;
+                for (; i < prices.length; i++) {
+                    if (prices[i] > big) big = prices[i];
+                    else break;
+                }
+                result += big - last;
+                if (i >= prices.length - 1) break;
+                else last = prices[i];
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+public int maxProfit(int[] prices) {
+    int total = 0;
+    for (int i=0; i< prices.length-1; i++) {
+        if (prices[i+1]>prices[i]) total += prices[i+1]-prices[i];
+    }
+    
+    return total;
+}
+```
+
+其实代码不用我那么麻烦，归根结底还是主要第二天有上涨就买入卖出，相当于把我的一次大操作分解成一天天的小操作，专做短线，想想也是这个理。
 
 [回到目录](#Catalogue)
 
