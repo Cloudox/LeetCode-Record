@@ -101,6 +101,7 @@ LeetCode笔记
   * [445. Add Two Numbers II](#445. Add Two Numbers II)
   * [347. Top K Frequent Elements](#347. Top K Frequent Elements)
   * [122. Best Time to Buy and Sell Stock II](#122. Best Time to Buy and Sell Stock II)
+  * [357. Count Numbers with Unique Digits](#357. Count Numbers with Unique Digits)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7755,6 +7756,60 @@ public int maxProfit(int[] prices) {
 ```
 
 其实代码不用我那么麻烦，归根结底还是主要第二天有上涨就买入卖出，相当于把我的一次大操作分解成一天天的小操作，专做短线，想想也是这个理。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="357. Count Numbers with Unique Digits"/>357. Count Numbers with Unique Digits
+### 问题：
+>Given a non-negative integer n, count all numbers with unique digits, x, where 0 ≤ x < 10n.
+
+>Example:
+>Given n = 2, return 91. (The answer should be the total numbers in the range of 0 ≤ x < 100, excluding [11,22,33,44,55,66,77,88,99])
+
+### 大意：
+>给出一个非负整数n，计算所有单独数字组成的数 x 的数量，0 ≤ x < 10的n次方。
+
+>例子：
+>给出 n = 2，返回 91。（答案应该包含0 ≤ x < 100范围内的所有数，除了[11,22,33,44,55,66,77,88,99]）
+
+### 思路：
+这道题的意思是，对于0到10的n次方内的数，计算其中所有数都唯一的数的数量，比如19每一位都是唯一的数字，而11有两个1重复了，是这个意思，所以当给出n为2时，是计算0到99内的唯一组成数的数量，只有11、22...这些重复的数的组成不唯一，共9个，所以100-9=91。
+
+我们需要找一下规律：
+当 n = 0 时，0这个数是唯一组成的。
+当 n = 1 时，10个数都是唯一组成的。
+当 n = 2 时，除了头10个数外，每个十位上的数只会有一个个位上的数重复的情况，共有1~9，9个十位上的数，每个对应有9个数是唯一组成的，所以是 9*9。
+当 n = 3 时，出了头100个数的结果不影响外，对于三位数，还要排除百位数和其余位的数重复的情况，也就是说原来的9*9，变成了9*8，所以9个百位数共有 9*9*8 这些数。
+当 n = 4 时，除了头1000个数，还有 9*9*8*7这些数。
+。。。
+当 n = 10 时，除了前面的数，还有 9*9*8*7*6*5*4*3*2*1 个数。
+当 n >= 11 时，除了前面的数，到后面的数因为位数超过10了，已经不可能不重复了，所以不再有新的唯一组成数出现了。
+
+注意以上计算数量时都要加上前面出现的数，是个累加的过程。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int countNumbersWithUniqueDigits(int n) {
+         if (n == 0) return 1;
+         
+         int result = 10;
+         int middle = 9;
+         int decrease = 9;
+         while (n > 1 && decrease > 0) {
+             middle = middle * decrease;
+             result += middle;
+             decrease --;
+             n--;
+         }
+         
+         return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
