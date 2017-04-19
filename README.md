@@ -102,6 +102,7 @@ LeetCode笔记
   * [347. Top K Frequent Elements](#347. Top K Frequent Elements)
   * [122. Best Time to Buy and Sell Stock II](#122. Best Time to Buy and Sell Stock II)
   * [357. Count Numbers with Unique Digits](#357. Count Numbers with Unique Digits)
+  * [477. Total Hamming Distance](#477. Total Hamming Distance)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7807,6 +7808,69 @@ public class Solution {
          }
          
          return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="477. Total Hamming Distance"/>477. Total Hamming Distance
+### 问题：
+>The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
+
+>Now your job is to find the total Hamming distance between all pairs of the given numbers.
+
+>Example:
+>>Input: 4, 14, 2
+
+>>Output: 6
+
+>>Explanation: In binary representation, the 4 is 0100, 14 is 1110, and 2 is 0010 (just
+showing the four bits relevant in this case). So the answer will be:
+HammingDistance(4, 14) + HammingDistance(4, 2) + HammingDistance(14, 2) = 2 + 2 + 2 = 6.
+
+>Note:
+>1. Elements of the given array are in the range of 0 to 10^9
+>2. Length of the array will not exceed 10^4.
+
+### 大意：
+>两个整数之间的Hamming distance是指它们在二进制表示上各个位的数不同的个数。
+
+>现在你的工作是找出每对数字之间的Hamming distance的总和。
+
+>例子：
+>>输入：4, 14, 2
+
+>>输出：6
+
+>>解释：在二进制表示法中，4是 0100，14是 1110，2是 0010（这里只显示四位）。所以答案应该是 HammingDistance(4, 14) + HammingDistance(4, 2) + HammingDistance(14, 2) = 2 + 2 + 2 = 6。
+
+>注意：
+>1. 给出的元素范围在0到10的9次方。
+>2. 数组的长度不会超过10的4次方。
+
+### 思路：
+这里如果使用双重循环一个个比较两个数字的差异，可以算出来，但是在时间上会有用例超时。
+
+这里换一种思路，我们看每个数都有32位，对每一位，我们统计数组中的数再这一位上为1的有几个数，那么在这一位上，所有两对数不同的情况是为1的数量乘以为0的数量，是个排列组合的问题。对每一位我们都这样操作，就可以很快得出结果了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int totalHammingDistance(int[] nums) {
+        int result = 0;
+        for (int i = 0; i < 32; i++) {
+            int tempCount = 0;
+            for (int j = 0; j < nums.length; j++) {
+                int num = nums[j];
+                tempCount += (num >> i) & 1;
+            }
+            result += tempCount * (nums.length - tempCount);
+        }
+        return result;
     }
 }
 ```
