@@ -103,6 +103,7 @@ LeetCode笔记
   * [122. Best Time to Buy and Sell Stock II](#122. Best Time to Buy and Sell Stock II)
   * [357. Count Numbers with Unique Digits](#357. Count Numbers with Unique Digits)
   * [477. Total Hamming Distance](#477. Total Hamming Distance)
+  * [481. Magical String](#481. Magical String)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -7870,6 +7871,149 @@ public class Solution {
             }
             result += tempCount * (nums.length - tempCount);
         }
+        return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="481. Magical String"/>481. Magical String
+### 问题：
+>A magical string S consists of only '1' and '2' and obeys the following rules:
+
+>The string S is magical because concatenating the number of contiguous occurrences of characters '1' and '2' generates the string S itself.
+
+>The first few elements of string S is the following: S = "1221121221221121122……"
+
+>If we group the consecutive '1's and '2's in S, it will be:
+
+>1 22 11 2 1 22 1 22 11 2 11 22 ......
+
+>and the occurrences of '1's or '2's in each group are:
+
+>1 2	2 1 1 2 1 2 2 1 2 2 ......
+
+>You can see that the occurrence sequence above is the S itself.
+
+>Given an integer N as input, return the number of '1's in the first N number in the magical string S.
+
+>Note: N will not exceed 100,000.
+
+>Example 1:
+>>Input: 6
+>>Output: 3
+>>Explanation: The first 6 elements of magical string S is "12211" and it contains three 1's, so return 3.
+
+### 大意：
+>一个魔力字符串 S 仅由 1 和 2 组成，遵循下面的规则：
+
+>字符串 S 因为其中的1和2由其连续出现的次数组成其自身所以是魔力的。
+
+>S前面的一些元素是： S = "1221121221221121122……"
+
+>如果我们按照S中1和2出现的次数来分割，就会变成：
+
+>1 2	2 1 1 2 1 2 2 1 2 2 ......
+
+>你会看到次数的序列正好是S它自身。
+
+>给出整数N作为输入，返回魔力字符串S中前N个数内1的个数。
+
+>注意：N不会超过100000。
+
+>例1：
+>>输入：6
+>>输出：3
+>>解释：S的前六个元素是 "12211" ，包含了三个1，所以返回3。
+
+### 思路：
+其实只要理解题目中字符串S的生成过程，就好模拟这个过程了，1和2交替出现，其字符串自身每个元素代表后面1或者2连续出现的个数，我们需要用数组来记录字符串S，由于需要前面的至少两、三个数做初始值，我们对于小于3的情况直接返回结果，如果给出的n为0，那么返回0，给出的n为1/2/3，都返回1。
+
+然后就可以对记录的数组先初始前面两三个数了，由于要交替出现1和2，所以需要一个布尔变量来记录当前应该放1还是2，还需要一个坐标用来记录我们判断后面数字出现个数的数的位置，开始我设立了两个数组，后来发现两个数组其实都是一模一样的，只需要用一个坐标记录就可以了，一个是在数组尾部添加元素，一个是用来判断添加什么元素的数的位置。然后就可以根据要放1还是要放2来连续放元素了。每次放1的时候记录1的个数，得出结果。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int magicalString(int n) {
+        if (n == 0) return 0;
+        else if (n <= 3) return 1;
+        
+        int[] num = new int[n];
+        int[] occ = new int[n];
+        int result = 0;
+        num[0] = 1;
+        
+        occ[0] = 1;
+        occ[1] = 2;
+        result ++;
+        boolean one = false;
+        int index = 1;
+        for (int i = 1; i < n; i++) {
+            if (one) {
+                for (int j = occ[index]; j > 0; j--) {
+                    if (i >= n) break;
+                    num[i] = 1;
+                    occ[i] = 1;
+                    result ++;
+                    i++;
+                }
+                i--;
+            } else {
+                for (int j = occ[index]; j > 0; j--) {
+                    if (i >= n) break;
+                    num[i] = 2;
+                    occ[i] = 2;
+                    i++;
+                }
+                i--;
+            }
+            
+            one = !one;
+            index ++;
+        }
+        
+        // for (int i = 0; i < n; i++) {
+        //     System.out.println(num[i]);
+        // }
+        
+        return result;
+    }
+}
+```
+
+### 代码改进（Java）：
+
+取出多余的数组，只保留一个，节省空间，同时对于放1还是放2的判断可以在一个循环内去做，代码会简洁很多：
+
+```java
+public class Solution {
+    public int magicalString(int n) {
+        if (n == 0) return 0;
+        else if (n <= 3) return 1;
+        
+        int[] num = new int[n];
+        int result = 1;
+        num[0] = 1;
+        num[1] = 2;
+        boolean one = false;
+        int index = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = num[index]; j > 0; j--) {
+                if (i >= n) break;
+                num[i] = one ? 1 : 2;
+                if (one) result ++;
+                i++;
+            }
+            i--;
+            
+            one = !one;
+            index ++;
+        }
+        
         return result;
     }
 }
