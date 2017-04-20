@@ -7903,8 +7903,11 @@ public class Solution {
 >Note: N will not exceed 100,000.
 
 >Example 1:
+
 >>Input: 6
+
 >>Output: 3
+
 >>Explanation: The first 6 elements of magical string S is "12211" and it contains three 1's, so return 3.
 
 ### 大意：
@@ -7925,8 +7928,11 @@ public class Solution {
 >注意：N不会超过100000。
 
 >例1：
+
 >>输入：6
+
 >>输出：3
+
 >>解释：S的前六个元素是 "12211" ，包含了三个1，所以返回3。
 
 ### 思路：
