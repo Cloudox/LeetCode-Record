@@ -104,6 +104,7 @@ LeetCode笔记
   * [357. Count Numbers with Unique Digits](#357. Count Numbers with Unique Digits)
   * [477. Total Hamming Distance](#477. Total Hamming Distance)
   * [481. Magical String](#481. Magical String)
+  * [482. License Key Formatting](#482. License Key Formatting)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8024,6 +8025,108 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="482. License Key Formatting"/>482. License Key Formatting
+### 问题：
+>Now you are given a string S, which represents a software license key which we would like to format. The string S is composed of alphanumerical characters and dashes. The dashes split the alphanumerical characters within the string into groups. (i.e. if there are M dashes, the string is split into M+1 groups). The dashes in the given string are possibly misplaced.
+
+>We want each group of characters to be of length K (except for possibly the first group, which could be shorter, but still must contain at least one character). To satisfy this requirement, we will reinsert dashes. Additionally, all the lower case letters in the string must be converted to upper case.
+
+>So, you are given a non-empty string S, representing a license key to format, and an integer K. And you need to return the license key formatted according to the description above.
+
+>Example 1:
+>>Input: S = "2-4A0r7-4k", K = 4
+
+>>Output: "24A0-R74K"
+
+>>Explanation: The string S has been split into two parts, each part has 4 characters.
+
+>Example 2:
+>>Input: S = "2-4A0r7-4k", K = 3
+
+>>Output: "24-A0R-74K"
+
+>>Explanation: The string S has been split into three parts, each part has 3 characters except the first part as it could be shorter as said above.
+
+>Note:
+>1. The length of string S will not exceed 12,000, and K is a positive integer.
+>2. String S consists only of alphanumerical characters (a-z and/or A-Z and/or 0-9) and dashes(-).
+>3. String S is non-empty.
+
+### 大意：
+>现在给你一个字符串S，代表我们想要组成的一个软件的序列号。字符串S由数字和字母以及破折号组成。破折号将数字和字母分割成一组组。（比如，如果有M个破折号，则字符串被分为M+1组）。字符串中的破折号可能放错了位置。
+
+>我们想要每组字符的长度为K（除了第一组可能短一些，但必须至少包含一个字符）。要满足这些要求，我们会重新插入破折号。此外，所有的小写字母必须转换成大写字母。
+
+>所以，给你一个非空字符串S，代表要组成的序列号，以及一个整数K。你需要根据上面的描述返回正确的序列号。
+
+>例1：
+>>输入： S = "2-4A0r7-4k", K = 4
+>输出："24A0-R74K"
+>解释：字符串S被分为两组，每组有4个字符。
+
+>例2：
+>>输入：S = "2-4A0r7-4k", K = 3
+>输出："24-A0R-74K"
+>解释：字符串S被分为三部分，每部分有三个字符，除了第一部分如上所说可以短一点。
+
+>注意：
+>1. 字符串S的长度不会超过12000，K是个正数。
+>2. 字符串S只由数字及字母（a-z 和/或 A-Z 和/或 0-9）以及破折号（-）组成。
+>3. 字符串S非空。
+
+### 思路：
+题目说了一长串，其实总结起来就是：
+
+给一个字符串和正整数，将字符串用破折号分成多个长度为K的组（第一组可以小于K），所有字母必须为大写。
+
+其实还是很容易的，因为第一组不一定长度为K，所以我们从后往前来重组，遇到小写字母就换成大写字母，结果中每放完K个字符就加一个破折号，遍历字符串时遇到破折号直接跳过，为了速度我们使用StringBuffer来处理结果字符串，处理完后再将结果翻转，才是正确的顺序。注意最后可能会在结果的开头出现一个破折号，也就是未翻转前的最后，这时候要去除掉。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String licenseKeyFormatting(String S, int K) {
+        char[] sArr = S.toCharArray();
+        String result = "";
+        StringBuffer sBuffer = new StringBuffer(result);
+        int length = 0;
+        for (int i = sArr.length-1; i >= 0; i--) {
+            if (sArr[i] - '-' == 0) continue;
+            
+            if (sArr[i] - 'a' >= 0) sArr[i] = (char)(sArr[i] - 32);
+            sBuffer.append(sArr[i]);
+            length ++;
+            
+            if (length == K) {
+                sBuffer.append('-');
+                length = 0;
+            }
+        }
+        if (sBuffer.length() > 0 && sBuffer.charAt(sBuffer.length()-1) - '-' == 0) sBuffer.delete(sBuffer.length()-1, sBuffer.length());
+        sBuffer.reverse();
+        result = sBuffer.toString();
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+    public String licenseKeyFormatting(String s, int k) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = s.length() - 1; i >= 0; i--)
+            if (s.charAt(i) != '-')
+                sb.append(sb.length() % (k + 1) == k ? '-' : "").append(s.charAt(i));
+        return sb.reverse().toString().toUpperCase();
+    } 
+```
+上面的代码时对前面的思路的极致简洁。
 
 [回到目录](#Catalogue)
 
