@@ -8153,7 +8153,7 @@ public class Solution {
 
 假设将n拆分成相等的多个x相加，那么乘积就是x的n/x次方。
 
-求导数得出 ![](http://img.blog.csdn.net/20170116152454534?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)，当 0 < x < e 时这个导数是正的，当 x = e 时等于0，当 x > e 时为负，也就是说这个乘积会在 x < e 时递增，到达 x = e 时达到最大，接着x越大，乘积变小。所以让 x = e 是最好的，也就是拆分成多个 e ，相乘的结果最大，但是题目要求拆分成正整数，那就只能找和e相近的，那就只能是2和3了，毕竟 2 < e < 3。
+求导数得出 ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/343Image.png)，当 0 < x < e 时这个导数是正的，当 x = e 时等于0，当 x > e 时为负，也就是说这个乘积会在 x < e 时递增，到达 x = e 时达到最大，接着x越大，乘积变小。所以让 x = e 是最好的，也就是拆分成多个 e ，相乘的结果最大，但是题目要求拆分成正整数，那就只能找和e相近的，那就只能是2和3了，毕竟 2 < e < 3。
 
 而3离e更近，所以我们倾向于多弄出点3来，但是当取到够多的时候就不得不取2了，比如对于 n = 4，2*2 > 3*1，也就是说，如果取3使得剩下一个数是1，那么就要放弃取3，而取两个2。
 
