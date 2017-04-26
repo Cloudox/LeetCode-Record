@@ -89,6 +89,23 @@ LeetCode笔记
   * [8. String to Integer (atoi)](#8. String to Integer (atoi))
 * Medium
   * [419. Battleships in a Board](#419. Battleships in a Board)
+  * [338. Counting Bits](#338. Counting Bits)
+  * [406. Queue Reconstruction by Height](#406. Queue Reconstruction by Height)
+  * [413. Arithmetic Slices](#413. Arithmetic Slices)
+  * [462. Minimum Moves to Equal Array Elements II](#462. Minimum Moves to Equal Array Elements II)
+  * [451. Sort Characters By Frequency](#451. Sort Characters By Frequency)
+  * [260. Single Number III](#260. Single Number III)
+  * [167. Two Sum II - Input array is sorted](#167. Two Sum II - Input array is sorted)
+  * [442. Find All Duplicates in an Array](#442. Find All Duplicates in an Array)
+  * [238. Product of Array Except Self](#238. Product of Array Except Self)
+  * [445. Add Two Numbers II](#445. Add Two Numbers II)
+  * [347. Top K Frequent Elements](#347. Top K Frequent Elements)
+  * [122. Best Time to Buy and Sell Stock II](#122. Best Time to Buy and Sell Stock II)
+  * [357. Count Numbers with Unique Digits](#357. Count Numbers with Unique Digits)
+  * [477. Total Hamming Distance](#477. Total Hamming Distance)
+  * [481. Magical String](#481. Magical String)
+  * [482. License Key Formatting](#482. License Key Formatting)
+  * [343. Integer Break](#343. Integer Break)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -6436,13 +6453,13 @@ public class Solution {
 
 > Example:
 
->>![](http://img.blog.csdn.net/20161225153506164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/419Image1.png)
 
 >In the above board there are 2 battleships.
 
 >Invalid Example:
 
->>![](http://img.blog.csdn.net/20161225153520389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/419Image2.png)
 
 > This is an invalid board that you will not receive - as battleships will always have a cell separating between them.
 
@@ -6458,13 +6475,13 @@ Could you do it in one-pass, using only O(1) extra memory and without modifying 
 
 >例子：
 
->>![](http://img.blog.csdn.net/20161225153506164?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/419Image1.png)
 
 >上面的面板上有两艘战舰。
 
 >无效的例子：
 
->>![](http://img.blog.csdn.net/20161225153520389?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/419Image2.png)
 
 >这是一个无效的面板，你不会接受到 - 因为两艘战舰一定会有空白的点。
 
@@ -6541,6 +6558,1635 @@ public class Solution {
 ```
 
 上面我的做法其实用了O（n）的内存，而且要进行多次循环，很耗时，这个就简单多了，每次遇到一个坐标，如果它既不是空地，他的上面和左边也没有X，那就说明这是一个新战舰，只记录这种新战舰的个数，很节省空间和时间。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="338. Counting Bits"/>338. Counting Bits
+### 问题：
+>Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1's in their binary representation and return them as an array.
+
+>Example:
+For num = 5 you should return [0,1,1,2,1,2].
+
+>Follow up:
+
+>* It is very easy to come up with a solution with run time O(n*sizeof(integer)). But can you do it in linear time O(n) /possibly in a single pass?
+* Space complexity should be O(n).
+* Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.
+
+### 大意：
+>给出一个非负整数num。对于 0 ≤ i ≤ num 范围的每个数计算它们二进制表示的数中的1的个数，并返回它们组成的数组。
+
+>例子：
+>对 num = 5 你应该返回 [0,1,1,2,1,2]。
+
+>进阶：
+
+>* 很容易找到时间复杂度为 O(n*sizeof(integer))的解决方案。但你能不能在线性时间复杂度O（n）中解决呢？
+>* 康健复杂度需要是O（n）。
+>你能不能像一个boss一样做？不要使用像c++中 __builtin_popcount 一样的内置的函数去做。
+
+### 思路：
+把0~7的二进制表示法的数字列出来，数其中的1的个数，找到一个规律，0对应的数是0，1、2对应的是1个1。往上走只用计算不断除以2一直除到1后，存在余数为1的次数，加上最后的1，就是该数二进制表示法中1的个数。
+
+注意初始化结果数组的时候容量为 num+1，不是 num。
+
+我的做法时间复杂度应该是O（nlogn）。
+
+初始化int型数组后，数组所有元素默认为0，所以对0的判断处理可以略去。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] countBits(int num) {
+        int[] result = new int[num+1];
+        for (int i = 0; i <= num; i++) {
+            if (i == 0) result[i] = 0;
+            else if (i <= 2) result[i] = 1;
+            else {
+                int numberOfOne = 1;
+                int number = i;
+                while (number > 1) {
+                    numberOfOne += number % 2;
+                    number = number / 2;
+                }
+                result[i] = numberOfOne;
+            }
+        }
+        return result;
+
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public int[] countBits(int num) {
+    int[] f = new int[num + 1];
+    for (int i=1; i<=num; i++) f[i] = f[i >> 1] + (i & 1);
+    return f;
+}
+```
+
+这个做法把上面的思想简化了很多，i&1其实就是看最后一位有没有1，也就是取余为1。然后加上 f[i >> 1]，这个其实就是当前数字除以2后对应的数字的1的个数，所以可以看出我的做法做了很多无用功，因为没有利用到已经得出的结果，而这个做法的时间复杂度就是O（n）了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="406. Queue Reconstruction by Height"/>406. Queue Reconstruction by Height
+### 问题：
+>Suppose you have a random list of people standing in a queue. Each person is described by a pair of integers (h, k), where h is the height of the person and k is the number of people in front of this person who have a height greater than or equal to h. Write an algorithm to reconstruct the queue.
+
+>Note:
+The number of people is less than 1,100.
+
+>Example
+
+>>Input:
+[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+>>Output:
+[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+
+### 大意：
+>假设你有一个随机顺序的人站在队列中。每个人都被一对整数 (h, k) 描述，h 是人的高度，k 是站在他前面的人中高度大于等于他的数量。写一个算法来重构队列。
+
+>注意：
+>人的数量少于1100。
+
+>例子：
+
+>>输入：
+>[[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
+
+>>输出：
+>[[5,0], [7,0], [5,2], [6,1], [4,4], [7,1]]
+
+### 思路：
+这个需求中其实主要要抓到最大的规律。
+
+首先我们将人全部从高到低排个序，如果一样高，就看谁的 k 大谁就拍前面。这时我们得到了一堆从高到低的，等高中 k 大在前的人。
+
+现在，遍历这个排序后的数组，按照每个人的 k 的值将其一个个插入到对应的位置。相同位置的，后插入的一定小于先插入的，所以在前面，而越后插入的人，已经插过的所有人都比他高，它插在任何位置，前面的人都比他高，高的个数就正好是他的 k 值。即使后面又在他前面插了人，也比他矮。
+
+PS：List 的 add 方法如果带有两个参数，第一个整型参数是指插入的位置。
+
+### 他山之石：
+
+```java
+public class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        Arrays.sort(people,new Comparator<int[]>(){
+           public int compare(int[] p1, int[] p2){
+               return p1[0]!=p2[0]?Integer.compare(p2[0],p1[0]): Integer.compare(p1[1],p2[1]);
+           }
+        });
+        List<int[]> list = new LinkedList();
+        for (int[] ppl: people) list.add(ppl[1], ppl);
+        return list.toArray(new int[people.length][] );
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="413. Arithmetic Slices"/>413. Arithmetic Slices
+### 问题：
+>A sequence of number is called arithmetic if it consists of at least three elements and if the difference between any two consecutive elements is the same.
+
+>For example, these are arithmetic sequence:
+
+>>1, 3, 5, 7, 9
+
+>>7, 7, 7, 7
+
+>>3, -1, -5, -9
+
+>The following sequence is not arithmetic.
+
+>>1, 1, 2, 5, 7
+
+>A zero-indexed array A consisting of N numbers is given. A slice of that array is any pair of integers (P, Q) such that 0 <= P < Q < N.
+
+>A slice (P, Q) of array A is called arithmetic if the sequence:
+A[P], A[p + 1], ..., A[Q - 1], A[Q] is arithmetic. In particular, this means that P + 1 < Q.
+
+>The function should return the number of arithmetic slices in the array A.
+
+
+>Example:
+
+>>A = [1, 2, 3, 4]
+
+>>return: 3, for 3 arithmetic slices in A: [1, 2, 3], [2, 3, 4] and [1, 2, 3, 4] itself.
+
+### 大意：
+>如果一序列的数字至少由三个数字组成且每两个相邻的数字间的差值都一样，就称该序列为 arithmetic 。
+
+>比如，下面这些是 arithmetic 序列：
+>>1, 3, 5, 7, 9
+
+>>7, 7, 7, 7
+
+>>3, -1, -5, -9
+
+>而下面的序列不是 arithmetic 序列：
+>>1, 1, 2, 5, 7
+
+>一个零索引的数组A由N个数字组成。其中的一截数字 （P，Q）， 0 <= P < Q < N。
+
+>如果序列 A[P], A[p + 1], ..., A[Q - 1], A[Q] 是arithmetic，就称数组的一截数字（P，Q）是 arithmetic。尤其是，这意味着 P + 1 < Q。
+
+>函数需要返回数组A中 arithmetic 截的数量。
+
+>例子：
+>>A = [1, 2, 3, 4]
+>返回 3，因为A中有三截arithmetic ： [1, 2, 3], [2, 3, 4] 和 [1, 2, 3, 4] （它自己）。
+
+### 思路：
+题目的意思就是找数组中有多少节三个数以上组成的等差数列。我的做法一个个数开始往后遍历，对每个数都看能找几节，从3个数一截开始判断，如果是就算一节，然后长度加一再判断，知道数组末尾。对每个数都这样判断一次。至于怎么判断等差数列就很简单了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int numberOfArithmeticSlices(int[] A) {
+        int result = 0;
+        for (int i = 0; i < A.length - 2; i++) {
+            int gap = A[i+1] - A[i];
+            for (int j = i+2; j < A.length; j++) {
+                if (A[j] - A[j-1] == gap) result ++;
+                else break;
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public int numberOfArithmeticSlices(int[] A) {
+    int curr = 0, sum = 0;
+    for (int i=2; i<A.length; i++)
+        if (A[i]-A[i-1] == A[i-1]-A[i-2]) {
+            curr += 1;
+            sum += curr;
+        } else {
+            curr = 0;
+        }
+    return sum;
+}
+```
+
+这个做法只需要遍历一次，他发现了一个规律，就是每找到更长的一节，其实就代表其内还包含了很多节，而这个数量也是递增的。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="462. Minimum Moves to Equal Array Elements II"/>462. Minimum Moves to Equal Array Elements II
+### 问题：
+>Given a non-empty integer array, find the minimum number of moves required to make all array elements equal, where a move is incrementing a selected element by 1 or decrementing a selected element by 1.
+
+>You may assume the array's length is at most 10,000.
+
+>Example:
+
+>>Input:
+
+>>[1,2,3]
+
+>>Output:
+
+>>2
+
+>>Explanation:
+
+>>Only two moves are needed (remember each move increments or decrements one element):
+
+>>[1,2,3]  =>  [2,2,3]  =>  [2,2,2]
+
+### 大意：
+>给出一个非空整型数组，找到需要移动的最小值来让数组的所有元素都相等，一次移动是指将指定元素加一或者减一。
+
+>你可以假设数组的长度不超过10000。
+
+>例子：
+
+>>输入：
+
+>>[1,2,3]
+
+>>输出：
+
+>>2
+
+>>解释：
+
+>>只需要两次移动（记住每次移动是指增减一个元素）：
+
+>>[1,2,3]  =>  [2,2,3]  =>  [2,2,2]
+
+### 思路：
+题目的描述有一点误导性，主要是用了“移动”这个词，而且给出的例子也不够明确，一开始我误以为是要将元素进行位移，导致想的很复杂，后来才发现是对元素进行加减。
+
+只是加减就很简单了，我们要通过最小的加减数来使所有的元素都相同，最快的方式是往中间靠拢，这就需要先给数组排序，然后取其中间的数，由于每次“移动”都只能加一或者减一，所以“移动”的次数其实就是两数之间的差值。这样遍历一次都进行一次减法就行了，当然要记得取绝对值。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int minMoves2(int[] nums) {
+        Arrays.sort(nums);
+        int middle = nums[nums.length/2];
+        int result = 0;
+        for (int i = 0; i < nums.length; i++) {
+            result += Math.abs(middle - nums[i]);
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public int minMoves2(int[] nums) {
+        Arrays.sort(nums);
+        int i = 0, j = nums.length-1;
+        int count = 0;
+        while(i < j){
+            count += nums[j]-nums[i];
+            i++;
+            j--;
+        }
+        return count;
+    }
+}
+```
+
+同样的思路，这种做法理想情况下会快一半。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="451. Sort Characters By Frequency"/>451. Sort Characters By Frequency
+### 问题：
+>Given a string, sort it in decreasing order based on the frequency of characters.
+
+>Example 1:
+
+>>Input:
+
+>>"tree"
+
+>>Output:
+
+>>"eert"
+
+>>Explanation:
+
+>>'e' appears twice while 'r' and 't' both appear once.
+
+>>So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+
+>Example 2:
+
+>>Input:
+
+>>"cccaaa"
+
+>>Output:
+
+>>"cccaaa"
+
+>>Explanation:
+
+>>Both 'c' and 'a' appear three times, so "aaaccc" is also a valid answer.
+
+>>Note that "cacaca" is incorrect, as the same characters must be together.
+
+>Example 3:
+
+>>Input:
+
+>>"Aabb"
+
+>>Output:
+
+>>"bbAa"
+
+>>Explanation:
+
+>>"bbaA" is also a valid answer, but "Aabb" is incorrect.
+
+>>Note that 'A' and 'a' are treated as two different characters.
+
+### 大意：
+>给出一个字符串，基于其中字符出现的次数按照降序排列。
+
+>例1：
+
+>>输入：
+
+>"tree"
+
+>>输出：
+
+>"eert"
+
+>>解释：
+
+>‘e’出现了两次，‘r’和‘t’都只出现了一次。
+
+>所以‘e’要在‘r’和‘t’的前面。因此“eetr”也是对的。
+
+>例2：
+
+>>输入：
+
+>"cccaaa"
+
+>>输出：
+
+>"cccaaa"
+
+>>解释：
+
+>‘c’和‘a’都出现了三次，所以“aaaccc”也是对的。
+
+>注意“cacaca”是错的，因为同样的字符必须在一起。
+
+>例3：
+
+>>输入：
+
+>"Aabb"
+
+>>输出：
+
+>"bbAa"
+
+>>解释：
+
+>“bbaA”也是对的，但“Aabb”不对。
+
+>注意‘A’和‘a’被视为两个不同的字符。
+
+### 思路：
+题目的要求是将字符按照出现次数排序，注意是区分大小写的，而且并没有说只有字母。
+
+其实整个过程可以分为几步：
+
+1. 遍历收集不同字符出现的次数；
+2. 按照次数排序
+3. 组成结果数组，每个字符要出现对应的次数。
+
+我用二维数组来记录字符和出现的次数，然后用冒泡法排序，最后组成数组。
+
+这个做法能实现，但是时间复杂度太高了，在超长输入的测试用例中超时了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        char[] arr = s.toCharArray();
+        String[][] record = new String[arr.length][2];
+        int num = 0;
+        // 将字符串中的不同字符及其数量记录到二维数组中
+        for (int i = 0; i < arr.length; i++) {
+            int j = 0;
+            boolean hasFind = false;
+            for (; j < num; j++) {
+                if (arr[i] - record[j][0].charAt(0) == 0) {
+                    hasFind = true;
+                    int temp = Integer.parseInt(record[j][1]) + 1;
+                    record[j][1] = Integer.toString(temp);
+                    break;
+                }
+            }
+            if (!hasFind) {
+                record[j][0] = String.valueOf(arr[i]);
+                record[j][1] = "1";
+                num ++;
+            }
+        }
+        
+        // 对二维数组按第二列排序
+        for (int i = 0; i < num; i++) {
+            for (int j = 0; j < num-1; j++) {
+                String[] temp = new String[2];
+                if (Integer.parseInt(record[j][1]) - Integer.parseInt(record[j+1][1]) > 0) {
+                    temp = record[j];
+                    record[j] = record[j+1];
+                    record[j+1] = temp;
+                }
+            }
+        }
+        // 结果
+        System.out.println(num);
+        String result = "";
+        for (int i = num-1; i >= 0; i--) {
+            System.out.println(record[i][1]);
+            System.out.println(record[i][0]);
+            for (int j = 0; j < Integer.parseInt(record[i][1]); j++) {
+                result = result + record[i][0];
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 改进：
+其实想了想ASCII码表总共就126个字符，可以像对待纯字母一样用一个数组来记录次数，同时用一个字符数组来记录对应位置的字符，在排序时跟着一起变就行了。
+
+但是依然会超时，看来主要还是排序方式太慢了。
+
+### 改进代码（Java）：
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        char[] arr = s.toCharArray();
+        int[] map = new int[126];
+        char[] c = new char[126];
+        // 将字符串中的不同字符及其数量记录到数组中
+        for (char ch : s.toCharArray()) {
+            map[ch]++;
+        }
+        
+        // 对应字符
+        for (int i = 0; i < 126; i++) {
+            c[i] = (char)i;
+        }
+        
+        // 对次数排序
+        for (int i = 0; i < 126; i++) {
+            for (int j = 0; j < 125; j++) {
+                if (map[j] - map[j+1] > 0) {
+                    // 次数移动
+                    int tempNum = map[j];
+                    map[j] = map[j+1];
+                    map[j+1] = tempNum;
+                    
+                    // 对应字符移动
+                    char tempChar = c[j];
+                    c[j] = c[j+1];
+                    c[j+1] = tempChar;
+                }
+            }
+        }
+        // 结果
+        String result = "";
+        for (int i = 125; i >= 0; i--) {
+            if (map[i] > 0) {
+                for (int j = 0; j < map[i]; j++) {
+                    result = result + c[i];
+                }
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public String frequencySort(String s) {
+        if (s == null) {
+            return null;
+        }
+        Map<Character, Integer> map = new HashMap();
+        char[] charArray = s.toCharArray();
+        int max = 0;
+        for (Character c : charArray) {
+            if (!map.containsKey(c)) {
+                map.put(c, 0);
+            }
+            map.put(c, map.get(c) + 1);
+            max = Math.max(max, map.get(c));
+        }
+    
+        List<Character>[] array = buildArray(map, max);
+    
+        return buildString(array);
+    }
+    
+    private List<Character>[] buildArray(Map<Character, Integer> map, int maxCount) {
+        List<Character>[] array = new List[maxCount + 1];
+        for (Character c : map.keySet()) {
+            int count = map.get(c);
+            if (array[count] == null) {
+                array[count] = new ArrayList();
+            }
+            array[count].add(c);
+        }
+        return array;
+    }
+    
+    private String buildString(List<Character>[] array) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = array.length - 1; i > 0; i--) {
+            List<Character> list = array[i];
+            if (list != null) {
+                for (Character c : list) {
+                    for (int j = 0; j < i; j++) {
+                        sb.append(c);
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+这个做法用map来记录字符出现的次数，比我的方法要快一些。然后创建数组，用序号来表示其出现的次数，省去了排序的过程，最后反过来得出结果就可以了。速度回快一些，但是属于空间换时间，在字符数量很大时会浪费很多空间。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="260. Single Number III"/>260. Single Number III
+### 问题：
+>Given an array of numbers nums, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once.
+
+>For example:
+
+>Given nums = [1, 2, 1, 3, 2, 5], return [3, 5].
+
+>Note:
+>1. The order of the result is not important. So in the above example, [5, 3] is also correct.
+>2. Your algorithm should run in linear runtime complexity. Could you implement it using only constant space complexity?
+
+### 大意：
+>给出一个数字数组 nums，其中只有两个元素只出现过一次，其余的都出现了两次。找到只出现了一次的两个元素。
+
+>例子：
+
+>给出 nums = [1, 2, 1, 3, 2, 5], 返回 [3, 5].
+
+>注意：
+>1. 结果的顺序不重要，所以上面的例子中 [5, 3] 也是对的。
+>2. 你的算法应该为线性的时间复杂度。你能不能只用恒定的空间复杂度？
+
+### 思路：
+最简单的方法就是排序后，依次检查相邻两个数是否相等，当然遇到相等的就要跳一个数字再进行检查，遇到不相等的就记录下来是结果，注意如果单个的元素排序后在最末尾，要单独处理。
+
+这个做法排序是需要时间和空间的，并不完全符合题目的要求。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] singleNumber(int[] nums) {
+        Arrays.sort(nums);
+        
+        int[] result = new int[2];
+        int index = 0;
+        
+        int i = 0;
+        for (; i < nums.length-1; i++) {
+            if (nums[i] != nums[i+1]) {
+                result[index] = nums[i];
+                index ++;
+            }
+            else i++;
+        }
+        if (i < nums.length) result[index] = nums[i];
+        
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public int[] singleNumber(int[] nums) {
+        // Pass 1 : 
+        // Get the XOR of the two numbers we need to find
+        int diff = 0;
+        for (int num : nums) {
+            diff ^= num;
+        }
+        // Get its last set bit
+        diff &= -diff;
+        
+        // Pass 2 :
+        int[] rets = {0, 0}; // this array stores the two numbers we will return
+        for (int num : nums)
+        {
+            if ((num & diff) == 0) // the bit is not set
+            {
+                rets[0] ^= num;
+            }
+            else // the bit is set
+            {
+                rets[1] ^= num;
+            }
+        }
+        return rets;
+    }
+}
+```
+
+好的，这是一个完全符合题目要求的做法，用到了按位异或和与的操作，是什么意思呢？
+
+首先我们要知道异或的操作是指两个数同一位上相等时结果为0，不等时结果为1。如果是两个相同的数字异或，结果自然为0，而0与一个数异或，结果也是那个数，按照我们数组的特性，遍历异或后的结果将会是两个唯一的元素的异或结果。
+
+得到两个数的异或结果后，我们要知道，这个结果中为0的位上说明两个数字相同，为1的位上说明两个数字不同，对于这一位，将数组中所有数字和其相与，必然会得到为0和为1两个结果阵营，而我们要的两个数就在两个阵营之中，那怎么分别在两个阵营中找出两个数呢？还是上面用过的手法，遍历异或。因为相同的两个数一定会进入同一个阵营，异或后又变成0了，最后就会凸显出要找的两个数了。
+
+上面我们说要将第一次异或后的结果中找出某一位为1的值，怎么找呢？办法很多，这里的做法是将其与自己的负数相与，就会得出一个唯一一位为1的数了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="167. Two Sum II - Input array is sorted"/>167. Two Sum II - Input array is sorted
+### 问题：
+>Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.
+
+>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.
+
+>You may assume that each input would have exactly one solution.
+
+>Input: numbers={2, 7, 11, 15}, target=9
+>Output: index1=1, index2=2
+
+### 大意：
+>给出一个递增排好序的整型数组，找出两个数组相加等于目标数字。
+
+>函数 twoSum 应该返回两个数字的索引，index1 必须小于 index2。请注意你返回的结果（index1 和 index2）不是基于0开始的。
+
+>你可以假设每个输入都有一个结果。
+
+>输入：numbers={2, 7, 11, 15}, target=9
+>输出：index1=1, index2=2
+
+### 思路：
+最直接的方法是遍历每一个数，然后看它后面的每个数与它相加能不能等于目标数字，但是这样太慢了。
+
+要利用好数组已经排好序的条件，两个数相加一定是一大一小相加得出目标数字，那么我们可以用两个游标，一个从数组头开始遍历，一个从数组尾开始遍历，如果数组头的数字小于目标数字减去数组尾的数字，则数组头的游标往后移动一格，否则数组尾的游标往前移动一格。如果两个数字相加正好等于目标数字，那么结束循环将结果返回，注意索引要求从1开始，所以我们要将得出得的两个索引号都加一。
+
+举个例子，数组为 [1,2,3,4]，目标数字为6，i 和 j 分别一开始在1和4两个数字，因为1小于6-4，所以数组头的游标指向2，数组尾的游标不变，此时2+4正好等于6，返回结果索引为2和4，而不是1和3。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        int[] result = new int[2];
+        int i = 0;
+        int j = numbers.length-1;
+        while (i < j) {
+            if (numbers[i] + numbers[j] == target) {
+                result[0] = i+1;
+                result[1] = j+1;
+                break;
+            }
+            if (numbers[i] < target - numbers[j]) i++;
+            else j--;
+        }
+        return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="442. Find All Duplicates in an Array"/>442. Find All Duplicates in an Array
+### 问题：
+>Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+
+>Find all the elements that appear twice in this array.
+
+>Could you do it without extra space and in O(n) runtime?
+
+>Example:
+
+>>Input:
+>>[4,3,2,7,8,2,3,1]
+
+>>Output:
+>>[2,3]
+
+### 大意：
+>给出一个整型数组， 1 ≤ a[i] ≤ n （n为数组的尺寸），一些元素出现了两次，另一些只出现一次。
+
+>找到所有数组中出现了两次的元素。
+
+>你能不能不使用额外的空间，在O（n）时间内完成？
+
+>例子：
+
+>>输入：
+>>[4,3,2,7,8,2,3,1]
+
+>>输出：
+>>[2,3]
+
+### 思路：
+题目说明了数组中元素的范围，那么可以依此创建一个长度为n的新整型数组，其每个位置的值大小表示对应数字出现的次数，遍历原数组，遇到那个数字就将新数组对应值的位置的元素值加一，就记录下每个数字出现的次数了，之后找出出现次数为2的添加到结果List中即可。
+
+这个做法使用了额外的O（n）的空间，并不符合要求。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> result = new ArrayList<Integer>();
+        int[] count = new int[nums.length+1];
+        for (int i = 0; i < nums.length; i++) {
+            count[nums[i]]++;
+        }
+        for (int i = 1; i < count.length; i++) {
+            if (count[i] == 2) result.add(i);
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    // when find a number i, flip the number at position i-1 to negative. 
+    // if the number at position i-1 is already negative, i is the number that occurs twice.
+    
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums.length; ++i) {
+            int index = Math.abs(nums[i])-1;
+            if (nums[index] < 0)
+                res.add(Math.abs(index+1));
+            nums[index] = -nums[index];
+        }
+        return res;
+    }
+}
+```
+
+这个做法在注释中也解释了，遍历数组，没遇到一个元素，将其值对应的位置上的那个元素取负数，当然因为元素的值是从1开始的，所以变成位置的时候都要减一，每次换成位置时都要用绝对值来算，因为出现了两次的元素，在之前就已经被变成负数了，所以借此可以判断，如果该位置的元素是个负数，说明之前出现过一次，就记录下来。
+
+这个做法就没有用额外的空间，时间复杂度也是O（n）。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="238. Product of Array Except Self"/>238. Product of Array Except Self
+### 问题：
+>Given an array of n integers where n > 1, nums, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+
+>Solve it without division and in O(n).
+
+>For example, given [1,2,3,4], return [24,12,8,6].
+
+>Follow up:
+>Could you solve it with constant space complexity? (Note: The output array does not count as extra space for the purpose of space complexity analysis.)
+
+### 大意：
+>给出一个有n（n>1）个整数的数组nums，返回一个output数组，output[i]等于除了nums[i]外其余所有元素的乘积。
+
+>不使用除法且在O（n）时间内完成。
+
+>比如，给出 [1,2,3,4]，返回 [24,12,8,6]。
+
+>进阶：
+>你能使用固定的空间复杂度吗？（注意：output数组不算做额外的空间。）
+
+### 思路：
+如果用除法就简单了，直接全部乘起来，然后每个位置对应除以nums[i]的元素就可以了。
+
+不用除法的话，我们要用两次遍历，先正着遍历一遍，在结果数组上每个元素都算到累乘至nums数组中对应位置的前面所有的元素，比如第三个元素的值为nums中前连个元素的乘积。
+
+第二次遍历，反着遍历，用一个变量记录从后到前的累乘，同时结果数组中乘以这个变量。
+
+这样对每一个位置来说，其刚好在第一次遍历中取得了它前面所有元素的乘积，第二次遍历中又乘以了它后面所有元素的乘积，唯独不算它自己在内。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int[] result = new int[nums.length];
+        
+        for (int i = 0; i < result.length; i++) result[i] = 1;
+        
+        for (int i = 1; i < nums.length; i++) {// 先正着来一遍，只乘到前一个元素
+            result[i] = result[i-1] * nums[i-1];
+        }
+        
+        int behind = 1;
+        for (int i = nums.length-1; i >= 0; i--) {// 再倒着来一遍，乘以后面的数
+            result[i] = result[i] * behind;
+            behind = behind * nums[i];
+        }
+        
+        return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="445. Add Two Numbers II"/>445. Add Two Numbers II
+### 问题：
+>You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+>You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+>Follow up:
+>What if you cannot modify the input lists? In other words, reversing the lists is not allowed.
+
+>Example:
+
+>>Input: (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
+>>Output: 7 -> 8 -> 0 -> 7
+
+### 大意：
+>给出两个非空的链表表示的非负整数。最高位的数在第一个，每个节点都只包含一个数字。将两个数相加并作为链表返回。
+
+>你可以假设两个数字不包含0开头的数字，除非就是0。
+
+>进阶：
+>你能不改变原有链表吗？也就是说不反转链表。
+
+>例子：
+>>输入： (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
+>输出： 7 -> 8 -> 0 -> 7
+
+### 思路：
+这道题的意思就是由链表表示的两个大数字相加得出结果，比如例子中就是 7243 + 564 = 7807 
+
+我们相加两个数字必须要从最低位开始加，所以肯定得先遍历链表知道分别有多少位，还得一位位的往高位加起来，所以我们用两个数组分别记录两个链表各个位的数字和两个链表的位数，然后都从最后一位往前一位位的做加法，注意会有进位，加法过程中还要注意存在某个数位数更多，没有加完的情况，当然也要考虑最后有没有最高一位进位的情况。
+
+在计算结果的时候还是要用数组一位位的记录，最后再换成链表。
+
+这种做法的时间复杂度是O(n)，还是比较快的，不过是以空间的消耗为代价。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int[] arr1 = new int[100];
+        int index = 0;
+        ListNode newl = l1;
+        while (newl != null) {
+            arr1[index] = newl.val;
+            newl = newl.next;
+            index ++;
+        }
+        arr1 = Arrays.copyOfRange(arr1, 0, index);
+        
+        int[] arr2 = new int[100];
+        index = 0;
+        newl = l2;
+        while (newl != null) {
+            arr2[index] = newl.val;
+            newl = newl.next;
+            index ++;
+        } 
+        arr2 = Arrays.copyOfRange(arr2, 0, index);
+        
+        int n1 = arr1.length-1;
+        int n2 = arr2.length-1;
+        int[] result = new int[100];
+        index = 0;
+        int flag = 0;
+        while (n1 >= 0 && n2 >= 0) {
+            int sum = arr1[n1] + arr2[n2] + flag;
+            if (sum > 9) {
+                flag = 1;
+                sum = sum % 10;
+            } else flag = 0;
+            
+            result[index] = sum;
+            index ++;
+            n1 --;
+            n2 --;
+        }
+        while (n1 >= 0) {
+            int sum = arr1[n1] + flag;
+            if (sum > 9) {
+                flag = 1;
+                sum = sum % 10;
+            } else flag = 0;
+            
+            result[index] = sum;
+            index ++;
+            n1 --;
+        }
+        while (n2 >= 0) {
+            int sum = arr2[n2] + flag;
+            if (sum > 9) {
+                flag = 1;
+                sum = sum % 10;
+            } else flag = 0;
+            
+            result[index] = sum;
+            index ++;
+            n2 --;
+        }
+        if (flag == 1) result[index] = 1;
+        else index --;
+        
+        if (index == -1) return null;
+        ListNode head = new ListNode(result[index]);
+        ListNode nextNode = head;
+        while (index > 0) {
+            index --;
+            ListNode newNext = new ListNode(result[index]);
+            nextNode.next = newNext;
+            nextNode = newNext;
+        }
+        
+        return head;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> s1 = new Stack<Integer>();
+        Stack<Integer> s2 = new Stack<Integer>();
+        
+        while(l1 != null) {
+            s1.push(l1.val);
+            l1 = l1.next;
+        };
+        while(l2 != null) {
+            s2.push(l2.val);
+            l2 = l2.next;
+        }
+        
+        int sum = 0;
+        ListNode list = new ListNode(0);
+        while (!s1.empty() || !s2.empty()) {
+            if (!s1.empty()) sum += s1.pop();
+            if (!s2.empty()) sum += s2.pop();
+            list.val = sum % 10;
+            ListNode head = new ListNode(sum / 10);
+            head.next = list;
+            list = head;
+            sum /= 10;
+        }
+        
+        return list.val == 0 ? list.next : list;
+    }
+}
+```
+
+这个做法差不多，不过是把数组的存储换成栈的存储，刚好符合从最后一位开始加的情况，比要多预留位数的数组更节省空间。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="347. Top K Frequent Elements"/>347. Top K Frequent Elements
+### 问题：
+>Given a non-empty array of integers, return the k most frequent elements.
+
+>For example,
+>Given [1,1,1,2,2,3] and k = 2, return [1,2].
+
+>Note: 
+>* You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
+>* Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+
+### 大意：
+>给出一个非空的整型数组，返回最频繁的k个元素。
+
+>例子：
+>给出 [1,1,1,2,2,3] 和 k = 2，返回 [1,2]。
+
+>注意：
+>* 你可以假设k始终是有效的，1 ≤ k ≤ 不同的元素数。
+>* 你的算法时间复杂度要少于O(nlogn)，n是数组的尺寸。
+
+### 思路：
+我们要知道哪些数字出现的最多，以及对应的次数，肯定要先遍历一遍并记录下各个数字出现的次数，这里我们用一个HashMap来记录，数字为key，值为它们出现的次数。
+
+接着循环查找出现的最多、次多...的数字，并添加到结果中去。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {// 记录过
+                String numStr = map.get(nums[i]);
+                int num = Integer.valueOf(numStr).intValue();
+                num ++;
+                map.put(nums[i], String.valueOf(num));
+            } else {// 没记录过
+                map.put(nums[i], "1");
+            }
+        }
+        
+        int[] keyArr = new int[map.size()];
+        int[] valueArr = new int[map.size()];
+        int[] used = new int[map.size()];
+        int index = 0;
+        for (Integer key : map.keySet()) {  
+            keyArr[index] = key;
+            System.out.println(key);
+            valueArr[index] = Integer.valueOf(map.get(key)).intValue();
+            System.out.println(map.get(key));
+            index ++;
+        }  
+        
+        List<Integer> result = new ArrayList<Integer>();
+        while (k > 0) {
+            int biggest = 0;
+            for (int i = 0; i < used.length; i++) {
+                if (used[i] != 1) {
+                    biggest = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < valueArr.length; i++) {
+                if (valueArr[i] > valueArr[biggest] && used[i] != 1) biggest = i;
+            }
+            result.add(keyArr[biggest]);
+            k --;
+            used[biggest] = 1;
+        }
+        
+        return result;
+        
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="122. Best Time to Buy and Sell Stock II"/>122. Best Time to Buy and Sell Stock II
+### 问题：
+>Say you have an array for which the ith element is the price of a given stock on day i.
+
+>Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times). However, you may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+
+### 大意：
+>说你有这么一个表示一只股票每日股价的数组。
+
+>设计一个算法寻找最大收益。你可以随便完成多少次交易（比如，多次买入卖出）。然而你不能一次进行多次交易（在再次买入前你必须卖出股票）。
+
+### 思路：
+这等于是把股票以后的走向告诉你，让你躺着赚钱，那最大收益当然是低价买进高价卖出了，只不过还是要按照时间顺序，而且每次也只能买一股。
+
+我们遍历股价，遇到不断下降的趋势，我们就等到降到最低了再买，然后等他开始上涨涨到最高点的时候卖出，以此往复，每次的收益累计就是最大收益了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length < 1) return 0;
+        
+        int last = prices[0];
+        int result = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if (prices[i] < last) last = prices[i];
+            else if (prices[i] > last) {
+                int big = prices[i];
+                i ++;
+                for (; i < prices.length; i++) {
+                    if (prices[i] > big) big = prices[i];
+                    else break;
+                }
+                result += big - last;
+                if (i >= prices.length - 1) break;
+                else last = prices[i];
+            }
+        }
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public class Solution {
+public int maxProfit(int[] prices) {
+    int total = 0;
+    for (int i=0; i< prices.length-1; i++) {
+        if (prices[i+1]>prices[i]) total += prices[i+1]-prices[i];
+    }
+    
+    return total;
+}
+```
+
+其实代码不用我那么麻烦，归根结底还是主要第二天有上涨就买入卖出，相当于把我的一次大操作分解成一天天的小操作，专做短线，想想也是这个理。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="357. Count Numbers with Unique Digits"/>357. Count Numbers with Unique Digits
+### 问题：
+>Given a non-negative integer n, count all numbers with unique digits, x, where 0 ≤ x < 10n.
+
+>Example:
+>Given n = 2, return 91. (The answer should be the total numbers in the range of 0 ≤ x < 100, excluding [11,22,33,44,55,66,77,88,99])
+
+### 大意：
+>给出一个非负整数n，计算所有单独数字组成的数 x 的数量，0 ≤ x < 10的n次方。
+
+>例子：
+>给出 n = 2，返回 91。（答案应该包含0 ≤ x < 100范围内的所有数，除了[11,22,33,44,55,66,77,88,99]）
+
+### 思路：
+这道题的意思是，对于0到10的n次方内的数，计算其中所有数都唯一的数的数量，比如19每一位都是唯一的数字，而11有两个1重复了，是这个意思，所以当给出n为2时，是计算0到99内的唯一组成数的数量，只有11、22...这些重复的数的组成不唯一，共9个，所以100-9=91。
+
+我们需要找一下规律：
+当 n = 0 时，0这个数是唯一组成的。
+当 n = 1 时，10个数都是唯一组成的。
+当 n = 2 时，除了头10个数外，每个十位上的数只会有一个个位上的数重复的情况，共有1~9，9个十位上的数，每个对应有9个数是唯一组成的，所以是 9*9。
+当 n = 3 时，出了头100个数的结果不影响外，对于三位数，还要排除百位数和其余位的数重复的情况，也就是说原来的9*9，变成了9*8，所以9个百位数共有 9*9*8 这些数。
+当 n = 4 时，除了头1000个数，还有 9*9*8*7这些数。
+。。。
+当 n = 10 时，除了前面的数，还有 9*9*8*7*6*5*4*3*2*1 个数。
+当 n >= 11 时，除了前面的数，到后面的数因为位数超过10了，已经不可能不重复了，所以不再有新的唯一组成数出现了。
+
+注意以上计算数量时都要加上前面出现的数，是个累加的过程。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int countNumbersWithUniqueDigits(int n) {
+         if (n == 0) return 1;
+         
+         int result = 10;
+         int middle = 9;
+         int decrease = 9;
+         while (n > 1 && decrease > 0) {
+             middle = middle * decrease;
+             result += middle;
+             decrease --;
+             n--;
+         }
+         
+         return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="477. Total Hamming Distance"/>477. Total Hamming Distance
+### 问题：
+>The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
+
+>Now your job is to find the total Hamming distance between all pairs of the given numbers.
+
+>Example:
+>>Input: 4, 14, 2
+
+>>Output: 6
+
+>>Explanation: In binary representation, the 4 is 0100, 14 is 1110, and 2 is 0010 (just
+showing the four bits relevant in this case). So the answer will be:
+HammingDistance(4, 14) + HammingDistance(4, 2) + HammingDistance(14, 2) = 2 + 2 + 2 = 6.
+
+>Note:
+>1. Elements of the given array are in the range of 0 to 10^9
+>2. Length of the array will not exceed 10^4.
+
+### 大意：
+>两个整数之间的Hamming distance是指它们在二进制表示上各个位的数不同的个数。
+
+>现在你的工作是找出每对数字之间的Hamming distance的总和。
+
+>例子：
+>>输入：4, 14, 2
+
+>>输出：6
+
+>>解释：在二进制表示法中，4是 0100，14是 1110，2是 0010（这里只显示四位）。所以答案应该是 HammingDistance(4, 14) + HammingDistance(4, 2) + HammingDistance(14, 2) = 2 + 2 + 2 = 6。
+
+>注意：
+>1. 给出的元素范围在0到10的9次方。
+>2. 数组的长度不会超过10的4次方。
+
+### 思路：
+这里如果使用双重循环一个个比较两个数字的差异，可以算出来，但是在时间上会有用例超时。
+
+这里换一种思路，我们看每个数都有32位，对每一位，我们统计数组中的数再这一位上为1的有几个数，那么在这一位上，所有两对数不同的情况是为1的数量乘以为0的数量，是个排列组合的问题。对每一位我们都这样操作，就可以很快得出结果了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int totalHammingDistance(int[] nums) {
+        int result = 0;
+        for (int i = 0; i < 32; i++) {
+            int tempCount = 0;
+            for (int j = 0; j < nums.length; j++) {
+                int num = nums[j];
+                tempCount += (num >> i) & 1;
+            }
+            result += tempCount * (nums.length - tempCount);
+        }
+        return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="481. Magical String"/>481. Magical String
+### 问题：
+>A magical string S consists of only '1' and '2' and obeys the following rules:
+
+>The string S is magical because concatenating the number of contiguous occurrences of characters '1' and '2' generates the string S itself.
+
+>The first few elements of string S is the following: S = "1221121221221121122……"
+
+>If we group the consecutive '1's and '2's in S, it will be:
+
+>1 22 11 2 1 22 1 22 11 2 11 22 ......
+
+>and the occurrences of '1's or '2's in each group are:
+
+>1 2	2 1 1 2 1 2 2 1 2 2 ......
+
+>You can see that the occurrence sequence above is the S itself.
+
+>Given an integer N as input, return the number of '1's in the first N number in the magical string S.
+
+>Note: N will not exceed 100,000.
+
+>Example 1:
+
+>>Input: 6
+
+>>Output: 3
+
+>>Explanation: The first 6 elements of magical string S is "12211" and it contains three 1's, so return 3.
+
+### 大意：
+>一个魔力字符串 S 仅由 1 和 2 组成，遵循下面的规则：
+
+>字符串 S 因为其中的1和2由其连续出现的次数组成其自身所以是魔力的。
+
+>S前面的一些元素是： S = "1221121221221121122……"
+
+>如果我们按照S中1和2出现的次数来分割，就会变成：
+
+>1 2	2 1 1 2 1 2 2 1 2 2 ......
+
+>你会看到次数的序列正好是S它自身。
+
+>给出整数N作为输入，返回魔力字符串S中前N个数内1的个数。
+
+>注意：N不会超过100000。
+
+>例1：
+
+>>输入：6
+
+>>输出：3
+
+>>解释：S的前六个元素是 "12211" ，包含了三个1，所以返回3。
+
+### 思路：
+其实只要理解题目中字符串S的生成过程，就好模拟这个过程了，1和2交替出现，其字符串自身每个元素代表后面1或者2连续出现的个数，我们需要用数组来记录字符串S，由于需要前面的至少两、三个数做初始值，我们对于小于3的情况直接返回结果，如果给出的n为0，那么返回0，给出的n为1/2/3，都返回1。
+
+然后就可以对记录的数组先初始前面两三个数了，由于要交替出现1和2，所以需要一个布尔变量来记录当前应该放1还是2，还需要一个坐标用来记录我们判断后面数字出现个数的数的位置，开始我设立了两个数组，后来发现两个数组其实都是一模一样的，只需要用一个坐标记录就可以了，一个是在数组尾部添加元素，一个是用来判断添加什么元素的数的位置。然后就可以根据要放1还是要放2来连续放元素了。每次放1的时候记录1的个数，得出结果。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int magicalString(int n) {
+        if (n == 0) return 0;
+        else if (n <= 3) return 1;
+        
+        int[] num = new int[n];
+        int[] occ = new int[n];
+        int result = 0;
+        num[0] = 1;
+        
+        occ[0] = 1;
+        occ[1] = 2;
+        result ++;
+        boolean one = false;
+        int index = 1;
+        for (int i = 1; i < n; i++) {
+            if (one) {
+                for (int j = occ[index]; j > 0; j--) {
+                    if (i >= n) break;
+                    num[i] = 1;
+                    occ[i] = 1;
+                    result ++;
+                    i++;
+                }
+                i--;
+            } else {
+                for (int j = occ[index]; j > 0; j--) {
+                    if (i >= n) break;
+                    num[i] = 2;
+                    occ[i] = 2;
+                    i++;
+                }
+                i--;
+            }
+            
+            one = !one;
+            index ++;
+        }
+        
+        // for (int i = 0; i < n; i++) {
+        //     System.out.println(num[i]);
+        // }
+        
+        return result;
+    }
+}
+```
+
+### 代码改进（Java）：
+
+取出多余的数组，只保留一个，节省空间，同时对于放1还是放2的判断可以在一个循环内去做，代码会简洁很多：
+
+```java
+public class Solution {
+    public int magicalString(int n) {
+        if (n == 0) return 0;
+        else if (n <= 3) return 1;
+        
+        int[] num = new int[n];
+        int result = 1;
+        num[0] = 1;
+        num[1] = 2;
+        boolean one = false;
+        int index = 1;
+        for (int i = 1; i < n; i++) {
+            for (int j = num[index]; j > 0; j--) {
+                if (i >= n) break;
+                num[i] = one ? 1 : 2;
+                if (one) result ++;
+                i++;
+            }
+            i--;
+            
+            one = !one;
+            index ++;
+        }
+        
+        return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="482. License Key Formatting"/>482. License Key Formatting
+### 问题：
+>Now you are given a string S, which represents a software license key which we would like to format. The string S is composed of alphanumerical characters and dashes. The dashes split the alphanumerical characters within the string into groups. (i.e. if there are M dashes, the string is split into M+1 groups). The dashes in the given string are possibly misplaced.
+
+>We want each group of characters to be of length K (except for possibly the first group, which could be shorter, but still must contain at least one character). To satisfy this requirement, we will reinsert dashes. Additionally, all the lower case letters in the string must be converted to upper case.
+
+>So, you are given a non-empty string S, representing a license key to format, and an integer K. And you need to return the license key formatted according to the description above.
+
+>Example 1:
+>>Input: S = "2-4A0r7-4k", K = 4
+
+>>Output: "24A0-R74K"
+
+>>Explanation: The string S has been split into two parts, each part has 4 characters.
+
+>Example 2:
+>>Input: S = "2-4A0r7-4k", K = 3
+
+>>Output: "24-A0R-74K"
+
+>>Explanation: The string S has been split into three parts, each part has 3 characters except the first part as it could be shorter as said above.
+
+>Note:
+>1. The length of string S will not exceed 12,000, and K is a positive integer.
+>2. String S consists only of alphanumerical characters (a-z and/or A-Z and/or 0-9) and dashes(-).
+>3. String S is non-empty.
+
+### 大意：
+>现在给你一个字符串S，代表我们想要组成的一个软件的序列号。字符串S由数字和字母以及破折号组成。破折号将数字和字母分割成一组组。（比如，如果有M个破折号，则字符串被分为M+1组）。字符串中的破折号可能放错了位置。
+
+>我们想要每组字符的长度为K（除了第一组可能短一些，但必须至少包含一个字符）。要满足这些要求，我们会重新插入破折号。此外，所有的小写字母必须转换成大写字母。
+
+>所以，给你一个非空字符串S，代表要组成的序列号，以及一个整数K。你需要根据上面的描述返回正确的序列号。
+
+>例1：
+>>输入： S = "2-4A0r7-4k", K = 4
+>输出："24A0-R74K"
+>解释：字符串S被分为两组，每组有4个字符。
+
+>例2：
+>>输入：S = "2-4A0r7-4k", K = 3
+>输出："24-A0R-74K"
+>解释：字符串S被分为三部分，每部分有三个字符，除了第一部分如上所说可以短一点。
+
+>注意：
+>1. 字符串S的长度不会超过12000，K是个正数。
+>2. 字符串S只由数字及字母（a-z 和/或 A-Z 和/或 0-9）以及破折号（-）组成。
+>3. 字符串S非空。
+
+### 思路：
+题目说了一长串，其实总结起来就是：
+
+给一个字符串和正整数，将字符串用破折号分成多个长度为K的组（第一组可以小于K），所有字母必须为大写。
+
+其实还是很容易的，因为第一组不一定长度为K，所以我们从后往前来重组，遇到小写字母就换成大写字母，结果中每放完K个字符就加一个破折号，遍历字符串时遇到破折号直接跳过，为了速度我们使用StringBuffer来处理结果字符串，处理完后再将结果翻转，才是正确的顺序。注意最后可能会在结果的开头出现一个破折号，也就是未翻转前的最后，这时候要去除掉。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public String licenseKeyFormatting(String S, int K) {
+        char[] sArr = S.toCharArray();
+        String result = "";
+        StringBuffer sBuffer = new StringBuffer(result);
+        int length = 0;
+        for (int i = sArr.length-1; i >= 0; i--) {
+            if (sArr[i] - '-' == 0) continue;
+            
+            if (sArr[i] - 'a' >= 0) sArr[i] = (char)(sArr[i] - 32);
+            sBuffer.append(sArr[i]);
+            length ++;
+            
+            if (length == K) {
+                sBuffer.append('-');
+                length = 0;
+            }
+        }
+        if (sBuffer.length() > 0 && sBuffer.charAt(sBuffer.length()-1) - '-' == 0) sBuffer.delete(sBuffer.length()-1, sBuffer.length());
+        sBuffer.reverse();
+        result = sBuffer.toString();
+        return result;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+    public String licenseKeyFormatting(String s, int k) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = s.length() - 1; i >= 0; i--)
+            if (s.charAt(i) != '-')
+                sb.append(sb.length() % (k + 1) == k ? '-' : "").append(s.charAt(i));
+        return sb.reverse().toString().toUpperCase();
+    } 
+```
+上面的代码时对前面的思路的极致简洁。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="343. Integer Break"/>343. Integer Break
+### 问题：
+>Given a positive integer n, break it into the sum of at least two positive integers and maximize the product of those integers. Return the maximum product you can get.
+
+>For example, given n = 2, return 1 (2 = 1 + 1); given n = 10, return 36 (10 = 3 + 3 + 4).
+
+>Note: You may assume that n is not less than 2 and not larger than 58.
+
+### 大意：
+>给出一个正整数n，将其拆分成至少两个正整数的和，并使这些数的乘积最大。返回你能获得的最大乘积。
+
+>比如，给出 n = 2，返回 1（2 = 1 + 1）；给出 n = 10，返回 36（10 = 3 + 3 + 4）。
+
+>注意：你可以假设n在2~58之间。
+
+### 思路：
+这道题是要考我们一个个猜拆分数字的和的方法吗？不是的，这种找最大乘积是有规律可循的，结论是拆分成多个2和3相乘得出的乘积最大，至于原因要靠数学分析。
+
+假设将n拆分成相等的多个x相加，那么乘积就是x的n/x次方。
+
+求导数得出 ![](http://img.blog.csdn.net/20170116152454534?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)，当 0 < x < e 时这个导数是正的，当 x = e 时等于0，当 x > e 时为负，也就是说这个乘积会在 x < e 时递增，到达 x = e 时达到最大，接着x越大，乘积变小。所以让 x = e 是最好的，也就是拆分成多个 e ，相乘的结果最大，但是题目要求拆分成正整数，那就只能找和e相近的，那就只能是2和3了，毕竟 2 < e < 3。
+
+而3离e更近，所以我们倾向于多弄出点3来，但是当取到够多的时候就不得不取2了，比如对于 n = 4，2*2 > 3*1，也就是说，如果取3使得剩下一个数是1，那么就要放弃取3，而取两个2。
+
+总结就是，将n尽量多拆分成多个3相加，最后如果剩下了4，那就不得不将剩下的4拆分成两个2，此时相乘的乘积一定最大，计算出结果即可。
+
+Leetcode刷到现在，随着难度的提升，已经开始出现需要纯粹依靠高等数学来解决的问题，而不再是单纯的逻辑思考，可见数学的重要性。
+
+
+### 代码（Java）：
+
+
+```java
+public class Solution {
+    public int integerBreak(int n) {
+        if (n == 2) return 1;
+        else if (n == 3) return 2;
+        
+        int sum = 0;
+        int result = 1;
+        while (true) {
+            if (n > 4) {
+                result = result * 3;
+                n -= 3;
+            } else {
+                result = result * n;
+                break;
+            }
+        }
+        
+        return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
