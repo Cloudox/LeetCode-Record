@@ -105,6 +105,7 @@ LeetCode笔记
   * [477. Total Hamming Distance](#477. Total Hamming Distance)
   * [481. Magical String](#481. Magical String)
   * [482. License Key Formatting](#482. License Key Formatting)
+  * [343. Integer Break](#343. Integer Break)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8127,6 +8128,65 @@ public class Solution {
     } 
 ```
 上面的代码时对前面的思路的极致简洁。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="343. Integer Break"/>343. Integer Break
+### 问题：
+>Given a positive integer n, break it into the sum of at least two positive integers and maximize the product of those integers. Return the maximum product you can get.
+
+>For example, given n = 2, return 1 (2 = 1 + 1); given n = 10, return 36 (10 = 3 + 3 + 4).
+
+>Note: You may assume that n is not less than 2 and not larger than 58.
+
+### 大意：
+>给出一个正整数n，将其拆分成至少两个正整数的和，并使这些数的乘积最大。返回你能获得的最大乘积。
+
+>比如，给出 n = 2，返回 1（2 = 1 + 1）；给出 n = 10，返回 36（10 = 3 + 3 + 4）。
+
+>注意：你可以假设n在2~58之间。
+
+### 思路：
+这道题是要考我们一个个猜拆分数字的和的方法吗？不是的，这种找最大乘积是有规律可循的，结论是拆分成多个2和3相乘得出的乘积最大，至于原因要靠数学分析。
+
+假设将n拆分成相等的多个x相加，那么乘积就是x的n/x次方。
+
+求导数得出 ![](http://img.blog.csdn.net/20170116152454534?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)，当 0 < x < e 时这个导数是正的，当 x = e 时等于0，当 x > e 时为负，也就是说这个乘积会在 x < e 时递增，到达 x = e 时达到最大，接着x越大，乘积变小。所以让 x = e 是最好的，也就是拆分成多个 e ，相乘的结果最大，但是题目要求拆分成正整数，那就只能找和e相近的，那就只能是2和3了，毕竟 2 < e < 3。
+
+而3离e更近，所以我们倾向于多弄出点3来，但是当取到够多的时候就不得不取2了，比如对于 n = 4，2*2 > 3*1，也就是说，如果取3使得剩下一个数是1，那么就要放弃取3，而取两个2。
+
+总结就是，将n尽量多拆分成多个3相加，最后如果剩下了4，那就不得不将剩下的4拆分成两个2，此时相乘的乘积一定最大，计算出结果即可。
+
+Leetcode刷到现在，随着难度的提升，已经开始出现需要纯粹依靠高等数学来解决的问题，而不再是单纯的逻辑思考，可见数学的重要性。
+
+
+### 代码（Java）：
+
+
+```java
+public class Solution {
+    public int integerBreak(int n) {
+        if (n == 2) return 1;
+        else if (n == 3) return 2;
+        
+        int sum = 0;
+        int result = 1;
+        while (true) {
+            if (n > 4) {
+                result = result * 3;
+                n -= 3;
+            } else {
+                result = result * n;
+                break;
+            }
+        }
+        
+        return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
