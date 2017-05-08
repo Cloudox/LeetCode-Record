@@ -106,6 +106,7 @@ LeetCode笔记
   * [481. Magical String](#481. Magical String)
   * [482. License Key Formatting](#482. License Key Formatting)
   * [343. Integer Break](#343. Integer Break)
+  * [392. Is Subsequence](#392. Is Subsequence)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8187,6 +8188,94 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="392. Is Subsequence"/>392. Is Subsequence
+
+### 问题：
+>Given a string s and a string t, check if s is subsequence of t.
+
+>You may assume that there is only lower case English letters in both s and t. t is potentially a very long (length ~= 500,000) string, and s is a short string (<=100).
+
+>A subsequence of a string is a new string which is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (ie, "ace" is a subsequence of "abcde" while "aec" is not).
+
+>Example 1:
+>s = "abc", t = "ahbgdc"
+
+>Return true.
+
+>Example 2:
+>s = "axc", t = "ahbgdc"
+
+>Return false.
+
+>Follow up:
+>If there are lots of incoming S, say S1, S2, ... , Sk where k >= 1B, and you want to check one by one to see if T has its subsequence. In this scenario, how would you change your code?
+
+### 大意：
+>给出字符串s和t，检查s是否是t的子序列。
+
+>你可以假设s和t中只有小写英文字母。t可能是个非常长（长度 ~= 5000000）的字符串，s是个短字符串（<=100）。
+
+>一个字符串的子序列是将字符串中删除（可以不删除）一些字符，而不改变字符间的相对位置。（比如，“ace”是“abcde”的子序列，但“aec”就不是）。
+
+>例1：
+>s = "abc", t = "ahbgdc"
+
+>返回 true。
+
+>例2：
+>s = "axc", t = "ahbgdc"
+
+>返回 false。
+
+>进阶：
+>如果有很多传入的S，称为 S1, S2, ... , Sk ，k>=1B，你想要一个个检查是否是T的子序列。在这个情境下，你会怎么修改你的代码？
+
+### 思路：
+这道题最直接的思路就是遍历t，一个个按顺序检查s中的字符是否顺序出现了，如果一直到s的最后一个字符都出现了，而且是符合顺序的，那就返回true，否则返回false。
+
+但是，这个做法没有用到题目中全是英文小写字母的说明。对于多个子序列检测的情况，同时检测，且多个S之间也需进行一定的比较。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public boolean isSubsequence(String s, String t) {
+        if (s.length() == 0) return true;
+
+        int i = 0;
+        for (int j = 0; j < t.length(); j++) {
+            if (t.charAt(j) - s.charAt(i) == 0) {
+                i ++;
+                if (i == s.length()) return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public boolean isSubsequence(String s, String t) {
+        int fromIndex = 0;
+        for (char c : s.toCharArray()) {
+            fromIndex = t.indexOf(c, fromIndex);
+            if (fromIndex++ < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+这个使用了java的函数indexOf，同时每次从前一个字符找到的位置开始找，本质上与我的做法是一致的，会快一点点。
 
 [回到目录](#Catalogue)
 
