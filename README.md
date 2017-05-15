@@ -8288,7 +8288,7 @@ public boolean isSubsequence(String s, String t) {
 
 >For example:
 >Given binary tree [1,null,2,3],
->>![](http://img.blog.csdn.net/20170118105629474?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/94Image.png)
 
 >return [1,3,2].
 
@@ -8299,7 +8299,7 @@ public boolean isSubsequence(String s, String t) {
 
 >比如：
 >给出二叉树 [1,null,2,3]，
->>![](http://img.blog.csdn.net/20170118105629474?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/94Image.png)
 
 >返回 [1,3,2]。
 
