@@ -107,6 +107,7 @@ LeetCode笔记
   * [482. License Key Formatting](#482. License Key Formatting)
   * [343. Integer Break](#343. Integer Break)
   * [392. Is Subsequence](#392. Is Subsequence)
+  * [94. Binary Tree Inorder Traversal](#94. Binary Tree Inorder Traversal)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8276,6 +8277,111 @@ public boolean isSubsequence(String s, String t) {
 ```
 
 这个使用了java的函数indexOf，同时每次从前一个字符找到的位置开始找，本质上与我的做法是一致的，会快一点点。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="94. Binary Tree Inorder Traversal"/>94. Binary Tree Inorder Traversal
+### 问题：
+>Given a binary tree, return the inorder traversal of its nodes' values.
+
+>For example:
+>Given binary tree [1,null,2,3],
+>>![](http://img.blog.csdn.net/20170118105629474?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>return [1,3,2].
+
+>Note: Recursive solution is trivial, could you do it iteratively?
+
+### 大意：
+>给出一个二叉树，返回中序遍历的节点值。
+
+>比如：
+>给出二叉树 [1,null,2,3]，
+>>![](http://img.blog.csdn.net/20170118105629474?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>返回 [1,3,2]。
+
+>注意：递归的解决方法很简单，能不能用循环做？
+
+### 思路：
+所谓中序遍历是指：左中右，这种遍历方式。
+
+对于二叉树，因为要遍历，我们需要记录节点，否则从子节点是无法回到父节点的，所以我们需要使用栈，同时利用其先入后出的特性。
+
+因为要不停地看一个节点的子节点然后回来，又要满足中序遍历，我们用递归来保证深入到叶子节点后能一个个返回来。
+
+因为栈是先入后出的，而我们要记录的顺序是左中右，所以入栈的顺序应该反过来，即右中左，先入右节点，没有右节点了才入根节点，然后对左节点进行同样的操作。
+
+全部遍历完后再一个个出栈记录节点值就可以了。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<Integer>();
+        if (root == null) return result;
+        
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode node = root;
+        findNode(node, stack);
+        
+        while (!stack.isEmpty()) {
+            TreeNode temp = stack.pop();
+            result.add(temp.val);
+        }
+        return result;
+    }
+    
+    public void findNode(TreeNode node, Stack<TreeNode> stack) {
+        if (node.right != null) {
+            findNode(node.right, stack);
+            stack.push(node);
+        } else {
+            stack.push(node);
+        }
+        if (node.left != null) {
+            findNode(node.left, stack);
+        }
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public List<Integer> inorderTraversal(TreeNode root) {
+    List<Integer> list = new ArrayList<Integer>();
+
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    TreeNode cur = root;
+
+    while(cur!=null || !stack.empty()){
+        while(cur!=null){
+            stack.add(cur);
+            cur = cur.left;
+        }
+        cur = stack.pop();
+        list.add(cur.val);
+        cur = cur.right;
+    }
+
+    return list;
+}
+```
+
+这个做法就是不用递归而用循环了，也是用栈，一路入栈左节点到底，然后出栈取值，这时候其实是一个没有左子节点的根节点了，然后对其右节点进行同样的操作，弄完了就返回上一个节点，其实也是左中右的顺序。
 
 [回到目录](#Catalogue)
 
