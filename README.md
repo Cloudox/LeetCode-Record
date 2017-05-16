@@ -108,6 +108,7 @@ LeetCode笔记
   * [343. Integer Break](#343. Integer Break)
   * [392. Is Subsequence](#392. Is Subsequence)
   * [94. Binary Tree Inorder Traversal](#94. Binary Tree Inorder Traversal)
+  * [268. Missing Number](#268. Missing Number)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8382,6 +8383,67 @@ public List<Integer> inorderTraversal(TreeNode root) {
 ```
 
 这个做法就是不用递归而用循环了，也是用栈，一路入栈左节点到底，然后出栈取值，这时候其实是一个没有左子节点的根节点了，然后对其右节点进行同样的操作，弄完了就返回上一个节点，其实也是左中右的顺序。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="268. Missing Number"/>268. Missing Number
+### 问题：
+>Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+
+>For example,
+>Given nums = [0, 1, 3] return 2.
+
+>Note:
+>Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?
+
+### 大意：
+>给出一个包含n个数字的数组，数字范围为 0, 1, 2, ..., n，寻找数组遗失的那个数字。
+
+>例子：
+>给出 nums = [0, 1, 3] 返回 2。
+
+>注意：
+>你的算法需要在线性时间复杂度内运行。能不能使用恒定的额外空间复杂度？
+
+### 思路：
+这道题就是找0~n中那个数字没出现。
+
+题目说了要线性时间复杂度，所以不能对数组排序，又说要恒定的空间，所以不能创建一个新数组来记录出现过的数字。
+
+其实既然知道了数字一定是 0, 1, 2, ..., n，只缺一个数字，我们可以求0~n的累加和，然后遍历数组，对数组中的数字也累加个和，相减就知道差的是那个数字了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int missingNumber(int[] nums) {
+        int total = (1 + nums.length) * nums.length / 2;
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+        }
+        return total - sum;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public int missingNumber(int[] nums) {
+
+    int xor = 0, i = 0;
+	for (i = 0; i < nums.length; i++) {
+		xor = xor ^ i ^ nums[i];
+	}
+
+	return xor ^ i;
+}
+```
+
+这个方法还是利用异或的特性：相同的数字异或等于0，遍历过程中不断将 i 和数组中的数字异或，最后数组中有的数字都被异或成0了，最后剩下来的就是数组中没有的数字了。
 
 [回到目录](#Catalogue)
 
