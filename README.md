@@ -109,6 +109,7 @@ LeetCode笔记
   * [392. Is Subsequence](#392. Is Subsequence)
   * [94. Binary Tree Inorder Traversal](#94. Binary Tree Inorder Traversal)
   * [268. Missing Number](#268. Missing Number)
+  * [454. 4Sum II](#454. 4Sum II)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8444,6 +8445,88 @@ public int missingNumber(int[] nums) {
 ```
 
 这个方法还是利用异或的特性：相同的数字异或等于0，遍历过程中不断将 i 和数组中的数字异或，最后数组中有的数字都被异或成0了，最后剩下来的就是数组中没有的数字了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="454. 4Sum II"/>454. 4Sum II
+### 问题：
+>Given four lists A, B, C, D of integer values, compute how many tuples (i, j, k, l) there are such that A[i] + B[j] + C[k] + D[l] is zero.
+
+>To make problem a bit easier, all A, B, C, D have same length of N where 0 ≤ N ≤ 500. All integers are in the range of -228 to 228 - 1 and the result is guaranteed to be at most 231 - 1.
+
+>Example:
+
+>>Input:
+>>A = [ 1, 2]
+>>B = [-2,-1]
+>>C = [-1, 2]
+>>D = [ 0, 2]
+
+>>Output:
+>>2
+
+>>Explanation:
+>>The two tuples are:
+>>1. (0, 0, 0, 1) -> A[0] + B[0] + C[0] + D[1] = 1 + (-2) + (-1) + 2 = 0
+>>2. (1, 1, 0, 0) -> A[1] + B[1] + C[0] + D[0] = 2 + (-1) + (-1) + 0 = 0
+
+### 大意：
+>给出四个整数数组A、B、C、D，计算有多少份（i, j, k, l）可以让 A[i] + B[j] + C[k] + D[l] 等于0。
+
+>为了让问题简单点，所有的A、B、C、D都有相同的长度N， 0 ≤ N ≤ 500。其中所有的证书都在-2的28次方到2的28次方-1之间，并且结果保证小于2的31次方-1。
+
+>例子：
+
+
+>>输入:
+>>A = [ 1, 2]
+>>B = [-2,-1]
+>>C = [-1, 2]
+>>D = [ 0, 2]
+
+>>输出:
+>>2
+
+>>解释:
+>>两种组法为:
+>>1. (0, 0, 0, 1) -> A[0] + B[0] + C[0] + D[1] = 1 + (-2) + (-1) + 2 = 0
+>>2. (1, 1, 0, 0) -> A[1] + B[1] + C[0] + D[0] = 2 + (-1) + (-1) + 0 = 0
+
+### 思路：
+最简单的方式就是嵌套四个循环把每种情况都试一次，并且记录其中和等于0的次数，这样时间是O（n的四次方）。
+
+
+我们可以分成两组来计算，一份为A和B中所有可能的元素和，一份是C和D中所有可能的元素和，然后利用map的唯一性，将和作为key，记录A和B的每种和出现的次数，然后计算C和D的所有和时去判断map中有没有这个key的负数，以及出现了几次，累加起来就是最后的四个数相加为0的总次数了。
+
+这里使用了map的getOrDefault（key，default）函数，会在map中查找map对应的值，如果没找到就返回设置的默认值。我们设为0。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        int result = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < B.length; j++) {
+                int sum = A[i] + B[j];
+                map.put(sum, map.getOrDefault(sum, 0) + 1);
+            }
+        }
+        
+        for (int k = 0; k < C.length; k++) {
+            for (int l = 0; l < D.length; l++) {
+                result += map.getOrDefault(-1 * (C[k] + D[l]), 0);
+            }
+        }
+        
+        return result;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
