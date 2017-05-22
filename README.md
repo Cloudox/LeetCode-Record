@@ -8541,7 +8541,7 @@ public class Solution {
 
 >>Input:
 
->>![](http://img.blog.csdn.net/20170308093208171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/513Image1.png)
 
 >>Output:
 >>1
@@ -8549,7 +8549,7 @@ public class Solution {
 >Example 2: 
 >>Input:
 
->>![](http://img.blog.csdn.net/20170308093250466?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/513Image2.png)
 
 >>Output:
 >>7
@@ -8563,7 +8563,7 @@ public class Solution {
 
 >>输入：
 
->>![](http://img.blog.csdn.net/20170308093208171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/513Image1.png)
 
 >>输出：
 >>1
@@ -8573,7 +8573,7 @@ public class Solution {
 >>输入：
 
 
->>![](http://img.blog.csdn.net/20170308093250466?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/513Image2.png)
 
 >>输出：
 >>7
