@@ -108,6 +108,9 @@ LeetCode笔记
   * [343. Integer Break](#343. Integer Break)
   * [392. Is Subsequence](#392. Is Subsequence)
   * [94. Binary Tree Inorder Traversal](#94. Binary Tree Inorder Traversal)
+  * [268. Missing Number](#268. Missing Number)
+  * [454. 4Sum II](#454. 4Sum II)
+  * [513. Find Bottom Left Tree Value](#513. Find Bottom Left Tree Value)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8288,7 +8291,7 @@ public boolean isSubsequence(String s, String t) {
 
 >For example:
 >Given binary tree [1,null,2,3],
->>![](http://img.blog.csdn.net/20170118105629474?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/94Image.png)
 
 >return [1,3,2].
 
@@ -8299,7 +8302,7 @@ public boolean isSubsequence(String s, String t) {
 
 >比如：
 >给出二叉树 [1,null,2,3]，
->>![](http://img.blog.csdn.net/20170118105629474?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/94Image.png)
 
 >返回 [1,3,2]。
 
@@ -8382,6 +8385,275 @@ public List<Integer> inorderTraversal(TreeNode root) {
 ```
 
 这个做法就是不用递归而用循环了，也是用栈，一路入栈左节点到底，然后出栈取值，这时候其实是一个没有左子节点的根节点了，然后对其右节点进行同样的操作，弄完了就返回上一个节点，其实也是左中右的顺序。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="268. Missing Number"/>268. Missing Number
+### 问题：
+>Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+
+>For example,
+>Given nums = [0, 1, 3] return 2.
+
+>Note:
+>Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?
+
+### 大意：
+>给出一个包含n个数字的数组，数字范围为 0, 1, 2, ..., n，寻找数组遗失的那个数字。
+
+>例子：
+>给出 nums = [0, 1, 3] 返回 2。
+
+>注意：
+>你的算法需要在线性时间复杂度内运行。能不能使用恒定的额外空间复杂度？
+
+### 思路：
+这道题就是找0~n中那个数字没出现。
+
+题目说了要线性时间复杂度，所以不能对数组排序，又说要恒定的空间，所以不能创建一个新数组来记录出现过的数字。
+
+其实既然知道了数字一定是 0, 1, 2, ..., n，只缺一个数字，我们可以求0~n的累加和，然后遍历数组，对数组中的数字也累加个和，相减就知道差的是那个数字了。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int missingNumber(int[] nums) {
+        int total = (1 + nums.length) * nums.length / 2;
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+        }
+        return total - sum;
+    }
+}
+```
+
+### 他山之石：
+
+```java
+public int missingNumber(int[] nums) {
+
+    int xor = 0, i = 0;
+	for (i = 0; i < nums.length; i++) {
+		xor = xor ^ i ^ nums[i];
+	}
+
+	return xor ^ i;
+}
+```
+
+这个方法还是利用异或的特性：相同的数字异或等于0，遍历过程中不断将 i 和数组中的数字异或，最后数组中有的数字都被异或成0了，最后剩下来的就是数组中没有的数字了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="454. 4Sum II"/>454. 4Sum II
+### 问题：
+>Given four lists A, B, C, D of integer values, compute how many tuples (i, j, k, l) there are such that A[i] + B[j] + C[k] + D[l] is zero.
+
+>To make problem a bit easier, all A, B, C, D have same length of N where 0 ≤ N ≤ 500. All integers are in the range of -228 to 228 - 1 and the result is guaranteed to be at most 231 - 1.
+
+>Example:
+
+>>Input:
+>>A = [ 1, 2]
+>>B = [-2,-1]
+>>C = [-1, 2]
+>>D = [ 0, 2]
+
+>>Output:
+>>2
+
+>>Explanation:
+>>The two tuples are:
+>>1. (0, 0, 0, 1) -> A[0] + B[0] + C[0] + D[1] = 1 + (-2) + (-1) + 2 = 0
+>>2. (1, 1, 0, 0) -> A[1] + B[1] + C[0] + D[0] = 2 + (-1) + (-1) + 0 = 0
+
+### 大意：
+>给出四个整数数组A、B、C、D，计算有多少份（i, j, k, l）可以让 A[i] + B[j] + C[k] + D[l] 等于0。
+
+>为了让问题简单点，所有的A、B、C、D都有相同的长度N， 0 ≤ N ≤ 500。其中所有的整数都在-2的28次方到2的28次方-1之间，并且结果保证小于2的31次方-1。
+
+>例子：
+
+
+>>输入:
+>>A = [ 1, 2]
+>>B = [-2,-1]
+>>C = [-1, 2]
+>>D = [ 0, 2]
+
+>>输出:
+>>2
+
+>>解释:
+>>两种组法为:
+>>1. (0, 0, 0, 1) -> A[0] + B[0] + C[0] + D[1] = 1 + (-2) + (-1) + 2 = 0
+>>2. (1, 1, 0, 0) -> A[1] + B[1] + C[0] + D[0] = 2 + (-1) + (-1) + 0 = 0
+
+### 思路：
+最简单的方式就是嵌套四个循环把每种情况都试一次，并且记录其中和等于0的次数，这样时间是O（n的四次方）。
+
+
+我们可以分成两组来计算，一份为A和B中所有可能的元素和，一份是C和D中所有可能的元素和，然后利用map的唯一性，将和作为key，记录A和B的每种和出现的次数，然后计算C和D的所有和时去判断map中有没有这个key的负数，以及出现了几次，累加起来就是最后的四个数相加为0的总次数了。
+
+这里使用了map的getOrDefault（key，default）函数，会在map中查找map对应的值，如果没找到就返回设置的默认值。我们设为0。
+
+### 代码（Java）：
+
+```java
+public class Solution {
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        int result = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < B.length; j++) {
+                int sum = A[i] + B[j];
+                map.put(sum, map.getOrDefault(sum, 0) + 1);
+            }
+        }
+        
+        for (int k = 0; k < C.length; k++) {
+            for (int l = 0; l < D.length; l++) {
+                result += map.getOrDefault(-1 * (C[k] + D[l]), 0);
+            }
+        }
+        
+        return result;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="513. Find Bottom Left Tree Value"/>513. Find Bottom Left Tree Value
+### 问题：
+>Given a binary tree, find the leftmost value in the last row of the tree.
+
+>Example 1:
+
+>>Input:
+
+>>![](http://img.blog.csdn.net/20170308093208171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>Output:
+>>1
+
+>Example 2: 
+>>Input:
+
+>>![](http://img.blog.csdn.net/20170308093250466?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>Output:
+>>7
+
+>Note: You may assume the tree (i.e., the given root node) is not NULL.
+
+### 大意：
+>给出一个二叉树，找到树最下一行的最左边的节点值。
+
+>例1：
+
+>>输入：
+
+>>![](http://img.blog.csdn.net/20170308093208171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>输出：
+>>1
+
+>例2：
+
+>>输入：
+
+
+>>![](http://img.blog.csdn.net/20170308093250466?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>输出：
+>>7
+
+>注意：你可以假设树（比如，给出根节点）是非空的。
+
+### 思路：
+这道题其实有可以拆解成两个问题：
+
+1. 找到二叉树的最下面一行；
+2. 在最下面一行找到最左边的节点值。
+
+要注意的是，这个最左边的节点值，并不一定是左节点，也可能是最左边的一个右子节点值。
+
+还记得我们在[传送门：LeetCode笔记：102. Binary Tree Level Order Traversal](http://blog.csdn.net/Cloudox_/article/details/52918686)中，是要求将二叉树一层层地输出出来。那么通过同样的方法，我们用BFS广度优先遍历的方法，利用队列，可以确保找到最下一层的所有节点值，然后只需要用一个标记，来在每次梳理一层的节点时，将最左边的一个节点值记录下来，这样，当已经确定是最后一层，没有再下一层后，我们记录下来的就是最下一层的最左边的节点值了。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int findBottomLeftValue(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        
+        queue.offer(root);
+        int result = root.val;
+        boolean has = false;
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            for (int i = 0; i < levelNum; i++) {
+                if (queue.peek().left != null) {
+                    queue.offer(queue.peek().left);
+                    if (!has) {
+                        result = queue.peek().left.val;
+                        has = true;
+                    }
+                }
+                if (queue.peek().right != null) {
+                    queue.offer(queue.peek().right);
+                    if (!has) {
+                        result = queue.peek().right.val;
+                        has = true;
+                    }
+                }
+                queue.poll();
+            }
+            has = false;
+        }
+        
+        return result;
+    }
+}
+```
+
+### 他山之石：
+我的这个方法其实比较慢，我们看看下面这个方法：
+
+```java
+public class Solution {
+    public int findBottomLeftValue(TreeNode root) {
+        return findBottomLeftValue(root, 1, new int[]{0,0});
+    }
+    public int findBottomLeftValue(TreeNode root, int depth, int[] res) {
+        if (res[1]<depth) {res[0]=root.val;res[1]=depth;}
+        if (root.left!=null) findBottomLeftValue(root.left, depth+1, res);
+        if (root.right!=null) findBottomLeftValue(root.right, depth+1, res);
+        return res[0];
+    }
+}
+```
+
+这个方法的第一个优势就是代码确实比我简洁多了。。。他的做法其实跟我第一个想法差不多，用DFS的方式递归来往下找，同时记录当前找到的节点所在的深度，他用了一个int数组res，数组第一个元素记录节点值，第二个元素记录节点所在的深度。只有在进入更深一层，且这一层还没有记录节点值时，才记录下找到的第一个节点值，其实也就是最左边的节点值，找到后就将深度标记为当前深度，那么后面找到的所有这个深度的节点值都不再记录，除非又找到了更深的节点。这样一直往下，不断根据深度来更新找到的节点值，最后找到的就是最深一层的最左边的节点值了。
 
 [回到目录](#Catalogue)
 
