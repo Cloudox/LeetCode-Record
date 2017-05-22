@@ -110,6 +110,7 @@ LeetCode笔记
   * [94. Binary Tree Inorder Traversal](#94. Binary Tree Inorder Traversal)
   * [268. Missing Number](#268. Missing Number)
   * [454. 4Sum II](#454. 4Sum II)
+  * [513. Find Bottom Left Tree Value](#513. Find Bottom Left Tree Value)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8527,6 +8528,132 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="513. Find Bottom Left Tree Value"/>513. Find Bottom Left Tree Value
+### 问题：
+>Given a binary tree, find the leftmost value in the last row of the tree.
+
+>Example 1:
+
+>>Input:
+
+>>![](http://img.blog.csdn.net/20170308093208171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>Output:
+>>1
+
+>Example 2: 
+>>Input:
+
+>>![](http://img.blog.csdn.net/20170308093250466?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>Output:
+>>7
+
+>Note: You may assume the tree (i.e., the given root node) is not NULL.
+
+### 大意：
+>给出一个二叉树，找到树最下一行的最左边的节点值。
+
+>例1：
+
+>>输入：
+
+>>![](http://img.blog.csdn.net/20170308093208171?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>输出：
+>>1
+
+>例2：
+
+>>输入：
+
+
+>>![](http://img.blog.csdn.net/20170308093250466?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>输出：
+>>7
+
+>注意：你可以假设树（比如，给出根节点）是非空的。
+
+### 思路：
+这道题其实有可以拆解成两个问题：
+
+1. 找到二叉树的最下面一行；
+2. 在最下面一行找到最左边的节点值。
+
+要注意的是，这个最左边的节点值，并不一定是左节点，也可能是最左边的一个右子节点值。
+
+还记得我们在[传送门：LeetCode笔记：102. Binary Tree Level Order Traversal](http://blog.csdn.net/Cloudox_/article/details/52918686)中，是要求将二叉树一层层地输出出来。那么通过同样的方法，我们用BFS广度优先遍历的方法，利用队列，可以确保找到最下一层的所有节点值，然后只需要用一个标记，来在每次梳理一层的节点时，将最左边的一个节点值记录下来，这样，当已经确定是最后一层，没有再下一层后，我们记录下来的就是最下一层的最左边的节点值了。
+
+### 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public int findBottomLeftValue(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        
+        queue.offer(root);
+        int result = root.val;
+        boolean has = false;
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            for (int i = 0; i < levelNum; i++) {
+                if (queue.peek().left != null) {
+                    queue.offer(queue.peek().left);
+                    if (!has) {
+                        result = queue.peek().left.val;
+                        has = true;
+                    }
+                }
+                if (queue.peek().right != null) {
+                    queue.offer(queue.peek().right);
+                    if (!has) {
+                        result = queue.peek().right.val;
+                        has = true;
+                    }
+                }
+                queue.poll();
+            }
+            has = false;
+        }
+        
+        return result;
+    }
+}
+```
+
+### 他山之石：
+我的这个方法其实比较慢，我们看看下面这个方法：
+
+```java
+public class Solution {
+    public int findBottomLeftValue(TreeNode root) {
+        return findBottomLeftValue(root, 1, new int[]{0,0});
+    }
+    public int findBottomLeftValue(TreeNode root, int depth, int[] res) {
+        if (res[1]<depth) {res[0]=root.val;res[1]=depth;}
+        if (root.left!=null) findBottomLeftValue(root.left, depth+1, res);
+        if (root.right!=null) findBottomLeftValue(root.right, depth+1, res);
+        return res[0];
+    }
+}
+```
+
+这个方法的第一个优势就是代码确实比我简洁多了。。。他的做法其实跟我第一个想法差不多，用DFS的方式递归来往下找，同时记录当前找到的节点所在的深度，他用了一个int数组res，数组第一个元素记录节点值，第二个元素记录节点所在的深度。只有在进入更深一层，且这一层还没有记录节点值时，才记录下找到的第一个节点值，其实也就是最左边的节点值，找到后就将深度标记为当前深度，那么后面找到的所有这个深度的节点值都不再记录，除非又找到了更深的节点。这样一直往下，不断根据深度来更新找到的节点值，最后找到的就是最深一层的最左边的节点值了。
 
 [回到目录](#Catalogue)
 
