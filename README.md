@@ -8668,7 +8668,7 @@ public class Solution {
 
 >>Input: 
 
->>![](http://img.blog.csdn.net/20170313144743106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/515Image.png)
 
 >>Output: [1, 3, 9]
 
@@ -8679,7 +8679,7 @@ public class Solution {
 
 >>输入：
 >
->>![](http://img.blog.csdn.net/20170313144743106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/515Image.png)
 
 >>输出： [1, 3, 9]
 
