@@ -111,6 +111,7 @@ LeetCode笔记
   * [268. Missing Number](#268. Missing Number)
   * [454. 4Sum II](#454. 4Sum II)
   * [513. Find Bottom Left Tree Value](#513. Find Bottom Left Tree Value)
+  * [515. Find Largest Value in Each Tree Row](#515. Find Largest Value in Each Tree Row)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8654,6 +8655,105 @@ public class Solution {
 ```
 
 这个方法的第一个优势就是代码确实比我简洁多了。。。他的做法其实跟我第一个想法差不多，用DFS的方式递归来往下找，同时记录当前找到的节点所在的深度，他用了一个int数组res，数组第一个元素记录节点值，第二个元素记录节点所在的深度。只有在进入更深一层，且这一层还没有记录节点值时，才记录下找到的第一个节点值，其实也就是最左边的节点值，找到后就将深度标记为当前深度，那么后面找到的所有这个深度的节点值都不再记录，除非又找到了更深的节点。这样一直往下，不断根据深度来更新找到的节点值，最后找到的就是最深一层的最左边的节点值了。
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="515. Find Largest Value in Each Tree Row"/>515. Find Largest Value in Each Tree Row
+## 问题：
+>You need to find the largest value in each row of a binary tree.
+
+>Example:
+
+>>Input: 
+
+>>![](http://img.blog.csdn.net/20170313144743106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>Output: [1, 3, 9]
+
+## 大意：
+>你需要找到二叉树中每一行最大的值。
+
+>例子：
+
+>>输入：
+>
+>>![](http://img.blog.csdn.net/20170313144743106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+>>输出： [1, 3, 9]
+
+## 思路：
+要找每一行最大的数，我们总归是要遍历二叉树的，遍历二叉树分为BFS和DFS，这里我们要找每行最大的数，那么我们就用BFS，一行行分析过去。
+
+还记得我们在[传送门：LeetCode笔记：102. Binary Tree Level Order Traversal](http://blog.csdn.net/Cloudox_/article/details/52918686)中，是要求将二叉树一层层地输出出来。那么通过同样的方法，我们用利用队列的先进先出特性，依次保留每一行新读进来的节点。用一个变量记录当前行的总节点数，然后对每一行都去寻找最大的节点值是多少，记录在结果中就可以了。
+
+## 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<Integer> largestValues(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        
+        List<Integer> res = new LinkedList<Integer>();
+        if (root == null) return res;
+        
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int levelNum = queue.size();
+            int temp = queue.peek().val;
+            if (queue.peek().left != null) queue.offer(queue.peek().left);
+            if (queue.peek().right != null) queue.offer(queue.peek().right);
+            queue.poll();
+            for (int i = 1; i < levelNum; i++) {
+                if (queue.peek().val > temp) temp = queue.peek().val;
+                if (queue.peek().left != null) queue.offer(queue.peek().left);
+                if (queue.peek().right != null) queue.offer(queue.peek().right);
+                queue.poll();
+            }
+            res.add(temp);
+        }
+        return res;
+    }
+}
+```
+
+## 他山之石：
+除了用BFS，其实DFS也可以做，但是就需要有一个参数来记录当前节点所在的行，同时对于每次遇到的新节点，判断该节点值与已经记录的所在行的最大值之间的大小，如果更大就替换掉结果中记录的值，如果小一些那就略过。这个方法运行起来会比我的方法要快。
+
+```java
+public class Solution {
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> res = new ArrayList<Integer>();
+        helper(root, res, 0);
+        return res;
+    }
+    private void helper(TreeNode root, List<Integer> res, int d){
+        if(root == null){
+            return;
+        }
+       //expand list size
+        if(d == res.size()){
+            res.add(root.val);
+        }
+        else{
+        //or set value
+            res.set(d, Math.max(res.get(d), root.val));
+        }
+        helper(root.left, res, d+1);
+        helper(root.right, res, d+1);
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
