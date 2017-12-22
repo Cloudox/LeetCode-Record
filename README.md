@@ -112,7 +112,7 @@ LeetCode笔记
   * [454. 4Sum II](#454. 4Sum II)
   * [513. Find Bottom Left Tree Value](#513. Find Bottom Left Tree Value)
   * [515. Find Largest Value in Each Tree Row](#515. Find Largest Value in Each Tree Row)
-  * [526. Beautiful Arrangement](#Beautiful Arrangement)
+  * [526. Beautiful Arrangement](#526)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8760,75 +8760,59 @@ public class Solution {
 
 -------------------------
 
-## <a name="Beautiful Arrangement"/>526. Beautiful Arrangement
+## <a name="526"/>526. Beautiful Arrangement
 ## 问题：
 >Suppose you have N integers from 1 to N. We define a beautiful arrangement as an array that is constructed by these N numbers successfully if one of the following is true for the ith position (1 ≤ i ≤ N) in this array:
-
 >1. The number at the ith position is divisible by i.
-
 >2. i is divisible by the number at the ith position.
-
 >Now given N, how many beautiful arrangements can you construct?
-
 >Example 1:
-
->>Input: 2
-
->>Output: 2
-
->>Explanation: 
-
->>The first beautiful arrangement is [1, 2]:
-
->>Number at the 1st position (i=1) is 1, and 1 is divisible by i (i=1).
-
->>Number at the 2nd position (i=2) is 2, and 2 is divisible by i (i=2).
-
->>The second beautiful arrangement is [2, 1]:
-
->>Number at the 1st position (i=1) is 2, and 2 is divisible by i (i=1).
-
->>Number at the 2nd position (i=2) is 1, and i (i=2) is divisible by 1.
-
+>> Input: 2
 >
-
+>> Output: 2
+>
+>>Explanation: 
+>
+>>The first beautiful arrangement is [1, 2]:
+>
+>>Number at the 1st position (i=1) is 1, and 1 is divisible by i (i=1).
+>
+>>Number at the 2nd position (i=2) is 2, and 2 is divisible by i (i=2).
+>
+>>The second beautiful arrangement is [2, 1]:
+>
+>>Number at the 1st position (i=1) is 2, and 2 is divisible by i (i=1).
+>
+>>Number at the 2nd position (i=2) is 1, and i (i=2) is divisible by 1.
+>
 >Note:
-
 >1. N is a positive integer and will not exceed 15.
 
 ## 大意：
 >假设你有1到N的N个整数，我们定义如果这N个整数可以组成数组后每第 i 位（1 ≤ i ≤ N）都满足下面两个要求之一就称其为漂亮的安排：
-
 >1. 第 i 个位置的数字可以被 i 整除。
-
 >2. i 可以被第 i 个位置的数字整除。
-
 >现在给出N，你可以组成多少种漂亮的安排？
-
 >例 1:
-
 >>输入： 2
-
->>输出： 2
-
->>解释： 
-
->>第一个漂亮的安排是 [1, 2]：
-
->>第一个位置（i = 1）的数字是 1，而 1 可以被 i （i = 1）整除。
-
->>第二个位置（i = 2）的数字是 2，而 2 可以被 i（i = 2）整除。
-
->>第二个漂亮的安排是 [2, 1]：
-
->>第一个位置（i = 1）的数字是 2，而 2 可以被 i （i = 1）整除。
-
->>第二个位置（i = 2）的数字是 1，而 1 可以被 i（i = 2）整除。
-
 >
-
+>>输出： 2
+>
+>>解释： 
+>
+>>第一个漂亮的安排是 [1, 2]：
+>
+>>第一个位置（i = 1）的数字是 1，而 1 可以被 i （i = 1）整除。
+>
+>>第二个位置（i = 2）的数字是 2，而 2 可以被 i（i = 2）整除。
+>
+>>第二个漂亮的安排是 [2, 1]：
+>
+>>第一个位置（i = 1）的数字是 2，而 2 可以被 i （i = 1）整除。
+>
+>>第二个位置（i = 2）的数字是 1，而 1 可以被 i（i = 2）整除。
+>
 >注意：
-
 >1. N是个正数，而且不会超过15。
 
 ## 思路：
