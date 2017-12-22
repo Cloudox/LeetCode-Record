@@ -112,6 +112,7 @@ LeetCode笔记
   * [454. 4Sum II](#454. 4Sum II)
   * [513. Find Bottom Left Tree Value](#513. Find Bottom Left Tree Value)
   * [515. Find Largest Value in Each Tree Row](#515. Find Largest Value in Each Tree Row)
+  * [526. Beautiful Arrangement](#526. Beautiful Arrangement)
  
 ## <a name="292.Nim Game"/>292.Nim Game
 ### 问题：
@@ -8751,6 +8752,86 @@ public class Solution {
         }
         helper(root.left, res, d+1);
         helper(root.right, res, d+1);
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="526. Beautiful Arrangement"/>526. Beautiful Arrangement
+## 问题：
+>Suppose you have N integers from 1 to N. We define a beautiful arrangement as an array that is constructed by these N numbers successfully if one of the following is true for the ith position (1 ≤ i ≤ N) in this array:
+>1. The number at the ith position is divisible by i.
+>2. i is divisible by the number at the ith position.
+>Now given N, how many beautiful arrangements can you construct?
+>Example 1:
+>>Input: 2
+>>Output: 2
+>>Explanation: 
+>>The first beautiful arrangement is [1, 2]:
+>>Number at the 1st position (i=1) is 1, and 1 is divisible by i (i=1).
+>>Number at the 2nd position (i=2) is 2, and 2 is divisible by i (i=2).
+>>The second beautiful arrangement is [2, 1]:
+>>Number at the 1st position (i=1) is 2, and 2 is divisible by i (i=1).
+>>Number at the 2nd position (i=2) is 1, and i (i=2) is divisible by 1.
+>
+>Note:
+>1. N is a positive integer and will not exceed 15.
+
+## 大意：
+>假设你有1到N的N个整数，我们定义如果这N个整数可以组成数组后每第 i 位（1 ≤ i ≤ N）都满足下面两个要求之一就称其为漂亮的安排：
+>1. 第 i 个位置的数字可以被 i 整除。
+>2. i 可以被第 i 个位置的数字整除。
+>现在给出N，你可以组成多少种漂亮的安排？
+>例 1:
+>>输入： 2
+>>输出： 2
+>>解释： 
+>>第一个漂亮的安排是 [1, 2]：
+>>第一个位置（i = 1）的数字是 1，而 1 可以被 i （i = 1）整除。
+>>第二个位置（i = 2）的数字是 2，而 2 可以被 i（i = 2）整除。
+>>第二个漂亮的安排是 [2, 1]：
+>>第一个位置（i = 1）的数字是 2，而 2 可以被 i （i = 1）整除。
+>>第二个位置（i = 2）的数字是 1，而 1 可以被 i（i = 2）整除。
+>
+>注意：
+>1. N是个正数，而且不会超过15。
+
+## 思路：
+
+乍一想有很多种可能不知道怎么统计，而这恰恰就可以通过递归回溯来实现。
+
+我们的思路是，从第一位到第N位，我们都要找到对应的没有放置过的数字来放，每一位都会有很多个数字可以放，而放了之后以后就不能放了，这样一直放到最后一位，如果都能放到数字，那就是一种漂亮的安排，总结果就要加一。
+
+这种思路就可以通过递归来实现。每一次递归我们都判断当前位置有哪些没放过的数字可以放，对于数字有没有放过我们需要一个数字来记录。对于每个放在这一位的数字，都是一种可能性，我们要继续往后递归看能不能全部放完才能知道要不要算作一种。如果所有都放完了那就算作一种了，总结过可以加一。
+
+要注意这里的位置并不是从0开始算的，而是1。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int countArrangement(int N) {
+        int[] num = new int[N];
+        int res = findWay(num, 1);
+        return res;
+    }
+    
+    public int findWay(int[] num, int index) {
+        if (index == num.length+1) return 1;
+        int total = 0;
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] != 1) {
+                if ((i+1) % index == 0 || index % (i+1) == 0) {
+                    int[] newNum = num.clone();
+                    newNum[i] = 1;
+                    total += findWay(newNum, index+1);
+                }
+            }
+        }
+        return total;
     }
 }
 ```
