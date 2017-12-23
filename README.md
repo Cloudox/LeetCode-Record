@@ -8860,28 +8860,44 @@ public class Solution {
 ## <a name="508"/>508. Most Frequent Subtree Sum
 ## 问题：
 >Given the root of a tree, you are asked to find the most frequent subtree sum. The subtree sum of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself). So what is the most frequent subtree sum value? If there is a tie, return all the values with the highest frequency in any order.
+>
 >Examples 1
+>
 >Input:
->  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-9089533361c29547.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>  ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/508Image1.png)
 >
 >return [2, -3, 4], since all the values happen only once, return all of them in any order.
+>
 >Examples 2
+>
 >Input:
->  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-36ad97fcd6e504ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>  ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/508Image2.png)
 >
 >return [2], since 2 happens twice, however -5 only occur once.
+>
 >Note: You may assume the sum of values in any subtree is in the range of 32-bit signed integer.
 
 ## 大意：
 >给出一个树的根节点，要求你找到出现最频繁的子树和。一个节点的子树和是指其所有子节点以及子节点的子节点的值之和（包含节点本身）。所以最频繁的子树和是什么？如果有并列的，返回所有最高频率的值，顺序不限。
+>
 >例1：
+>
 >输入：
-> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-36e40ca234a41660.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/508Image1.png)
+>
 >返回 [2, -3, 4]，因为所有值都只出现了一次，以任意顺序返回它们。
+>
 >例2：
+>
 >输入：
->  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-9b138e5e6ce89476.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>  ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/508Image2.png)
+>
 >返回 [2]，因为2这个和出现了两次，而 -5 只出现了一次。
+>
 >注意：你可以假设所有子树的和都在32位int型范围内。
 
 ## 思路：
