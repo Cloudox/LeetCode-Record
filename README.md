@@ -3,117 +3,119 @@ LeetCode笔记
 
 ## <a name="Catalogue"/>目录
 * Easy
-  * [292.Nim Game](#292.Nim Game)
-  * [258.Add Digits](#258.Add Digits)
-  * [104.Maximum Depth of Binary Tree](#104.Maximum Depth of Binary Tree)
-  * [226. Invert Binary Tree](#226. Invert Binary Tree)
-  * [283. Move Zeroes](#283. Move Zeroes)
-  * [237. Delete Node in a Linked List](#237. Delete Node in a Linked List)
-  * [100. Same Tree](#100. Same Tree)
-  * [242. Valid Anagram](#242. Valid Anagram)
-  * [171. Excel Sheet Column Number](#171. Excel Sheet Column Number)
-  * [217. Contains Duplicate](#217. Contains Duplicate)
-  * [169. Majority Element](#169. Majority Element)
-  * [206. Reverse Linked List](#206. Reverse Linked List)
-  * [326. Power of Three](#326. Power of Three)
-  * [231. Power of Two](#231. Power of Two)
-  * [202. Happy Number](#202. Happy Number)
-  * [83. Remove Duplicates from Sorted List](#83. Remove Duplicates from Sorted List)
-  * [191. Number of 1 Bits](#191. Number of 1 Bits)
-  * [263. Ugly Number](#263. Ugly Number)
-  * [70. Climbing Stairs](#70. Climbing Stairs)
-  * [404. Sum of Left Leaves](#404. Sum of Left Leaves)
-  * [121. Best Time to Buy and Sell Stock](#121. Best Time to Buy and Sell Stock)
-  * [235. Lowest Common Ancestor of a Binary Search Tree](#235. Lowest Common Ancestor of a Binary Search Tree)
-  * [21. Merge Two Sorted Lists](#21. Merge Two Sorted Lists)
-  * [345. Reverse Vowels of a String](#345. Reverse Vowels of a String)
-  * [342. Power of Four](#342. Power of Four)
-  * [24. Swap Nodes in Pairs](#24. Swap Nodes in Pairs)
-  * [198. House Robber](#198. House Robber)
-  * [409. Longest Palindrome](#409. Longest Palindrome)
-  * [415. Add Strings](#415. Add Strings)
-  * [107. Binary Tree Level Order Traversal II](#107. Binary Tree Level Order Traversal II)
-  * [141. Linked List Cycle](#141. Linked List Cycle)
-  * [66. Plus One](#66. Plus One)
-  * [27. Remove Element](#27. Remove Element)
-  * [101. Symmetric Tree](#101. Symmetric Tree)
-  * [118. Pascal's Triangle](#118. Pascal's Triangle)
-  * [102. Binary Tree Level Order Traversal](#102. Binary Tree Level Order Traversal)
-  * [110. Balanced Binary Tree](#110. Balanced Binary Tree)
-  * [26. Remove Duplicates from Sorted Array](#26. Remove Duplicates from Sorted Array)
-  * [232. Implement Queue using Stacks](#232. Implement Queue using Stacks)
-  * [172. Factorial Trailing Zeroes](#172. Factorial Trailing Zeroes)
-  * [119. Pascal's Triangle II](#119. Pascal's Triangle II)
-  * [412. Fizz Buzz](#412. Fizz Buzz)
-  * [441. Arranging Coins](#441. Arranging Coins)
-  * [9. Palindrome Number](#9. Palindrome Number)
-  * [257. Binary Tree Paths](#257. Binary Tree Paths)
-  * [438. Find All Anagrams in a String](#438. Find All Anagrams in a String)
-  * [374. Guess Number Higher or Lower](#374. Guess Number Higher or Lower)
-  * [299. Bulls and Cows](#299. Bulls and Cows)
-  * [112. Path Sum](#112. Path Sum)
-  * [205. Isomorphic Strings](#205. Isomorphic Strings)
-  * [111. Minimum Depth of Binary Tree](#111. Minimum Depth of Binary Tree)
-  * [38. Count and Say](#38. Count and Say)
-  * [19. Remove Nth Node From End of List](#19. Remove Nth Node From End of List)
-  * [290. Word Pattern](#290. Word Pattern)
-  * [455. Assign Cookies](#455. Assign Cookies)
-  * [459. Repeated Substring Pattern](#459. Repeated Substring Pattern)
-  * [223. Rectangle Area](#223. Rectangle Area)
-  * [20. Valid Parentheses](#20. Valid Parentheses)
-  * [219. Contains Duplicate II](#219. Contains Duplicate II)
-  * [88. Merge Sorted Array](#88. Merge Sorted Array)
-  * [234. Palindrome Linked List](#234. Palindrome Linked List)
-  * [225. Implement Stack using Queues](#225. Implement Stack using Queues)
-  * [58. Length of Last Word](#58. Length of Last Word)
-  * [203. Remove Linked List Elements](#203. Remove Linked List Elements)
-  * [400. Nth Digit](#400. Nth Digit)
-  * [14. Longest Common Prefix](#14. Longest Common Prefix)
-  * [67. Add Binary](#67. Add Binary)
-  * [160. Intersection of Two Linked Lists](#160. Intersection of Two Linked Lists)
-  * [396. Rotate Function](#396. Rotate Function)
-  * [190. Reverse Bits](#190. Reverse Bits)
-  * [1. Two Sum](#1. Two Sum)
-  * [28. Implement strStr()](#28. Implement strStr())
-  * [414. Third Maximum Number](#414. Third Maximum Number)
-  * [303. Range Sum Query - Immutable](#303. Range Sum Query - Immutable)
-  * [204. Count Primes](#204. Count Primes)
-  * [155. Min Stack](#155. Min Stack)
-  * [6. ZigZag Conversion](#6. ZigZag Conversion)
-  * [125. Valid Palindrome](#125. Valid Palindrome)
-  * [168. Excel Sheet Column Title](#168. Excel Sheet Column Title)
-  * [278. First Bad Version](#278. First Bad Version)
-  * [7. Reverse Integer](#7. Reverse Integer)
-  * [189. Rotate Array](#189. Rotate Array)
-  * [165. Compare Version Numbers](#165. Compare Version Numbers)
-  * [8. String to Integer (atoi)](#8. String to Integer (atoi))
+  * [292.Nim Game](#292)
+  * [258.Add Digits](#258)
+  * [104.Maximum Depth of Binary Tree](#104)
+  * [226. Invert Binary Tree](#226)
+  * [283. Move Zeroes](#283)
+  * [237. Delete Node in a Linked List](#237)
+  * [100. Same Tree](#100)
+  * [242. Valid Anagram](#242)
+  * [171. Excel Sheet Column Number](#171)
+  * [217. Contains Duplicate](#217)
+  * [169. Majority Element](#169)
+  * [206. Reverse Linked List](#206)
+  * [326. Power of Three](#326)
+  * [231. Power of Two](#231)
+  * [202. Happy Number](#202)
+  * [83. Remove Duplicates from Sorted List](#83)
+  * [191. Number of 1 Bits](#191)
+  * [263. Ugly Number](#263)
+  * [70. Climbing Stairs](#70)
+  * [404. Sum of Left Leaves](#404)
+  * [121. Best Time to Buy and Sell Stock](#121)
+  * [235. Lowest Common Ancestor of a Binary Search Tree](#235)
+  * [21. Merge Two Sorted Lists](#21)
+  * [345. Reverse Vowels of a String](#345)
+  * [342. Power of Four](#342)
+  * [24. Swap Nodes in Pairs](#24)
+  * [198. House Robber](#198)
+  * [409. Longest Palindrome](#409)
+  * [415. Add Strings](#415)
+  * [107. Binary Tree Level Order Traversal II](#107)
+  * [141. Linked List Cycle](#141)
+  * [66. Plus One](#66)
+  * [27. Remove Element](#27)
+  * [101. Symmetric Tree](#101)
+  * [118. Pascal's Triangle](#118)
+  * [102. Binary Tree Level Order Traversal](#102)
+  * [110. Balanced Binary Tree](#110)
+  * [26. Remove Duplicates from Sorted Array](#26)
+  * [232. Implement Queue using Stacks](#232)
+  * [172. Factorial Trailing Zeroes](#172)
+  * [119. Pascal's Triangle II](#119)
+  * [412. Fizz Buzz](#412)
+  * [441. Arranging Coins](#441)
+  * [9. Palindrome Number](#9)
+  * [257. Binary Tree Paths](#257)
+  * [438. Find All Anagrams in a String](#438)
+  * [374. Guess Number Higher or Lower](#374)
+  * [299. Bulls and Cows](#299)
+  * [112. Path Sum](#112)
+  * [205. Isomorphic Strings](#205)
+  * [111. Minimum Depth of Binary Tree](#111)
+  * [38. Count and Say](#38)
+  * [19. Remove Nth Node From End of List](#19)
+  * [290. Word Pattern](#290)
+  * [455. Assign Cookies](#455)
+  * [459. Repeated Substring Pattern](#459)
+  * [223. Rectangle Area](#223)
+  * [20. Valid Parentheses](#20)
+  * [219. Contains Duplicate II](#219)
+  * [88. Merge Sorted Array](#88)
+  * [234. Palindrome Linked List](#234)
+  * [225. Implement Stack using Queues](#225)
+  * [58. Length of Last Word](#58)
+  * [203. Remove Linked List Elements](#203)
+  * [400. Nth Digit](#400)
+  * [14. Longest Common Prefix](#14)
+  * [67. Add Binary](#67)
+  * [160. Intersection of Two Linked Lists](#160)
+  * [396. Rotate Function](#396)
+  * [190. Reverse Bits](#190)
+  * [1. Two Sum](#1)
+  * [28. Implement strStr()](#28)
+  * [414. Third Maximum Number](#414)
+  * [303. Range Sum Query - Immutable](#303)
+  * [204. Count Primes](#204)
+  * [155. Min Stack](#155)
+  * [6. ZigZag Conversion](#6)
+  * [125. Valid Palindrome](#125)
+  * [168. Excel Sheet Column Title](#168)
+  * [278. First Bad Version](#278)
+  * [7. Reverse Integer](#7)
+  * [189. Rotate Array](#189)
+  * [165. Compare Version Numbers](#165)
+  * [8. String to Integer (atoi)](#8)
 * Medium
-  * [419. Battleships in a Board](#419. Battleships in a Board)
-  * [338. Counting Bits](#338. Counting Bits)
-  * [406. Queue Reconstruction by Height](#406. Queue Reconstruction by Height)
-  * [413. Arithmetic Slices](#413. Arithmetic Slices)
-  * [462. Minimum Moves to Equal Array Elements II](#462. Minimum Moves to Equal Array Elements II)
-  * [451. Sort Characters By Frequency](#451. Sort Characters By Frequency)
-  * [260. Single Number III](#260. Single Number III)
-  * [167. Two Sum II - Input array is sorted](#167. Two Sum II - Input array is sorted)
-  * [442. Find All Duplicates in an Array](#442. Find All Duplicates in an Array)
-  * [238. Product of Array Except Self](#238. Product of Array Except Self)
-  * [445. Add Two Numbers II](#445. Add Two Numbers II)
-  * [347. Top K Frequent Elements](#347. Top K Frequent Elements)
-  * [122. Best Time to Buy and Sell Stock II](#122. Best Time to Buy and Sell Stock II)
-  * [357. Count Numbers with Unique Digits](#357. Count Numbers with Unique Digits)
-  * [477. Total Hamming Distance](#477. Total Hamming Distance)
-  * [481. Magical String](#481. Magical String)
-  * [482. License Key Formatting](#482. License Key Formatting)
-  * [343. Integer Break](#343. Integer Break)
-  * [392. Is Subsequence](#392. Is Subsequence)
-  * [94. Binary Tree Inorder Traversal](#94. Binary Tree Inorder Traversal)
-  * [268. Missing Number](#268. Missing Number)
-  * [454. 4Sum II](#454. 4Sum II)
-  * [513. Find Bottom Left Tree Value](#513. Find Bottom Left Tree Value)
-  * [515. Find Largest Value in Each Tree Row](#515. Find Largest Value in Each Tree Row)
+  * [419. Battleships in a Board](#419)
+  * [338. Counting Bits](#338)
+  * [406. Queue Reconstruction by Height](#406)
+  * [413. Arithmetic Slices](#413)
+  * [462. Minimum Moves to Equal Array Elements II](#462)
+  * [451. Sort Characters By Frequency](#451)
+  * [260. Single Number III](#260)
+  * [167. Two Sum II - Input array is sorted](#167)
+  * [442. Find All Duplicates in an Array](#442)
+  * [238. Product of Array Except Self](#238)
+  * [445. Add Two Numbers II](#445)
+  * [347. Top K Frequent Elements](#347)
+  * [122. Best Time to Buy and Sell Stock II](#122)
+  * [357. Count Numbers with Unique Digits](#357)
+  * [477. Total Hamming Distance](#477)
+  * [481. Magical String](#481)
+  * [482. License Key Formatting](#482)
+  * [343. Integer Break](#343)
+  * [392. Is Subsequence](#392)
+  * [94. Binary Tree Inorder Traversal](#94)
+  * [268. Missing Number](#268)
+  * [454. 4Sum II](#454)
+  * [513. Find Bottom Left Tree Value](#513)
+  * [515. Find Largest Value in Each Tree Row](#515)
+  * [526. Beautiful Arrangement](#526)
+  * [508. Most Frequent Subtree Sum](#508)
  
-## <a name="292.Nim Game"/>292.Nim Game
+## <a name="292"/>292.Nim Game
 ### 问题：
 
 > You are playing the following Nim Game with your friend: There is a heap of stones on the table, each time one of you take turns to remove 1 to 3 stones. The one who removes the last stone will be the winner. You will take the first turn to remove the stones.
@@ -157,7 +159,7 @@ public:
 
 -------------------------
 
-## <a name="258.Add Digits"/>258.Add Digits
+## <a name="258"/>258.Add Digits
 ### 问题：
 
 > Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.
@@ -248,7 +250,7 @@ public:
 
 -------------------------
 
-## <a name="104.Maximum Depth of Binary Tree"/>104.Maximum Depth of Binary Tree
+## <a name="104"/>104.Maximum Depth of Binary Tree
 ### 问题：
 >Given a binary tree, find its maximum depth.
 
@@ -329,7 +331,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="226. Invert Binary Tree"/>226. Invert Binary Tree
+## <a name="226"/>226. Invert Binary Tree
 ### 问题：
 
 > Invert a binary tree.
@@ -423,7 +425,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="283. Move Zeroes"/>283. Move Zeroes
+## <a name="283"/>283. Move Zeroes
 ### 题目：
 
 > Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
@@ -588,7 +590,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="237. Delete Node in a Linked List"/>237. Delete Node in a Linked List
+## <a name="237"/>237. Delete Node in a Linked List
 ### 题目：
 
 > Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
@@ -647,7 +649,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="100. Same Tree"/>100. Same Tree
+## <a name="100"/>100. Same Tree
 ### 题目：
 >Given two binary trees, write a function to check if they are equal or not.
 
@@ -717,7 +719,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="242. Valid Anagram"/>242. Valid Anagram
+## <a name="242"/>242. Valid Anagram
 ### 题目：
 
 > Given two strings s and t, write a function to determine if t is an anagram of s.
@@ -801,7 +803,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="171. Excel Sheet Column Number"/>171. Excel Sheet Column Number
+## <a name="171"/>171. Excel Sheet Column Number
 ### 题目：
 
 > Related to question Excel Sheet Column Title
@@ -877,7 +879,7 @@ return result;
 
 -------------------------
 
-## <a name="217. Contains Duplicate"/>217. Contains Duplicate
+## <a name="217"/>217. Contains Duplicate
 ### 题目：
 >Given an array of integers, find if the array contains any duplicates. Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
 
@@ -907,7 +909,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="169. Majority Element"/>169. Majority Element
+## <a name="169"/>169. Majority Element
 ### 题目：
 >Given an array of size n, find the majority element. The majority element is the element that appears more than ⌊ n/2 ⌋ times.
 
@@ -957,7 +959,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="206. Reverse Linked List"/>206. Reverse Linked List
+## <a name="206"/>206. Reverse Linked List
 ### 题目：
 > Reverse a singly linked list.
 
@@ -1004,7 +1006,7 @@ private ListNode reverseListInt(ListNode head, ListNode newHead) {
 
 -------------------------
 
-## <a name="326. Power of Three"/>326. Power of Three
+## <a name="326"/>326. Power of Three
 ### 问题：
 > Given an integer, write a function to determine if it is a power of three.
 
@@ -1051,7 +1053,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="231. Power of Two"/>231. Power of Two
+## <a name="231"/>231. Power of Two
 ### 问题：
 > Given an integer, write a function to determine if it is a power of two.
 
@@ -1082,7 +1084,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="202. Happy Number"/>202. Happy Number
+## <a name="202"/>202. Happy Number
 ### 问题：
 > Write an algorithm to determine if a number is "happy".
 
@@ -1130,7 +1132,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="83. Remove Duplicates from Sorted List"/>83. Remove Duplicates from Sorted List
+## <a name="83"/>83. Remove Duplicates from Sorted List
 ### 问题：
 > Given a sorted linked list, delete all duplicates such that each element appear only once.
 
@@ -1192,7 +1194,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="191. Number of 1 Bits"/>191. Number of 1 Bits
+## <a name="191"/>191. Number of 1 Bits
 ### 问题：
 > Write a function that takes an unsigned integer and returns the number of ’1' bits it has (also known as the Hamming weight).
 
@@ -1240,7 +1242,7 @@ public static int hammingWeight(int n) {
 
 -------------------------
 
-## <a name="263. Ugly Number"/>263. Ugly Number
+## <a name="263"/>263. Ugly Number
 ### 问题：
 > Write a program to check whether a given number is an ugly number.
 
@@ -1284,7 +1286,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="70. Climbing Stairs"/>70. Climbing Stairs
+## <a name="70"/>70. Climbing Stairs
 ### 问题：
 > You are climbing a stair case. It takes n steps to reach to the top.
 
@@ -1319,7 +1321,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="404. Sum of Left Leaves"/>404. Sum of Left Leaves
+## <a name="404"/>404. Sum of Left Leaves
 ### 问题：
 
 > Find the sum of all left leaves in a given binary tree.
@@ -1376,7 +1378,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="121. Best Time to Buy and Sell Stock"/>121. Best Time to Buy and Sell Stock
+## <a name="121"/>121. Best Time to Buy and Sell Stock
 ### 问题：
 > Say you have an array for which the ith element is the price of a given stock on day i.
 
@@ -1430,7 +1432,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="235. Lowest Common Ancestor of a Binary Search Tree"/>235. Lowest Common Ancestor of a Binary Search Tree
+## <a name="235"/>235. Lowest Common Ancestor of a Binary Search Tree
 ### 问题：
 > Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
 
@@ -1498,7 +1500,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="21. Merge Two Sorted Lists"/>21. Merge Two Sorted Lists
+## <a name="21"/>21. Merge Two Sorted Lists
 ### 问题：
 > Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
 
@@ -1575,7 +1577,7 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2){
 
 -------------------------
 
-## <a name="345. Reverse Vowels of a String"/>345. Reverse Vowels of a String
+## <a name="345"/>345. Reverse Vowels of a String
 ### 问题：
 > Write a function that takes a string as input and reverse only the vowels of a string.
 
@@ -1668,7 +1670,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="342. Power of Four"/>342. Power of Four
+## <a name="342"/>342. Power of Four
 ### 问题：
 > Given an integer (signed 32 bits), write a function to check whether it is a power of 4.
 
@@ -1722,7 +1724,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="24. Swap Nodes in Pairs"/>24. Swap Nodes in Pairs
+## <a name="24"/>24. Swap Nodes in Pairs
 ### 问题：
 > Given a linked list, swap every two adjacent nodes and return its head.
 
@@ -1770,7 +1772,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="198. House Robber"/>198. House Robber
+## <a name="198"/>198. House Robber
 ## 问题：
 > You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
 
@@ -1809,7 +1811,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="409. Longest Palindrome"/>409. Longest Palindrome
+## <a name="409"/>409. Longest Palindrome
 ### 问题：
 > Given a string which consists of lowercase or uppercase letters, find the length of the longest palindromes that can be built with those letters.
 
@@ -1903,7 +1905,7 @@ public int longestPalindrome(String s) {
 
 -------------------------
 
-## <a name="415. Add Strings"/>415. Add Strings
+## <a name="415"/>415. Add Strings
 ### 问题：
 > Given two non-negative numbers num1 and num2 represented as string, return the sum of num1 and num2.
 
@@ -1963,7 +1965,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="107. Binary Tree Level Order Traversal II"/>107. Binary Tree Level Order Traversal II
+## <a name="107"/>107. Binary Tree Level Order Traversal II
 ### 问题：
 > Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).
 
@@ -2057,7 +2059,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="141. Linked List Cycle"/>141. Linked List Cycle
+## <a name="141"/>141. Linked List Cycle
 ### 问题：
 > Given a linked list, determine if it has a cycle in it.
 
@@ -2112,7 +2114,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="66. Plus One"/>66. Plus One
+## <a name="66"/>66. Plus One
 ### 问题：
 > Given a non-negative number represented as an array of digits, plus one to the number.
 
@@ -2196,7 +2198,7 @@ public int[] plusOne(int[] digits) {
 
 -------------------------
 
-## <a name="27. Remove Element"/>27. Remove Element
+## <a name="27"/>27. Remove Element
 ### 问题：
 > Given an array and a value, remove all instances of that value in place and return the new length.
 
@@ -2237,7 +2239,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="101. Symmetric Tree"/>101. Symmetric Tree
+## <a name="101"/>101. Symmetric Tree
 ### 问题：
 > Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
 
@@ -2301,7 +2303,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="118. Pascal's Triangle"/>118. Pascal's Triangle
+## <a name="118"/>118. Pascal's Triangle
 ### 问题：
 > Given numRows, generate the first numRows of Pascal's triangle.
 
@@ -2352,7 +2354,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="102. Binary Tree Level Order Traversal"/>102. Binary Tree Level Order Traversal
+## <a name="102"/>102. Binary Tree Level Order Traversal
 ### 问题：
 > Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
 
@@ -2472,7 +2474,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="110. Balanced Binary Tree"/>110. Balanced Binary Tree
+## <a name="110"/>110. Balanced Binary Tree
 ### 问题：
 > 
 Given a binary tree, determine if it is height-balanced.
@@ -2529,7 +2531,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="26. Remove Duplicates from Sorted Array"/>26. Remove Duplicates from Sorted Array
+## <a name="26"/>26. Remove Duplicates from Sorted Array
 ### 问题：
 > Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.
 
@@ -2577,7 +2579,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="232. Implement Queue using Stacks"/>232. Implement Queue using Stacks
+## <a name="232"/>232. Implement Queue using Stacks
 ### 问题：
 > Implement the following operations of a queue using stacks.
 
@@ -2687,7 +2689,7 @@ class MyQueue {
 
 -------------------------
 
-## <a name="172. Factorial Trailing Zeroes"/>172. Factorial Trailing Zeroes
+## <a name="172"/>172. Factorial Trailing Zeroes
 ### 问题：
 > Given an integer n, return the number of trailing zeroes in n!.
 
@@ -2717,7 +2719,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="119. Pascal's Triangle II"/>119. Pascal's Triangle II
+## <a name="119"/>119. Pascal's Triangle II
 ### 问题：
 > Given an index k, return the kth row of the Pascal's triangle.
 
@@ -2792,7 +2794,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="412. Fizz Buzz"/>412. Fizz Buzz
+## <a name="412"/>412. Fizz Buzz
 ### 问题：
 > Write a program that outputs the string representation of numbers from 1 to n.
 
@@ -2873,7 +2875,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="441. Arranging Coins"/>441. Arranging Coins
+## <a name="441"/>441. Arranging Coins
 ### 问题：
 > You have a total of n coins that you want to form in a staircase shape, where every k-th row must have exactly k coins.
 
@@ -2979,7 +2981,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="437. Path Sum III"/>437. Path Sum III
+## <a name="437"/>437. Path Sum III
 ### 问题：
 > You are given a binary tree in which each node contains an integer value.
 
@@ -3082,7 +3084,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="9. Palindrome Number"/>9. Palindrome Number
+## <a name="9"/>9. Palindrome Number
 ### 问题：
 > Determine whether an integer is a palindrome. Do this without extra space.
 
@@ -3132,7 +3134,7 @@ public boolean isPalindrome(int x) {
 
 -------------------------
 
-## <a name="257. Binary Tree Paths"/>257. Binary Tree Paths
+## <a name="257"/>257. Binary Tree Paths
 ### 问题：
 > Given a binary tree, return all root-to-leaf paths.
 
@@ -3206,7 +3208,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="438. Find All Anagrams in a String"/>438. Find All Anagrams in a String
+## <a name="438"/>438. Find All Anagrams in a String
 ### 问题：
 > Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
 
@@ -3360,7 +3362,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="374. Guess Number Higher or Lower"/>374. Guess Number Higher or Lower
+## <a name="374"/>374. Guess Number Higher or Lower
 ###问题：
 >We are playing the Guess Game. The game is as follows:
 
@@ -3431,7 +3433,7 @@ public class Solution extends GuessGame {
 
 -------------------------
 
-## <a name="299. Bulls and Cows"/>299. Bulls and Cows
+## <a name="299"/>299. Bulls and Cows
 ###问题：
 >You are playing the following Bulls and Cows game with your friend: You write down a number and ask your friend to guess what the number is. Each time your friend makes a guess, you provide a hint that indicates how many digits in said guess match your secret number exactly in both digit and position (called "bulls") and how many digits match the secret number but locate in the wrong position (called "cows"). Your friend will use successive guesses and hints to eventually derive the secret number.
 
@@ -3555,7 +3557,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="112. Path Sum"/>112. Path Sum
+## <a name="112"/>112. Path Sum
 ###问题：
 >Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
 
@@ -3618,7 +3620,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="205. Isomorphic Strings"/>205. Isomorphic Strings
+## <a name="205"/>205. Isomorphic Strings
 ###问题：
 > Given two strings s and t, determine if they are isomorphic.
 
@@ -3691,7 +3693,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="111. Minimum Depth of Binary Tree"/>111. Minimum Depth of Binary Tree
+## <a name="111"/>111. Minimum Depth of Binary Tree
 
 ###问题：
 >Given a binary tree, find its minimum depth.
@@ -3747,7 +3749,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="38. Count and Say"/>38. Count and Say
+## <a name="38"/>38. Count and Say
 ###问题：
 >The count-and-say sequence is the sequence of integers beginning as follows:
 
@@ -3871,7 +3873,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="19. Remove Nth Node From End of List"/>19. Remove Nth Node From End of List
+## <a name="19"/>19. Remove Nth Node From End of List
 ###问题：
 >Given a linked list, remove the nth node from the end of list and return its head.
 
@@ -3978,7 +3980,7 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
 
 -------------------------
 
-## <a name="290. Word Pattern"/>290. Word Pattern
+## <a name="290"/>290. Word Pattern
 ###问题：
 >Given a pattern and a string str, find if str follows the same pattern.
 
@@ -4057,7 +4059,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="455. Assign Cookies"/>455. Assign Cookies
+## <a name="455"/>455. Assign Cookies
 ###问题：
 >Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie. Each child i has a greed factor gi, which is the minimum size of a cookie that the child will be content with; and each cookie j has a size sj. If sj >= gi, we can assign the cookie j to the child i, and the child i will be content. Your goal is to maximize the number of your content children and output the maximum number.
 
@@ -4142,7 +4144,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="459. Repeated Substring Pattern"/>459. Repeated Substring Pattern
+## <a name="459"/>459. Repeated Substring Pattern
 ###问题：
 >Given a non-empty string check if it can be constructed by taking a substring of it and appending multiple copies of the substring together. You may assume the given string consists of lowercase English letters only and its length will not exceed 10000.
 
@@ -4234,7 +4236,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="223. Rectangle Area"/>223. Rectangle Area
+## <a name="223"/>223. Rectangle Area
 ###问题：
 >Find the total area covered by two rectilinear rectangles in a 2D plane.
 
@@ -4332,7 +4334,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="20. Valid Parentheses"/>20. Valid Parentheses
+## <a name="20"/>20. Valid Parentheses
 ###问题：
 >Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 
@@ -4440,7 +4442,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="219. Contains Duplicate II"/>219. Contains Duplicate II
+## <a name="219"/>219. Contains Duplicate II
 ###问题：
 >Given an array of integers and an integer k, find out whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the difference between i and j is at most k.
 
@@ -4548,7 +4550,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="234. Palindrome Linked List"/>234. Palindrome Linked List
+## <a name="234"/>234. Palindrome Linked List
 ###问题：
 >Given a singly linked list, determine if it is a palindrome.
 
@@ -4635,7 +4637,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="225. Implement Stack using Queues"/>225. Implement Stack using Queues
+## <a name="225"/>225. Implement Stack using Queues
 ## 问题：
 >Implement the following operations of a stack using queues.
 
@@ -4715,7 +4717,7 @@ class MyStack {
 
 -------------------------
 
-## <a name="58. Length of Last Word"/>58. Length of Last Word
+## <a name="58"/>58. Length of Last Word
 ## 问题：
 >Given a string s consists of upper/lower-case alphabets and empty space characters ' ', return the length of last word in the string.
 
@@ -4789,7 +4791,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="203. Remove Linked List Elements"/>203. Remove Linked List Elements
+## <a name="203"/>203. Remove Linked List Elements
 ### 问题：
 >Remove all elements from a linked list of integers that have value val.
 
@@ -4845,7 +4847,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="400. Nth Digit"/>400. Nth Digit
+## <a name="400"/>400. Nth Digit
 ### 问题：
 >Find the nth digit of the infinite integer sequence 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...
 
@@ -4931,7 +4933,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="14. Longest Common Prefix"/>14. Longest Common Prefix
+## <a name="14"/>14. Longest Common Prefix
 ### 问题
 >Write a function to find the longest common prefix string amongst an array of strings.
 
@@ -5004,7 +5006,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="67. Add Binary"/>67. Add Binary
+## <a name="67"/>67. Add Binary
 ### 问题：
 >Given two binary strings, return their sum (also a binary string).
 
@@ -5087,7 +5089,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="160. Intersection of Two Linked Lists"/>160. Intersection of Two Linked Lists
+## <a name="160"/>160. Intersection of Two Linked Lists
 ### 问题：
 >Write a program to find the node at which the intersection of two singly linked lists begins.
 
@@ -5216,7 +5218,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="396. Rotate Function"/>396. Rotate Function
+## <a name="396"/>396. Rotate Function
 ### 问题：
 >Given an array of integers A and let n to be its length.
 
@@ -5343,7 +5345,7 @@ k = 2; B[0] = A[len-2];
 
 -------------------------
 
-## <a name="190. Reverse Bits"/>190. Reverse Bits
+## <a name="190"/>190. Reverse Bits
 ### 问题：
 >Reverse bits of a given 32 bits unsigned integer.
 
@@ -5389,7 +5391,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="1. Two Sum"/>1. Two Sum
+## <a name="1"/>1. Two Sum
 ### 问题：
 >Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 
@@ -5445,7 +5447,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="28. Implement strStr()"/>28. Implement strStr()
+## <a name="28"/>28. Implement strStr()
 ### 问题：
 > Implement strStr().
 
@@ -5512,7 +5514,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="414. Third Maximum Number"/>414. Third Maximum Number
+## <a name="414"/>414. Third Maximum Number
 ### 问题：
 > Given a non-empty array of integers, return the third maximum number in this array. If it does not exist, return the maximum number. The time complexity must be in O(n).
 
@@ -5601,7 +5603,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="303. Range Sum Query - Immutable"/>303. Range Sum Query - Immutable
+## <a name="303"/>303. Range Sum Query - Immutable
 ### 问题：
 >Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.
 
@@ -5676,7 +5678,7 @@ public class NumArray {
 
 -------------------------
 
-## <a name="204. Count Primes"/>204. Count Primes
+## <a name="204"/>204. Count Primes
 ### 问题：
 >Count the number of prime numbers less than a non-negative number, n.
 
@@ -5746,7 +5748,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="155. Min Stack"/>155. Min Stack
+## <a name="155"/>155. Min Stack
 ### 问题：
 >Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
 
@@ -5868,7 +5870,7 @@ public class MinStack {
 
 -------------------------
 
-## <a name="6. ZigZag Conversion"/>6. ZigZag Conversion
+## <a name="6"/>6. ZigZag Conversion
 ### 问题：
 >The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
 
@@ -5941,7 +5943,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="125. Valid Palindrome"/>125. Valid Palindrome
+## <a name="125"/>125. Valid Palindrome
 ### 问题：
 >Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
 
@@ -6017,7 +6019,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="168. Excel Sheet Column Title"/>168. Excel Sheet Column Title
+## <a name="168"/>168. Excel Sheet Column Title
 ### 问题：
 >Given a positive integer, return its corresponding column title as appear in an Excel sheet.
 
@@ -6076,7 +6078,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="278. First Bad Version"/>278. First Bad Version
+## <a name="278"/>278. First Bad Version
 ### 问题：
 >You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
 
@@ -6129,7 +6131,7 @@ public class Solution extends VersionControl {
 
 -------------------------
 
-## <a name="7. Reverse Integer"/>7. Reverse Integer
+## <a name="7"/>7. Reverse Integer
 ### 问题：
 >Reverse digits of an integer.
 
@@ -6209,7 +6211,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="189. Rotate Array"/>189. Rotate Array
+## <a name="189"/>189. Rotate Array
 ### 问题：
 >Rotate an array of n elements to the right by k steps.
 
@@ -6285,7 +6287,7 @@ private void reverse(int[] nums, int i, int j){
 
 -------------------------
 
-## <a name="165. Compare Version Numbers"/>165. Compare Version Numbers
+## <a name="165"/>165. Compare Version Numbers
 ### 问题：
 >Compare two version numbers version1 and version2.
 
@@ -6376,7 +6378,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="8. String to Integer (atoi)"/>8. String to Integer (atoi)
+## <a name="8"/>8. String to Integer (atoi)
 ###问题：
 
 >Implement atoi to convert a string to an integer.
@@ -6449,7 +6451,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="419. Battleships in a Board"/>419. Battleships in a Board
+## <a name="419"/>419. Battleships in a Board
 ### 问题：
 >Given an 2D board, count how many different battleships are in it. The battleships are represented with 'X's, empty slots are represented with '.'s. You may assume the following rules:
 
@@ -6569,7 +6571,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="338. Counting Bits"/>338. Counting Bits
+## <a name="338"/>338. Counting Bits
 ### 问题：
 >Given a non negative integer number num. For every numbers i in the range 0 ≤ i ≤ num calculate the number of 1's in their binary representation and return them as an array.
 
@@ -6644,7 +6646,7 @@ public int[] countBits(int num) {
 
 -------------------------
 
-## <a name="406. Queue Reconstruction by Height"/>406. Queue Reconstruction by Height
+## <a name="406"/>406. Queue Reconstruction by Height
 ### 问题：
 >Suppose you have a random list of people standing in a queue. Each person is described by a pair of integers (h, k), where h is the height of the person and k is the number of people in front of this person who have a height greater than or equal to h. Write an algorithm to reconstruct the queue.
 
@@ -6703,7 +6705,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="413. Arithmetic Slices"/>413. Arithmetic Slices
+## <a name="413"/>413. Arithmetic Slices
 ### 问题：
 >A sequence of number is called arithmetic if it consists of at least three elements and if the difference between any two consecutive elements is the same.
 
@@ -6799,7 +6801,7 @@ public int numberOfArithmeticSlices(int[] A) {
 
 -------------------------
 
-## <a name="462. Minimum Moves to Equal Array Elements II"/>462. Minimum Moves to Equal Array Elements II
+## <a name="462"/>462. Minimum Moves to Equal Array Elements II
 ### 问题：
 >Given a non-empty integer array, find the minimum number of moves required to make all array elements equal, where a move is incrementing a selected element by 1 or decrementing a selected element by 1.
 
@@ -6887,7 +6889,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="451. Sort Characters By Frequency"/>451. Sort Characters By Frequency
+## <a name="451"/>451. Sort Characters By Frequency
 ### 问题：
 >Given a string, sort it in decreasing order based on the frequency of characters.
 
@@ -7168,7 +7170,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="260. Single Number III"/>260. Single Number III
+## <a name="260"/>260. Single Number III
 ### 问题：
 >Given an array of numbers nums, in which exactly two elements appear only once and all the other elements appear exactly twice. Find the two elements that appear only once.
 
@@ -7265,7 +7267,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="167. Two Sum II - Input array is sorted"/>167. Two Sum II - Input array is sorted
+## <a name="167"/>167. Two Sum II - Input array is sorted
 ### 问题：
 >Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.
 
@@ -7319,7 +7321,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="442. Find All Duplicates in an Array"/>442. Find All Duplicates in an Array
+## <a name="442"/>442. Find All Duplicates in an Array
 ### 问题：
 >Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
 
@@ -7401,7 +7403,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="238. Product of Array Except Self"/>238. Product of Array Except Self
+## <a name="238"/>238. Product of Array Except Self
 ### 问题：
 >Given an array of n integers where n > 1, nums, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
 
@@ -7459,7 +7461,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="445. Add Two Numbers II"/>445. Add Two Numbers II
+## <a name="445"/>445. Add Two Numbers II
 ### 问题：
 >You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
 
@@ -7624,7 +7626,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="347. Top K Frequent Elements"/>347. Top K Frequent Elements
+## <a name="347"/>347. Top K Frequent Elements
 ### 问题：
 >Given a non-empty array of integers, return the k most frequent elements.
 
@@ -7707,7 +7709,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="122. Best Time to Buy and Sell Stock II"/>122. Best Time to Buy and Sell Stock II
+## <a name="122"/>122. Best Time to Buy and Sell Stock II
 ### 问题：
 >Say you have an array for which the ith element is the price of a given stock on day i.
 
@@ -7771,7 +7773,7 @@ public int maxProfit(int[] prices) {
 
 -------------------------
 
-## <a name="357. Count Numbers with Unique Digits"/>357. Count Numbers with Unique Digits
+## <a name="357"/>357. Count Numbers with Unique Digits
 ### 问题：
 >Given a non-negative integer n, count all numbers with unique digits, x, where 0 ≤ x < 10n.
 
@@ -7825,7 +7827,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="477. Total Hamming Distance"/>477. Total Hamming Distance
+## <a name="477"/>477. Total Hamming Distance
 ### 问题：
 >The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
 
@@ -7888,7 +7890,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="481. Magical String"/>481. Magical String
+## <a name="481"/>481. Magical String
 ### 问题：
 >A magical string S consists of only '1' and '2' and obeys the following rules:
 
@@ -8037,7 +8039,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="482. License Key Formatting"/>482. License Key Formatting
+## <a name="482"/>482. License Key Formatting
 ### 问题：
 >Now you are given a string S, which represents a software license key which we would like to format. The string S is composed of alphanumerical characters and dashes. The dashes split the alphanumerical characters within the string into groups. (i.e. if there are M dashes, the string is split into M+1 groups). The dashes in the given string are possibly misplaced.
 
@@ -8139,7 +8141,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="343. Integer Break"/>343. Integer Break
+## <a name="343"/>343. Integer Break
 ### 问题：
 >Given a positive integer n, break it into the sum of at least two positive integers and maximize the product of those integers. Return the maximum product you can get.
 
@@ -8198,7 +8200,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="392. Is Subsequence"/>392. Is Subsequence
+## <a name="392"/>392. Is Subsequence
 
 ### 问题：
 >Given a string s and a string t, check if s is subsequence of t.
@@ -8286,7 +8288,7 @@ public boolean isSubsequence(String s, String t) {
 
 -------------------------
 
-## <a name="94. Binary Tree Inorder Traversal"/>94. Binary Tree Inorder Traversal
+## <a name="94"/>94. Binary Tree Inorder Traversal
 ### 问题：
 >Given a binary tree, return the inorder traversal of its nodes' values.
 
@@ -8391,7 +8393,7 @@ public List<Integer> inorderTraversal(TreeNode root) {
 
 -------------------------
 
-## <a name="268. Missing Number"/>268. Missing Number
+## <a name="268"/>268. Missing Number
 ### 问题：
 >Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
 
@@ -8452,7 +8454,7 @@ public int missingNumber(int[] nums) {
 
 -------------------------
 
-## <a name="454. 4Sum II"/>454. 4Sum II
+## <a name="454"/>454. 4Sum II
 ### 问题：
 >Given four lists A, B, C, D of integer values, compute how many tuples (i, j, k, l) there are such that A[i] + B[j] + C[k] + D[l] is zero.
 
@@ -8534,7 +8536,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="513. Find Bottom Left Tree Value"/>513. Find Bottom Left Tree Value
+## <a name="513"/>513. Find Bottom Left Tree Value
 ### 问题：
 >Given a binary tree, find the leftmost value in the last row of the tree.
 
@@ -8660,7 +8662,7 @@ public class Solution {
 
 -------------------------
 
-## <a name="515. Find Largest Value in Each Tree Row"/>515. Find Largest Value in Each Tree Row
+## <a name="515"/>515. Find Largest Value in Each Tree Row
 ## 问题：
 >You need to find the largest value in each row of a binary tree.
 
@@ -8668,7 +8670,7 @@ public class Solution {
 
 >>Input: 
 
->>![](http://img.blog.csdn.net/20170313144743106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/515Image.png)
 
 >>Output: [1, 3, 9]
 
@@ -8679,7 +8681,7 @@ public class Solution {
 
 >>输入：
 >
->>![](http://img.blog.csdn.net/20170313144743106?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQ2xvdWRveF8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/515Image.png)
 
 >>输出： [1, 3, 9]
 
@@ -8754,6 +8756,199 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="526"/>526. Beautiful Arrangement
+## 问题：
+>Suppose you have N integers from 1 to N. We define a beautiful arrangement as an array that is constructed by these N numbers successfully if one of the following is true for the ith position (1 ≤ i ≤ N) in this array:
+>1. The number at the ith position is divisible by i.
+>2. i is divisible by the number at the ith position.
+>Now given N, how many beautiful arrangements can you construct?
+>Example 1:
+>> Input: 2
+>>
+>> Output: 2
+>>
+>>Explanation: 
+>>
+>>The first beautiful arrangement is [1, 2]:
+>>
+>>Number at the 1st position (i=1) is 1, and 1 is divisible by i (i=1).
+>>
+>>Number at the 2nd position (i=2) is 2, and 2 is divisible by i (i=2).
+>>
+>>The second beautiful arrangement is [2, 1]:
+>>
+>>Number at the 1st position (i=1) is 2, and 2 is divisible by i (i=1).
+>>
+>>Number at the 2nd position (i=2) is 1, and i (i=2) is divisible by 1.
+>
+>Note:
+>1. N is a positive integer and will not exceed 15.
+
+## 大意：
+>假设你有1到N的N个整数，我们定义如果这N个整数可以组成数组后每第 i 位（1 ≤ i ≤ N）都满足下面两个要求之一就称其为漂亮的安排：
+>1. 第 i 个位置的数字可以被 i 整除。
+>2. i 可以被第 i 个位置的数字整除。
+>现在给出N，你可以组成多少种漂亮的安排？
+>例 1:
+>>输入： 2
+>>
+>>输出： 2
+>>
+>>解释： 
+>>
+>>第一个漂亮的安排是 [1, 2]：
+>>
+>>第一个位置（i = 1）的数字是 1，而 1 可以被 i （i = 1）整除。
+>>
+>>第二个位置（i = 2）的数字是 2，而 2 可以被 i（i = 2）整除。
+>>
+>>第二个漂亮的安排是 [2, 1]：
+>>
+>>第一个位置（i = 1）的数字是 2，而 2 可以被 i （i = 1）整除。
+>>
+>>第二个位置（i = 2）的数字是 1，而 1 可以被 i（i = 2）整除。
+>
+>注意：
+>1. N是个正数，而且不会超过15。
+
+## 思路：
+
+乍一想有很多种可能不知道怎么统计，而这恰恰就可以通过递归回溯来实现。
+
+我们的思路是，从第一位到第N位，我们都要找到对应的没有放置过的数字来放，每一位都会有很多个数字可以放，而放了之后以后就不能放了，这样一直放到最后一位，如果都能放到数字，那就是一种漂亮的安排，总结果就要加一。
+
+这种思路就可以通过递归来实现。每一次递归我们都判断当前位置有哪些没放过的数字可以放，对于数字有没有放过我们需要一个数字来记录。对于每个放在这一位的数字，都是一种可能性，我们要继续往后递归看能不能全部放完才能知道要不要算作一种。如果所有都放完了那就算作一种了，总结过可以加一。
+
+要注意这里的位置并不是从0开始算的，而是1。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int countArrangement(int N) {
+        int[] num = new int[N];
+        int res = findWay(num, 1);
+        return res;
+    }
+    
+    public int findWay(int[] num, int index) {
+        if (index == num.length+1) return 1;
+        int total = 0;
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] != 1) {
+                if ((i+1) % index == 0 || index % (i+1) == 0) {
+                    int[] newNum = num.clone();
+                    newNum[i] = 1;
+                    total += findWay(newNum, index+1);
+                }
+            }
+        }
+        return total;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="508"/>508. Most Frequent Subtree Sum
+## 问题：
+>Given the root of a tree, you are asked to find the most frequent subtree sum. The subtree sum of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself). So what is the most frequent subtree sum value? If there is a tie, return all the values with the highest frequency in any order.
+>Examples 1
+>Input:
+>  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-9089533361c29547.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>return [2, -3, 4], since all the values happen only once, return all of them in any order.
+>Examples 2
+>Input:
+>  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-36ad97fcd6e504ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>return [2], since 2 happens twice, however -5 only occur once.
+>Note: You may assume the sum of values in any subtree is in the range of 32-bit signed integer.
+
+## 大意：
+>给出一个树的根节点，要求你找到出现最频繁的子树和。一个节点的子树和是指其所有子节点以及子节点的子节点的值之和（包含节点本身）。所以最频繁的子树和是什么？如果有并列的，返回所有最高频率的值，顺序不限。
+>例1：
+>输入：
+> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-36e40ca234a41660.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>返回 [2, -3, 4]，因为所有值都只出现了一次，以任意顺序返回它们。
+>例2：
+>输入：
+>  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-9b138e5e6ce89476.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>返回 [2]，因为2这个和出现了两次，而 -5 只出现了一次。
+>注意：你可以假设所有子树的和都在32位int型范围内。
+
+## 思路：
+要计算一个节点的子树和其实不难，只需要用递归不断判断其子节点有没有左右子节点，有的话就加起来其值就好了。
+
+但是这道题要比较所有节点的子树和，那就要求每遇到一个节点，都要以这个节点为根节点，计算其子树和，所以每次递归时都要计算新计算一次。
+
+那怎么记录所有子树和呢？这道题既然是要求找出出现频率最高的子树和值，那肯定要记录各个值出现的次数，方法也就呼之欲出了，用HashMap，以子树和为key，以出现次数为value，对于已经出现过的子树和，就将其value+1，没出现过的就添加到HashMap中去，其value设为1。这样就可以边计算所有子树和，边记录各个和出现的次数了。
+
+现在只剩下一个问题，找到出现最频繁的子树和，而且不一定只有一个子树和值。所以我们要遍历HashMap，记录出现的次数最大的子树和，因为可能有多个，我们用数组来记录，如果碰到次数更当前记录的次数最大的一直的子树和，就添加到数组中，当出现更大次数的时候就重新记录，替代数组第一个元素，同时用一个int型变量num来记录最大出现频率下有几个子树和，可以保证遍历HashMap完后前num个数组元素是要的结果，我们取这几个就可以了。
+
+这个做法已经算快的了，打败了91%。
+
+## 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    
+    public int[] findFrequentTreeSum(TreeNode root) {
+        if (root == null) return new int[0];
+        
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        countSum(root, map);
+        
+        int[] all = new int[map.size()];
+        int num = 0;
+        int big = 0;
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if ((int)entry.getValue() > big) {
+                all[0] = (int)entry.getKey();
+                num = 1;
+                big = (int)entry.getValue();
+            } else if ((int)entry.getValue() == big) {
+                all[num] = (int)entry.getKey();
+                num++;
+            }
+        }
+        return Arrays.copyOfRange(all, 0, num);
+    }
+    
+    public int countSum(TreeNode root, HashMap<Integer, Integer> map) {
+        int sum = 0;
+        sum += root.val;
+        if (root.left != null) sum += countSum(root.left, map);
+        if (root.right != null) sum += countSum(root.right, map);
+        
+        if (map.get(sum) != null) {// 之前放过
+            map.put(sum, map.get(sum)+1);
+        } else {
+            map.put(sum, 1);
+        }
+        return sum;
+    }
+}
+```
+
 
 [回到目录](#Catalogue)
 
