@@ -113,6 +113,7 @@ LeetCode笔记
   * [513. Find Bottom Left Tree Value](#513)
   * [515. Find Largest Value in Each Tree Row](#515)
   * [526. Beautiful Arrangement](#526)
+  * [508. Most Frequent Subtree Sum](#508)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -8851,6 +8852,103 @@ public class Solution {
     }
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="508"/>508. Most Frequent Subtree Sum
+## 问题：
+>Given the root of a tree, you are asked to find the most frequent subtree sum. The subtree sum of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself). So what is the most frequent subtree sum value? If there is a tie, return all the values with the highest frequency in any order.
+>Examples 1
+>Input:
+>  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-9089533361c29547.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>return [2, -3, 4], since all the values happen only once, return all of them in any order.
+>Examples 2
+>Input:
+>  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-36ad97fcd6e504ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>return [2], since 2 happens twice, however -5 only occur once.
+>Note: You may assume the sum of values in any subtree is in the range of 32-bit signed integer.
+
+## 大意：
+>给出一个树的根节点，要求你找到出现最频繁的子树和。一个节点的子树和是指其所有子节点以及子节点的子节点的值之和（包含节点本身）。所以最频繁的子树和是什么？如果有并列的，返回所有最高频率的值，顺序不限。
+>例1：
+>输入：
+> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-36e40ca234a41660.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>返回 [2, -3, 4]，因为所有值都只出现了一次，以任意顺序返回它们。
+>例2：
+>输入：
+>  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-9b138e5e6ce89476.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>返回 [2]，因为2这个和出现了两次，而 -5 只出现了一次。
+>注意：你可以假设所有子树的和都在32位int型范围内。
+
+## 思路：
+要计算一个节点的子树和其实不难，只需要用递归不断判断其子节点有没有左右子节点，有的话就加起来其值就好了。
+
+但是这道题要比较所有节点的子树和，那就要求每遇到一个节点，都要以这个节点为根节点，计算其子树和，所以每次递归时都要计算新计算一次。
+
+那怎么记录所有子树和呢？这道题既然是要求找出出现频率最高的子树和值，那肯定要记录各个值出现的次数，方法也就呼之欲出了，用HashMap，以子树和为key，以出现次数为value，对于已经出现过的子树和，就将其value+1，没出现过的就添加到HashMap中去，其value设为1。这样就可以边计算所有子树和，边记录各个和出现的次数了。
+
+现在只剩下一个问题，找到出现最频繁的子树和，而且不一定只有一个子树和值。所以我们要遍历HashMap，记录出现的次数最大的子树和，因为可能有多个，我们用数组来记录，如果碰到次数更当前记录的次数最大的一直的子树和，就添加到数组中，当出现更大次数的时候就重新记录，替代数组第一个元素，同时用一个int型变量num来记录最大出现频率下有几个子树和，可以保证遍历HashMap完后前num个数组元素是要的结果，我们取这几个就可以了。
+
+这个做法已经算快的了，打败了91%。
+
+## 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    
+    public int[] findFrequentTreeSum(TreeNode root) {
+        if (root == null) return new int[0];
+        
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        countSum(root, map);
+        
+        int[] all = new int[map.size()];
+        int num = 0;
+        int big = 0;
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            if ((int)entry.getValue() > big) {
+                all[0] = (int)entry.getKey();
+                num = 1;
+                big = (int)entry.getValue();
+            } else if ((int)entry.getValue() == big) {
+                all[num] = (int)entry.getKey();
+                num++;
+            }
+        }
+        return Arrays.copyOfRange(all, 0, num);
+    }
+    
+    public int countSum(TreeNode root, HashMap<Integer, Integer> map) {
+        int sum = 0;
+        sum += root.val;
+        if (root.left != null) sum += countSum(root.left, map);
+        if (root.right != null) sum += countSum(root.right, map);
+        
+        if (map.get(sum) != null) {// 之前放过
+            map.put(sum, map.get(sum)+1);
+        } else {
+            map.put(sum, 1);
+        }
+        return sum;
+    }
+}
+```
+
 
 [回到目录](#Catalogue)
 
