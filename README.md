@@ -88,7 +88,8 @@ LeetCode笔记
   * [165. Compare Version Numbers](#165)
   * [8. String to Integer (atoi)](#8)
 * Medium
-  * [419. Battleships in a Board](#419)
+  
+  * [419. Battleships in a Board](#419)
   * [338. Counting Bits](#338)
   * [406. Queue Reconstruction by Height](#406)
   * [413. Arithmetic Slices](#413)
@@ -114,6 +115,7 @@ LeetCode笔记
   * [515. Find Largest Value in Each Tree Row](#515)
   * [526. Beautiful Arrangement](#526)
   * [508. Most Frequent Subtree Sum](#508)
+  * [503. Next Greater Element II](#503)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -8965,6 +8967,88 @@ public class Solution {
 }
 ```
 
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="503"/>503. Next Greater Element II
+## 问题：
+>Given a circular array (the next element of the last element is the first element of the array), print the Next Greater Number for every element. The Next Greater Number of a number x is the first greater number to its traversing-order next in the array, which means you could search circularly to find its next greater number. If it doesn't exist, output -1 for this number.
+>Example 1:
+>>Input: [1,2,1]
+>>
+>>Output: [2,-1,2]
+>>
+>>Explanation: The first 1's next greater number is 2; 
+>>
+>>The number 2 can't find next greater number; 
+>>
+>>The second 1's next greater number needs to search circularly, which is also 2.
+>
+>Note: The length of given array won't exceed 10000.
+
+## 大意：
+>给出一个循环数组（最后一个元素的下一个元素是数组的第一个元素），打印每个元素的下一个更大的数字。一个元素的下一个更大的数字是在数组中往后遍历遇到的第一个比他大的数字，也就意味着你可以循环搜索数组来寻找下一个更大的数字。如果不存在，为这个数字输出 -1。
+>例 1：
+>>输入：[1,2,1]
+>>
+>>输出：[2,-1,2]
+>>
+>>解释：第一个 1 的下一个更大数字是 2。
+>>
+>>数字 2 找不到下一个更大的数字。
+>>
+>>第二个 1 的下一个更大的数字需要循环寻找，也是 2。
+>
+>注意：给出的数组长度不会超过 10000。
+
+## 思路：
+首先，最简单的笨办法，对每个元素都往后遍历寻找第一个比他大的数字记录下来，找不到就是 -1。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int[] res = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            boolean find = false;
+            int j = i + 1;
+            for (int k = 0; k < nums.length; k++) {
+                if (j >= nums.length) j = 0;
+                if (nums[j] > nums[i]) {
+                    find = true;
+                    res[i] = nums[j];
+                    break;
+                }
+                j++;
+            }
+            if (!find) res[i] = -1;
+        }
+        return res;
+    }
+}
+```
+
+## 他山之石：
+我们思考一下，在遍历数组的过程中，如果是往后遇到大的数，那就是第一个更大的数，如果一直遇到不断小的数，才会一直找不到，我们可以用一个栈来记录，遇到比栈顶小的数字就放入栈中，遇到比栈顶大的数字就说明这是栈顶数字的下一个更大的数，就将其放在结果数组的对应位置上，栈顶的元素出栈，继续比较新的栈顶的数，如果还是大，那么继续记录，出栈，直到栈顶的数比新数要小，那么就可以将新数入栈了。因为我们要将找到的更大的数放在对应位置上，所以栈中记录的应该是元素位置，而不是具体的数字，但比较的时候还是比较原来的数组中这个位置的数字，这一点要想清楚。此外，因为会出现循环寻找的情况，所以数组我们可能遍历两次。这个做法会快很多。
+
+```java
+public class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length, next[] = new int[n];
+        Arrays.fill(next, -1);
+        Stack<Integer> stack = new Stack<>(); // index stack
+        for (int i = 0; i < n * 2; i++) {
+            int num = nums[i % n]; 
+            while (!stack.isEmpty() && nums[stack.peek()] < num)
+                next[stack.pop()] = num;
+            if (i < n) stack.push(i);
+        }   
+        return next;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
