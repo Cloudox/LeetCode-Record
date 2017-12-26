@@ -9076,7 +9076,7 @@ public class Solution {
 >>
 >>Explanation:
 >>
-![image.png](http://upload-images.jianshu.io/upload_images/9075967-6a8618130109621e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/498Image.png)
 >
 >Note:
 >The total number of elements of the given matrix will not exceed 10,000.
@@ -9100,7 +9100,7 @@ public class Solution {
 >>
 >>解释：
 >>
-![image.png](http://upload-images.jianshu.io/upload_images/9075967-6a8618130109621e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/498Image.png)
 >
 >注意：
 > 矩阵的元素数量不会超过10000。
