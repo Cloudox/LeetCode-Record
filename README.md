@@ -116,6 +116,7 @@ LeetCode笔记
   * [526. Beautiful Arrangement](#526)
   * [508. Most Frequent Subtree Sum](#508)
   * [503. Next Greater Element II](#503)
+  * [498. Diagonal Traverse](#498)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9046,6 +9047,118 @@ public class Solution {
             if (i < n) stack.push(i);
         }   
         return next;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="498"/>498. Diagonal Traverse
+## 问题：
+>Given a matrix of M x N elements (M rows, N columns), return all elements of the matrix in diagonal order as shown in the below image.
+>Example:
+>>Input:
+>>
+>>[
+>>
+>> [ 1, 2, 3 ],
+>>
+>> [ 4, 5, 6 ],
+>>
+>> [ 7, 8, 9 ]
+>>
+>>]
+>>
+>>Output:  [1,2,4,7,5,3,6,8,9]
+>>
+>>Explanation:
+>>
+![image.png](http://upload-images.jianshu.io/upload_images/9075967-6a8618130109621e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Note:
+>The total number of elements of the given matrix will not exceed 10,000.
+
+## 大意：
+>给出一个包含 M * N 个元素的矩阵（M行，N列），按照如下图所示顺序返回矩阵中所有元素。
+>例子：
+>>输入：
+>>
+>>[
+>>
+>> [ 1, 2, 3 ],
+>>
+>> [ 4, 5, 6 ],
+>>
+>> [ 7, 8, 9 ]
+>>
+>>]
+>>
+>>输出：[1,2,4,7,5,3,6,8,9]
+>>
+>>解释：
+>>
+![image.png](http://upload-images.jianshu.io/upload_images/9075967-6a8618130109621e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>注意：
+> 矩阵的元素数量不会超过10000。
+
+## 思路：
+我们可以跟随例子中的路线来遍历矩阵，路线无非就是从左下到右上，到顶后又从右上到坐下，一直到最右下角一个点。
+
+在往右上的过程中，一般是行在减，列在加，有三种情况停止右上：
+
+1. 到了第一行，不能再往上了；
+2. 到了最右边列，不能再往右了；
+3. 到了最右下角的元素，这时候要全部结束遍历。
+
+往左下的过程中，一般是行在加，列在减，有三种情况停止左下：
+
+1. 到了第一列，不能在往左了；
+2. 到了最下边的行，不能再往下了；
+3. 到了最右下角的元素，这时候要全部结束遍历。
+
+我们把这个过程用代码实现出来就可以了，用多个 if - else 来分支处理。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int[] findDiagonalOrder(int[][] matrix) {
+        boolean up = true;
+        if (matrix.length == 0) return new int[0];
+        int[] res = new int[matrix.length * matrix[0].length];
+        int i = 0;
+        int j = 0;
+        for (int k = 0; k < matrix.length * matrix[0].length; k++) {
+            res[k] = matrix[i][j];
+            if (up) {// 往右上走
+                if ((i-1) >= 0 && (j+1) < matrix[0].length) {
+                    i--;
+                    j++;
+                } else if ((j+1) < matrix[0].length) {
+                    j++;
+                    up = false;
+                } else if ((i+1) < matrix.length) {
+                    i++;
+                    up = false;
+                } else break;
+            } else {// 往左下走
+                if ((i+1) < matrix.length && (j-1) >= 0) {
+                    i++;
+                    j--;
+                } else if ((i+1) < matrix.length) {
+                    i++;
+                    up = true;
+                } else if ((j+1) < matrix[0].length) {
+                    j++;
+                    up = true;
+                } else break;
+            }
+        }
+        return res;
     }
 }
 ```
