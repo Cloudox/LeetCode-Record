@@ -88,7 +88,8 @@ LeetCode笔记
   * [165. Compare Version Numbers](#165)
   * [8. String to Integer (atoi)](#8)
 * Medium
-  * [419. Battleships in a Board](#419)
+  
+  * [419. Battleships in a Board](#419)
   * [338. Counting Bits](#338)
   * [406. Queue Reconstruction by Height](#406)
   * [413. Arithmetic Slices](#413)
@@ -114,6 +115,8 @@ LeetCode笔记
   * [515. Find Largest Value in Each Tree Row](#515)
   * [526. Beautiful Arrangement](#526)
   * [508. Most Frequent Subtree Sum](#508)
+  * [503. Next Greater Element II](#503)
+  * [498. Diagonal Traverse](#498)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -8860,28 +8863,44 @@ public class Solution {
 ## <a name="508"/>508. Most Frequent Subtree Sum
 ## 问题：
 >Given the root of a tree, you are asked to find the most frequent subtree sum. The subtree sum of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself). So what is the most frequent subtree sum value? If there is a tie, return all the values with the highest frequency in any order.
+>
 >Examples 1
+>
 >Input:
->  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-9089533361c29547.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>  ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/508Image1.png)
 >
 >return [2, -3, 4], since all the values happen only once, return all of them in any order.
+>
 >Examples 2
+>
 >Input:
->  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-36ad97fcd6e504ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>  ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/508Image2.png)
 >
 >return [2], since 2 happens twice, however -5 only occur once.
+>
 >Note: You may assume the sum of values in any subtree is in the range of 32-bit signed integer.
 
 ## 大意：
 >给出一个树的根节点，要求你找到出现最频繁的子树和。一个节点的子树和是指其所有子节点以及子节点的子节点的值之和（包含节点本身）。所以最频繁的子树和是什么？如果有并列的，返回所有最高频率的值，顺序不限。
+>
 >例1：
+>
 >输入：
-> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-36e40ca234a41660.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/508Image1.png)
+>
 >返回 [2, -3, 4]，因为所有值都只出现了一次，以任意顺序返回它们。
+>
 >例2：
+>
 >输入：
->  ![image.png](http://upload-images.jianshu.io/upload_images/9075967-9b138e5e6ce89476.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>  ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/508Image2.png)
+>
 >返回 [2]，因为2这个和出现了两次，而 -5 只出现了一次。
+>
 >注意：你可以假设所有子树的和都在32位int型范围内。
 
 ## 思路：
@@ -8949,6 +8968,200 @@ public class Solution {
 }
 ```
 
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="503"/>503. Next Greater Element II
+## 问题：
+>Given a circular array (the next element of the last element is the first element of the array), print the Next Greater Number for every element. The Next Greater Number of a number x is the first greater number to its traversing-order next in the array, which means you could search circularly to find its next greater number. If it doesn't exist, output -1 for this number.
+>Example 1:
+>>Input: [1,2,1]
+>>
+>>Output: [2,-1,2]
+>>
+>>Explanation: The first 1's next greater number is 2; 
+>>
+>>The number 2 can't find next greater number; 
+>>
+>>The second 1's next greater number needs to search circularly, which is also 2.
+>
+>Note: The length of given array won't exceed 10000.
+
+## 大意：
+>给出一个循环数组（最后一个元素的下一个元素是数组的第一个元素），打印每个元素的下一个更大的数字。一个元素的下一个更大的数字是在数组中往后遍历遇到的第一个比他大的数字，也就意味着你可以循环搜索数组来寻找下一个更大的数字。如果不存在，为这个数字输出 -1。
+>例 1：
+>>输入：[1,2,1]
+>>
+>>输出：[2,-1,2]
+>>
+>>解释：第一个 1 的下一个更大数字是 2。
+>>
+>>数字 2 找不到下一个更大的数字。
+>>
+>>第二个 1 的下一个更大的数字需要循环寻找，也是 2。
+>
+>注意：给出的数组长度不会超过 10000。
+
+## 思路：
+首先，最简单的笨办法，对每个元素都往后遍历寻找第一个比他大的数字记录下来，找不到就是 -1。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int[] res = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            boolean find = false;
+            int j = i + 1;
+            for (int k = 0; k < nums.length; k++) {
+                if (j >= nums.length) j = 0;
+                if (nums[j] > nums[i]) {
+                    find = true;
+                    res[i] = nums[j];
+                    break;
+                }
+                j++;
+            }
+            if (!find) res[i] = -1;
+        }
+        return res;
+    }
+}
+```
+
+## 他山之石：
+我们思考一下，在遍历数组的过程中，如果是往后遇到大的数，那就是第一个更大的数，如果一直遇到不断小的数，才会一直找不到，我们可以用一个栈来记录，遇到比栈顶小的数字就放入栈中，遇到比栈顶大的数字就说明这是栈顶数字的下一个更大的数，就将其放在结果数组的对应位置上，栈顶的元素出栈，继续比较新的栈顶的数，如果还是大，那么继续记录，出栈，直到栈顶的数比新数要小，那么就可以将新数入栈了。因为我们要将找到的更大的数放在对应位置上，所以栈中记录的应该是元素位置，而不是具体的数字，但比较的时候还是比较原来的数组中这个位置的数字，这一点要想清楚。此外，因为会出现循环寻找的情况，所以数组我们可能遍历两次。这个做法会快很多。
+
+```java
+public class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length, next[] = new int[n];
+        Arrays.fill(next, -1);
+        Stack<Integer> stack = new Stack<>(); // index stack
+        for (int i = 0; i < n * 2; i++) {
+            int num = nums[i % n]; 
+            while (!stack.isEmpty() && nums[stack.peek()] < num)
+                next[stack.pop()] = num;
+            if (i < n) stack.push(i);
+        }   
+        return next;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="498"/>498. Diagonal Traverse
+## 问题：
+>Given a matrix of M x N elements (M rows, N columns), return all elements of the matrix in diagonal order as shown in the below image.
+>Example:
+>>Input:
+>>
+>>[
+>>
+>> [ 1, 2, 3 ],
+>>
+>> [ 4, 5, 6 ],
+>>
+>> [ 7, 8, 9 ]
+>>
+>>]
+>>
+>>Output:  [1,2,4,7,5,3,6,8,9]
+>>
+>>Explanation:
+>>
+![image.png](http://upload-images.jianshu.io/upload_images/9075967-6a8618130109621e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Note:
+>The total number of elements of the given matrix will not exceed 10,000.
+
+## 大意：
+>给出一个包含 M * N 个元素的矩阵（M行，N列），按照如下图所示顺序返回矩阵中所有元素。
+>例子：
+>>输入：
+>>
+>>[
+>>
+>> [ 1, 2, 3 ],
+>>
+>> [ 4, 5, 6 ],
+>>
+>> [ 7, 8, 9 ]
+>>
+>>]
+>>
+>>输出：[1,2,4,7,5,3,6,8,9]
+>>
+>>解释：
+>>
+![image.png](http://upload-images.jianshu.io/upload_images/9075967-6a8618130109621e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>注意：
+> 矩阵的元素数量不会超过10000。
+
+## 思路：
+我们可以跟随例子中的路线来遍历矩阵，路线无非就是从左下到右上，到顶后又从右上到坐下，一直到最右下角一个点。
+
+在往右上的过程中，一般是行在减，列在加，有三种情况停止右上：
+
+1. 到了第一行，不能再往上了；
+2. 到了最右边列，不能再往右了；
+3. 到了最右下角的元素，这时候要全部结束遍历。
+
+往左下的过程中，一般是行在加，列在减，有三种情况停止左下：
+
+1. 到了第一列，不能在往左了；
+2. 到了最下边的行，不能再往下了；
+3. 到了最右下角的元素，这时候要全部结束遍历。
+
+我们把这个过程用代码实现出来就可以了，用多个 if - else 来分支处理。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int[] findDiagonalOrder(int[][] matrix) {
+        boolean up = true;
+        if (matrix.length == 0) return new int[0];
+        int[] res = new int[matrix.length * matrix[0].length];
+        int i = 0;
+        int j = 0;
+        for (int k = 0; k < matrix.length * matrix[0].length; k++) {
+            res[k] = matrix[i][j];
+            if (up) {// 往右上走
+                if ((i-1) >= 0 && (j+1) < matrix[0].length) {
+                    i--;
+                    j++;
+                } else if ((j+1) < matrix[0].length) {
+                    j++;
+                    up = false;
+                } else if ((i+1) < matrix.length) {
+                    i++;
+                    up = false;
+                } else break;
+            } else {// 往左下走
+                if ((i+1) < matrix.length && (j-1) >= 0) {
+                    i++;
+                    j--;
+                } else if ((i+1) < matrix.length) {
+                    i++;
+                    up = true;
+                } else if ((j+1) < matrix[0].length) {
+                    j++;
+                    up = true;
+                } else break;
+            }
+        }
+        return res;
+    }
+}
+```
 
 [回到目录](#Catalogue)
 
@@ -8956,4 +9169,4 @@ public class Solution {
 
 不断更新中...
 
-更多内容查看[我的博客](http://blog.csdn.net/column/details/cloudox-column2.html)
+更多内容查看[我的博客](https://www.jianshu.com/c/d02cf2737ee5)
