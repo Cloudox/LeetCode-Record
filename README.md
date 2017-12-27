@@ -9173,8 +9173,11 @@ public class Solution {
 
 ## 问题：
 >Given a list of 24-hour clock time points in "Hour:Minutes" format, find the minimum minutes difference between any two time points in the list.
+>
 >Example 1:
+>
 >Input: ["23:59","00:00"]
+>
 >Output: 1
 >
 >Note:
@@ -9183,8 +9186,11 @@ public class Solution {
 
 ## 大意：
 >给出一个 "Hour:Minutes" 形式的24小时制时间点的List，寻找List中任意两个时间点的最小分钟时间差。
+>
 >例1：
+>
 >输入：["23:59","00:00"]
+>
 >输出：1
 >
 >注意：
