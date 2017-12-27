@@ -117,6 +117,7 @@ LeetCode笔记
   * [508. Most Frequent Subtree Sum](#508)
   * [503. Next Greater Element II](#503)
   * [498. Diagonal Traverse](#498)
+  * [539. Minimum Time Difference](#539)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9159,6 +9160,67 @@ public class Solution {
             }
         }
         return res;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="539"/>539. Minimum Time Difference
+
+## 问题：
+>Given a list of 24-hour clock time points in "Hour:Minutes" format, find the minimum minutes difference between any two time points in the list.
+>Example 1:
+>Input: ["23:59","00:00"]
+>Output: 1
+>
+>Note:
+>1. The number of time points in the given list is at least 2 and won't exceed 20000.
+>2. The input time is legal and ranges from 00:00 to 23:59.
+
+## 大意：
+>给出一个 "Hour:Minutes" 形式的24小时制时间点的List，寻找List中任意两个时间点的最小分钟时间差。
+>例1：
+>输入：["23:59","00:00"]
+>输出：1
+>
+>注意：
+>1. 给出的List中包含的时间点至少有两个，不超过20000。
+>2. 输入的时间是合法的，而且范围在 00:00 到 23:59。
+
+## 思路：
+题目会给出一系列24小时制的时间，我们要找到最小的两个时间的时间差，这个差值是以分钟数表示的，为了计算方便，我们写一个函数来将所有给出的24小时制时间全部改成分钟表示，比如 1:30 用全分钟数来表示就90分钟，这样我们计算时间差就很方便，要排序也很方便。
+
+全部转换成分钟数后，我们放在一个int型数组里，对数组排序，这样我们就可以按照拍完序后的顺序去两两比较时间点之间的时间差，看哪个时间差最小，记录下来，要注意的一点是最后一个时间要用24小时的分钟数减去他然后加上第一个时间点的时间差，得到最后一个时间点和第一个时间点的时间差。
+
+题目说了至少会有两个时间点，所以给的List为空的情况不用考虑。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int findMinDifference(List<String> timePoints) {
+        int[] minuteArr = new int[timePoints.size()];
+        for (int i = 0; i < minuteArr.length; i++) {
+            minuteArr[i] = transToMinute(timePoints.get(i));
+        }
+        Arrays.sort(minuteArr);
+        
+        int res = 24*60 - minuteArr[minuteArr.length-1] + minuteArr[0];
+        for (int i = 0; i < minuteArr.length-1; i++) {
+            if (minuteArr[i+1] - minuteArr[i] < res) res = minuteArr[i+1] - minuteArr[i];
+        }
+        return res;
+    }
+    
+    public int transToMinute(String time) {
+        String[] arr = time.split(":");
+        int a = Integer.valueOf(arr[0]).intValue() * 60;
+        int b = Integer.valueOf(arr[1]).intValue();
+        return a + b;
     }
 }
 ```
