@@ -9239,20 +9239,31 @@ public class Solution {
 ## <a name="486"/>486. Predict the Winner
 ## 问题：
 >Given an array of scores that are non-negative integers. Player 1 picks one of the numbers from either end of the array followed by the player 2 and then player 1 and so on. Each time a player picks a number, that number will not be available for the next player. This continues until all the scores have been chosen. The player with the maximum score wins.
+>
 >Given an array of scores, predict whether player 1 is the winner. You can assume each player plays to maximize his score.
 >
 >Example 1:
+>
 >Input: [1, 5, 2]
+>
 >Output: False
+>
 >Explanation: Initially, player 1 can choose between 1 and 2. 
+>
 >If he chooses 2 (or 1), then player 2 can choose from 1 (or 2) and 5. If player 2 chooses 5, then player 1 will be left with 1 (or 2). 
+>
 >So, final score of player 1 is 1 + 2 = 3, and player 2 is 5. 
+>
 >Hence, player 1 will never be the winner and you need to return False.
 >
 >Example 2:
+>
 >Input: [1, 5, 233, 7]
+>
 >Output: True
+>
 >Explanation: Player 1 first chooses 1. Then player 2 have to choose between 5 and 7. No matter which number player 2 choose, player 1 can choose 233.
+>
 >Finally, player 1 has more score (234) than player 2 (12), so you need to return True representing player1 can win.
 >
 >Note:
@@ -9262,20 +9273,31 @@ public class Solution {
 
 ## 大意：
 >给出一个非负整数数组表示分数。玩家1从数组的第一个或者最后一个分数选择一个，接着玩家2在剩下的分数里继续这样选择，然后又玩家1选择，如此往复。每次由一个玩家选择，选择的数字下一个玩家不能再选。直到所有元素都被选择完。总分数更大的玩家获胜。
+>
 >给出分数数组，预测玩家1是否是赢家。你可以假设每个玩家都尽量扩大他的分数。
 >
 >例1：
+>
 >输入：[1, 5, 2]
+>
 >输出：False
+>
 >解释：一开始，玩家1可以选择1或者2。
+>
 >如果他选择2（或者1），玩家2可以选择1（或者2）和5，然后玩家1可以选剩下的1（或者2）。
+>
 >所以，最后玩家1的分数是 1+2=3，玩家2是5。
+>
 >因此，玩家1永远不会是赢家，你需要返回False。
 >
 >例2：
+>
 >输入：[1, 5, 233, 7]
+>
 >输出：True
+>
 >解释：玩家1首选选择1。玩家2需要选择5或者7。无论玩家2选择什么，玩家1都可以选233。
+>
 >最终，玩家1（234）比玩家2（12）的分数更高，所以你需要返回True代表玩家1赢。
 >
 >注意：
