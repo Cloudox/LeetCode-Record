@@ -119,6 +119,7 @@ LeetCode笔记
   * [498. Diagonal Traverse](#498)
   * [539. Minimum Time Difference](#539)
   * [486. Predict the Winner](#486)
+  * [494. Target Sum](#494)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9328,6 +9329,119 @@ public class Solution {
             return Math.max(first, last);
         }
     }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="494"/>494. Target Sum
+## 问题：
+>You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.
+>
+>Find out how many ways to assign symbols to make sum of integers equal to target S.
+>
+>Example 1:
+>
+>>Input: nums is [1, 1, 1, 1, 1], S is 3. 
+>>
+>>Output: 5
+>>
+>>Explanation: 
+>>
+>>-1+1+1+1+1 = 3
+>>
+>>+1-1+1+1+1 = 3
+>>
+>>+1+1-1+1+1 = 3
+>>
+>>+1+1+1-1+1 = 3
+>>
+>>+1+1+1+1-1 = 3
+>>
+>>There are 5 ways to assign symbols to make the sum of nums be target 3.
+>
+>Note:
+>1. The length of the given array is positive and will not exceed 20.
+>2. The sum of elements in the given array will not exceed 1000.
+>3. Your output answer is guaranteed to be fitted in a 32-bit integer.
+
+## 大意：
+>给你一个非负整数组成的数组和目标数S。现在你有两个符号 + 和 - 。对每个整数，你要选择 + 和 - 之一作为它的符号。
+>
+>寻找有多少种加符号的方式让这些整数的和为目标数S。
+>
+>例1：
+>
+>>输入：nums 是 [1, 1, 1, 1, 1], S 是 3。
+>>
+>>输出：5
+>>
+>>解释：
+>>
+>>-1+1+1+1+1 = 3
+>>
+>>+1-1+1+1+1 = 3
+>>
+>>+1+1-1+1+1 = 3
+>>
+>>+1+1+1-1+1 = 3
+>>
+>>+1+1+1+1-1 = 3
+>>
+>>有五种加符号的方式让总和等于目标数3。
+>
+>注意：
+>1. 给出的数组长度是证书且不超过20。
+>2. 给出的数组元素总和不超过1000。
+>3. 你输出的答案保证是32位int型的。
+
+## 思路：
+这个问题其实可以分解为两个问题：
+
+1. 计算加上符号后正数或者负数之和应该为多少；
+2. 用数组中的数有多少种方法可以加起来等于上面计算出的和。
+
+对于第一个问题，我们来分析一下。由于只有正负两种符号，最后分配符号后数组中的元素可以分为整数之和与负数之和，他们两个相加等于目标数，即：
+
+sum（正） - sum（负） = target
+
+两边都加上同样的sum（正） + sum（负）：
+
+sum（正） + sum（负） + sum（正） - sum（负） = target + sum（正） + sum（负）
+
+化简得：
+
+2 * sum（正） = target + sum（正） + sum（负） = target + sum（数组总和）
+
+那么我们可以惊讶的得出一个结论，都加上符号后，所有正数的和等于目标数加上数组所有元素之和。通过这个公式我们首先可以简单的判断出找不到结果的情况，也就是数组总和小于目标数或者目标数加上数组所有元素之和除以2不能整除时，都无法找到分配符号的方法。而且最后所有分配了 + 的元素之和一定等于目标数加上数组所有元素之和的一半。
+
+现在我们知道所有正数相加应该等于多少了，剩下的就是第二个问题，使用数组中的元素有多少种方法相加得到这个正数和？
+
+这里我们用一种非常巧妙的记录方式：对于每个元素，我们看看他与正数和只差是多少，这个结果处有没有其余的元素，没有我们就减一看看有没有其他元素，没有继续减一，直到见到0，这时候其实就是它自己了。对下一个元素依然这样判断。我们用一个标记来记录从0到正数和之间每个数当前用别的元素相加后能得到的个数，最后遍历完所有元素后，看看正数和记录了多少种其余元素相加得到的次数，就是我们要的方法数了。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int findTargetSumWays(int[] nums, int s) {
+        int sum = 0;
+        for (int n : nums)
+            sum += n;
+        // 两种情况找不到结果，找得到的话就用subsetSum去找，证书和是(s + sum) >>> 1，也就是除以2
+        return sum < s || (s + sum) % 2 > 0 ? 0 : subsetSum(nums, (s + sum) >>> 1); 
+    }   
+
+    public int subsetSum(int[] nums, int s) {
+        int[] dp = new int[s + 1]; 
+        dp[0] = 1;// 初始记录0的位置为1
+        for (int n : nums)
+            // 对每个元素，看看他现有能和别的元素相加得到哪些位置的数
+            for (int i = s; i >= n; i--)
+                dp[i] += dp[i - n]; 
+        return dp[s];
+    } 
 }
 ```
 
