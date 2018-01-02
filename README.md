@@ -117,6 +117,10 @@ LeetCode笔记
   * [508. Most Frequent Subtree Sum](#508)
   * [503. Next Greater Element II](#503)
   * [498. Diagonal Traverse](#498)
+  * [539. Minimum Time Difference](#539)
+  * [486. Predict the Winner](#486)
+  * [494. Target Sum](#494)
+  * [144. Binary Tree Preorder Traversal](#144)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9076,7 +9080,7 @@ public class Solution {
 >>
 >>Explanation:
 >>
-![image.png](http://upload-images.jianshu.io/upload_images/9075967-6a8618130109621e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/498Image.png)
 >
 >Note:
 >The total number of elements of the given matrix will not exceed 10,000.
@@ -9100,7 +9104,7 @@ public class Solution {
 >>
 >>解释：
 >>
-![image.png](http://upload-images.jianshu.io/upload_images/9075967-6a8618130109621e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/498Image.png)
 >
 >注意：
 > 矩阵的元素数量不会超过10000。
@@ -9156,6 +9160,371 @@ public class Solution {
                     j++;
                     up = true;
                 } else break;
+            }
+        }
+        return res;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="539"/>539. Minimum Time Difference
+
+## 问题：
+>Given a list of 24-hour clock time points in "Hour:Minutes" format, find the minimum minutes difference between any two time points in the list.
+>
+>Example 1:
+>
+>Input: ["23:59","00:00"]
+>
+>Output: 1
+>
+>Note:
+>1. The number of time points in the given list is at least 2 and won't exceed 20000.
+>2. The input time is legal and ranges from 00:00 to 23:59.
+
+## 大意：
+>给出一个 "Hour:Minutes" 形式的24小时制时间点的List，寻找List中任意两个时间点的最小分钟时间差。
+>
+>例1：
+>
+>输入：["23:59","00:00"]
+>
+>输出：1
+>
+>注意：
+>1. 给出的List中包含的时间点至少有两个，不超过20000。
+>2. 输入的时间是合法的，而且范围在 00:00 到 23:59。
+
+## 思路：
+题目会给出一系列24小时制的时间，我们要找到最小的两个时间的时间差，这个差值是以分钟数表示的，为了计算方便，我们写一个函数来将所有给出的24小时制时间全部改成分钟表示，比如 1:30 用全分钟数来表示就90分钟，这样我们计算时间差就很方便，要排序也很方便。
+
+全部转换成分钟数后，我们放在一个int型数组里，对数组排序，这样我们就可以按照拍完序后的顺序去两两比较时间点之间的时间差，看哪个时间差最小，记录下来，要注意的一点是最后一个时间要用24小时的分钟数减去他然后加上第一个时间点的时间差，得到最后一个时间点和第一个时间点的时间差。
+
+题目说了至少会有两个时间点，所以给的List为空的情况不用考虑。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int findMinDifference(List<String> timePoints) {
+        int[] minuteArr = new int[timePoints.size()];
+        for (int i = 0; i < minuteArr.length; i++) {
+            minuteArr[i] = transToMinute(timePoints.get(i));
+        }
+        Arrays.sort(minuteArr);
+        
+        int res = 24*60 - minuteArr[minuteArr.length-1] + minuteArr[0];
+        for (int i = 0; i < minuteArr.length-1; i++) {
+            if (minuteArr[i+1] - minuteArr[i] < res) res = minuteArr[i+1] - minuteArr[i];
+        }
+        return res;
+    }
+    
+    public int transToMinute(String time) {
+        String[] arr = time.split(":");
+        int a = Integer.valueOf(arr[0]).intValue() * 60;
+        int b = Integer.valueOf(arr[1]).intValue();
+        return a + b;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="486"/>486. Predict the Winner
+## 问题：
+>Given an array of scores that are non-negative integers. Player 1 picks one of the numbers from either end of the array followed by the player 2 and then player 1 and so on. Each time a player picks a number, that number will not be available for the next player. This continues until all the scores have been chosen. The player with the maximum score wins.
+>
+>Given an array of scores, predict whether player 1 is the winner. You can assume each player plays to maximize his score.
+>
+>Example 1:
+>
+>Input: [1, 5, 2]
+>
+>Output: False
+>
+>Explanation: Initially, player 1 can choose between 1 and 2. 
+>
+>If he chooses 2 (or 1), then player 2 can choose from 1 (or 2) and 5. If player 2 chooses 5, then player 1 will be left with 1 (or 2). 
+>
+>So, final score of player 1 is 1 + 2 = 3, and player 2 is 5. 
+>
+>Hence, player 1 will never be the winner and you need to return False.
+>
+>Example 2:
+>
+>Input: [1, 5, 233, 7]
+>
+>Output: True
+>
+>Explanation: Player 1 first chooses 1. Then player 2 have to choose between 5 and 7. No matter which number player 2 choose, player 1 can choose 233.
+>
+>Finally, player 1 has more score (234) than player 2 (12), so you need to return True representing player1 can win.
+>
+>Note:
+>1. 1 <= length of the array <= 20.
+>2. Any scores in the given array are non-negative integers and will not exceed 10,000,000.
+>3. If the scores of both players are equal, then player 1 is still the winner.
+
+## 大意：
+>给出一个非负整数数组表示分数。玩家1从数组的第一个或者最后一个分数选择一个，接着玩家2在剩下的分数里继续这样选择，然后又玩家1选择，如此往复。每次由一个玩家选择，选择的数字下一个玩家不能再选。直到所有元素都被选择完。总分数更大的玩家获胜。
+>
+>给出分数数组，预测玩家1是否是赢家。你可以假设每个玩家都尽量扩大他的分数。
+>
+>例1：
+>
+>输入：[1, 5, 2]
+>
+>输出：False
+>
+>解释：一开始，玩家1可以选择1或者2。
+>
+>如果他选择2（或者1），玩家2可以选择1（或者2）和5，然后玩家1可以选剩下的1（或者2）。
+>
+>所以，最后玩家1的分数是 1+2=3，玩家2是5。
+>
+>因此，玩家1永远不会是赢家，你需要返回False。
+>
+>例2：
+>
+>输入：[1, 5, 233, 7]
+>
+>输出：True
+>
+>解释：玩家1首选选择1。玩家2需要选择5或者7。无论玩家2选择什么，玩家1都可以选233。
+>
+>最终，玩家1（234）比玩家2（12）的分数更高，所以你需要返回True代表玩家1赢。
+>
+>注意：
+>1. 1 <= 数组的长度 <= 20。
+>2. 给出的数组中所有数字都是非负整数，而且不会超过10000000。
+>3. 如果两个玩家的分数相同，还是判玩家1胜。
+
+## 思路：
+这个如果要穷举所有可能的选法实在是太多了，而且也不是贪心算法，每次都取当前最大值，因为要考虑极大数的位置，比如例2的233。因此我们只能用递归来做。
+
+假设所有分数的总和为sum，那么最后一定是玩家1选择了一部分，玩家2选择了另一部分，我们只需要玩家1的分数大于等于玩家2就可以了，那么可以想象成，每次玩家1选择一个分数，就是加一个分数，轮到玩家2选择时，就是减去一个分数，判断最后剩下的数字的正负就可以知道玩家1是否赢了。
+
+我们另外创建一个函数，用来递归计算每次的加分数和减分数，最终值的正负就是赢与否，注意题目说分数相等也是玩家1赢，所以最后如果等于0，也是玩家1赢。
+
+## 他山之石（Java）：
+
+```java
+public class Solution {
+    public boolean PredictTheWinner(int[] nums) {
+        return findAns(nums, 0, nums.length-1) >= 0;
+    }
+    
+    public int findAns(int[] nums, int i, int j) {
+        if (i == j) return nums[i];
+        else {
+            int first = nums[i] - findAns(nums, i+1, j);
+            int last = nums[j] - findAns(nums, i, j-1);
+            return Math.max(first, last);
+        }
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="494"/>494. Target Sum
+## 问题：
+>You are given a list of non-negative integers, a1, a2, ..., an, and a target, S. Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.
+>
+>Find out how many ways to assign symbols to make sum of integers equal to target S.
+>
+>Example 1:
+>
+>>Input: nums is [1, 1, 1, 1, 1], S is 3. 
+>>
+>>Output: 5
+>>
+>>Explanation: 
+>>
+>>-1+1+1+1+1 = 3
+>>
+>>+1-1+1+1+1 = 3
+>>
+>>+1+1-1+1+1 = 3
+>>
+>>+1+1+1-1+1 = 3
+>>
+>>+1+1+1+1-1 = 3
+>>
+>>There are 5 ways to assign symbols to make the sum of nums be target 3.
+>
+>Note:
+>1. The length of the given array is positive and will not exceed 20.
+>2. The sum of elements in the given array will not exceed 1000.
+>3. Your output answer is guaranteed to be fitted in a 32-bit integer.
+
+## 大意：
+>给你一个非负整数组成的数组和目标数S。现在你有两个符号 + 和 - 。对每个整数，你要选择 + 和 - 之一作为它的符号。
+>
+>寻找有多少种加符号的方式让这些整数的和为目标数S。
+>
+>例1：
+>
+>>输入：nums 是 [1, 1, 1, 1, 1], S 是 3。
+>>
+>>输出：5
+>>
+>>解释：
+>>
+>>-1+1+1+1+1 = 3
+>>
+>>+1-1+1+1+1 = 3
+>>
+>>+1+1-1+1+1 = 3
+>>
+>>+1+1+1-1+1 = 3
+>>
+>>+1+1+1+1-1 = 3
+>>
+>>有五种加符号的方式让总和等于目标数3。
+>
+>注意：
+>1. 给出的数组长度是证书且不超过20。
+>2. 给出的数组元素总和不超过1000。
+>3. 你输出的答案保证是32位int型的。
+
+## 思路：
+这个问题其实可以分解为两个问题：
+
+1. 计算加上符号后正数或者负数之和应该为多少；
+2. 用数组中的数有多少种方法可以加起来等于上面计算出的和。
+
+对于第一个问题，我们来分析一下。由于只有正负两种符号，最后分配符号后数组中的元素可以分为整数之和与负数之和，他们两个相加等于目标数，即：
+
+sum（正） - sum（负） = target
+
+两边都加上同样的sum（正） + sum（负）：
+
+sum（正） + sum（负） + sum（正） - sum（负） = target + sum（正） + sum（负）
+
+化简得：
+
+2 * sum（正） = target + sum（正） + sum（负） = target + sum（数组总和）
+
+那么我们可以惊讶的得出一个结论，都加上符号后，所有正数的和等于目标数加上数组所有元素之和。通过这个公式我们首先可以简单的判断出找不到结果的情况，也就是数组总和小于目标数或者目标数加上数组所有元素之和除以2不能整除时，都无法找到分配符号的方法。而且最后所有分配了 + 的元素之和一定等于目标数加上数组所有元素之和的一半。
+
+现在我们知道所有正数相加应该等于多少了，剩下的就是第二个问题，使用数组中的元素有多少种方法相加得到这个正数和？
+
+这里我们用一种非常巧妙的记录方式：对于每个元素，我们看看他与正数和只差是多少，这个结果处有没有其余的元素，没有我们就减一看看有没有其他元素，没有继续减一，直到见到0，这时候其实就是它自己了。对下一个元素依然这样判断。我们用一个标记来记录从0到正数和之间每个数当前用别的元素相加后能得到的个数，最后遍历完所有元素后，看看正数和记录了多少种其余元素相加得到的次数，就是我们要的方法数了。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int findTargetSumWays(int[] nums, int s) {
+        int sum = 0;
+        for (int n : nums)
+            sum += n;
+        // 两种情况找不到结果，找得到的话就用subsetSum去找，证书和是(s + sum) >>> 1，也就是除以2
+        return sum < s || (s + sum) % 2 > 0 ? 0 : subsetSum(nums, (s + sum) >>> 1); 
+    }   
+
+    public int subsetSum(int[] nums, int s) {
+        int[] dp = new int[s + 1]; 
+        dp[0] = 1;// 初始记录0的位置为1
+        for (int n : nums)
+            // 对每个元素，看看他现有能和别的元素相加得到哪些位置的数
+            for (int i = s; i >= n; i--)
+                dp[i] += dp[i - n]; 
+        return dp[s];
+    } 
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="144"/>144. Binary Tree Preorder Traversal
+## 问题：
+>Given a binary tree, return the preorder traversal of its nodes' values.
+>
+>For example:
+>
+>Given binary tree {1,#,2,3},
+>
+> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-f393b1a3fe19372e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>return [1,2,3].
+>
+>Note: Recursive solution is trivial, could you do it iteratively?
+
+## 大意：
+>给出一个二叉树，返回节点值的前序遍历。
+>
+>比如：
+>
+>给出二叉树 {1,#,2,3}，
+>
+> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-0297409bd8d93fae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>返回 [1,2,3]。
+>
+>注意：递归实现很简单，你能用循环来做吗？
+
+## 思路：
+前序遍历二叉树，顺序是根节点 -> 左子节点 -> 右子节点。
+
+如题所说，用递归来做很简单，对于每个节点判断其有没有左子节点，有就将其值加入结果，然后递归判断其左子节点。之后再判断一个节点的右子节点。递归着就能全部按顺序获取到。
+
+题目要求用循环做。前序遍历始终保证左子节点在右子节点之前，所以这是一个DFS，我们利用栈来做。
+
+我们先将根节点入栈（注意判断有无根节点），只要栈不空，我们就一直循环。判断当前栈顶元素有无左子节点，有的话我们将其值加到结果List中，然后将左子节点入栈，别急，这之前还有一个操作，为了避免死循环，我们发现有左子节点，并且取到了左子节点的值后，原来的根节点就不需要了，否则每次判断到这个根节点就又进入其左子节点，重复操作了，因此我们在这里将这个根节点的值和它右子节点的指针赋给一个新节点，将原来的根节点出栈不要了，将新节点入栈，然后再入栈得到的左子节点，因为我们之后只会用到这个根节点的右子节点。
+
+如果没有左子节点（本来就没有，或者是已经操作过了），那么就判断有无右子节点，有的话就取其值加到结果List中，然后这个根节点就可以不要了，直接出栈，将右子节点入栈。
+
+如果两个子节点都没有，那就直接出栈吧。
+
+注意我们对于每个节点的值，都是一开始碰到了就加到结果List中去，而不是等处理完了它所有子节点后再加，这是为了保证前序遍历的顺序。
+
+## 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        if (root == null) return new LinkedList<Integer>();
+        List<Integer> res = new LinkedList<Integer>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.push(root);
+        res.add(root.val);
+        while (!stack.isEmpty()) {
+            if (stack.peek().left != null) {
+                res.add(stack.peek().left.val);
+                TreeNode temp = new TreeNode(stack.peek().val);
+                temp.right = stack.peek().right;
+                TreeNode left = stack.pop().left;
+                stack.push(temp);
+                stack.push(left);
+            } else if (stack.peek().right != null) {
+                res.add(stack.peek().right.val);
+                TreeNode temp = stack.pop();
+                stack.push(temp.right);
+            } else {
+                stack.pop();
             }
         }
         return res;
