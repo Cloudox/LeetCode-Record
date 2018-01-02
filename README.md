@@ -120,6 +120,7 @@ LeetCode笔记
   * [539. Minimum Time Difference](#539)
   * [486. Predict the Winner](#486)
   * [494. Target Sum](#494)
+  * [144. Binary Tree Preorder Traversal](#144)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9442,6 +9443,92 @@ public class Solution {
                 dp[i] += dp[i - n]; 
         return dp[s];
     } 
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="144"/>144. Binary Tree Preorder Traversal
+## 问题：
+>Given a binary tree, return the preorder traversal of its nodes' values.
+>
+>For example:
+>
+>Given binary tree {1,#,2,3},
+>
+> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-f393b1a3fe19372e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>return [1,2,3].
+>
+>Note: Recursive solution is trivial, could you do it iteratively?
+
+## 大意：
+>给出一个二叉树，返回节点值的前序遍历。
+>
+>比如：
+>
+>给出二叉树 {1,#,2,3}，
+>
+> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-0297409bd8d93fae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>返回 [1,2,3]。
+>
+>注意：递归实现很简单，你能用循环来做吗？
+
+## 思路：
+前序遍历二叉树，顺序是根节点 -> 左子节点 -> 右子节点。
+
+如题所说，用递归来做很简单，对于每个节点判断其有没有左子节点，有就将其值加入结果，然后递归判断其左子节点。之后再判断一个节点的右子节点。递归着就能全部按顺序获取到。
+
+题目要求用循环做。前序遍历始终保证左子节点在右子节点之前，所以这是一个DFS，我们利用栈来做。
+
+我们先将根节点入栈（注意判断有无根节点），只要栈不空，我们就一直循环。判断当前栈顶元素有无左子节点，有的话我们将其值加到结果List中，然后将左子节点入栈，别急，这之前还有一个操作，为了避免死循环，我们发现有左子节点，并且取到了左子节点的值后，原来的根节点就不需要了，否则每次判断到这个根节点就又进入其左子节点，重复操作了，因此我们在这里将这个根节点的值和它右子节点的指针赋给一个新节点，将原来的根节点出栈不要了，将新节点入栈，然后再入栈得到的左子节点，因为我们之后只会用到这个根节点的右子节点。
+
+如果没有左子节点（本来就没有，或者是已经操作过了），那么就判断有无右子节点，有的话就取其值加到结果List中，然后这个根节点就可以不要了，直接出栈，将右子节点入栈。
+
+如果两个子节点都没有，那就直接出栈吧。
+
+注意我们对于每个节点的值，都是一开始碰到了就加到结果List中去，而不是等处理完了它所有子节点后再加，这是为了保证前序遍历的顺序。
+
+## 代码（Java）：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        if (root == null) return new LinkedList<Integer>();
+        List<Integer> res = new LinkedList<Integer>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.push(root);
+        res.add(root.val);
+        while (!stack.isEmpty()) {
+            if (stack.peek().left != null) {
+                res.add(stack.peek().left.val);
+                TreeNode temp = new TreeNode(stack.peek().val);
+                temp.right = stack.peek().right;
+                TreeNode left = stack.pop().left;
+                stack.push(temp);
+                stack.push(left);
+            } else if (stack.peek().right != null) {
+                res.add(stack.peek().right.val);
+                TreeNode temp = stack.pop();
+                stack.push(temp.right);
+            } else {
+                stack.pop();
+            }
+        }
+        return res;
+    }
 }
 ```
 
