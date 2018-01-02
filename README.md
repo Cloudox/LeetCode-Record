@@ -9458,7 +9458,7 @@ public class Solution {
 >
 >Given binary tree {1,#,2,3},
 >
-> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-f393b1a3fe19372e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/144Image.png)
 >
 >return [1,2,3].
 >
@@ -9471,7 +9471,7 @@ public class Solution {
 >
 >给出二叉树 {1,#,2,3}，
 >
-> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-0297409bd8d93fae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/144Image.png)
 >
 >返回 [1,2,3]。
 >
