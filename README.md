@@ -9545,7 +9545,7 @@ public class Solution {
 >
 >Example:
 >
-> ![](http://upload-images.jianshu.io/upload_images/9075967-d9d58f5e739a0060.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/378Image.png)
 >
 >k = 8,
 >
@@ -9562,7 +9562,7 @@ public class Solution {
 >
 >例：
 >
-> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-346a5a2e07effb3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> ![image.png](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/378Image.png)
 >
 >k = 8,
 >
