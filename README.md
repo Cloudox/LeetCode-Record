@@ -121,6 +121,7 @@ LeetCode笔记
   * [486. Predict the Winner](#486)
   * [494. Target Sum](#494)
   * [144. Binary Tree Preorder Traversal](#144)
+  * [378. Kth Smallest Element in a Sorted Matrix](#378)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9458,7 +9459,7 @@ public class Solution {
 >
 >Given binary tree {1,#,2,3},
 >
-> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-f393b1a3fe19372e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/144Image.png)
 >
 >return [1,2,3].
 >
@@ -9471,7 +9472,7 @@ public class Solution {
 >
 >给出二叉树 {1,#,2,3}，
 >
-> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-0297409bd8d93fae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/144Image.png)
 >
 >返回 [1,2,3]。
 >
@@ -9528,6 +9529,79 @@ public class Solution {
             }
         }
         return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="378"/>378. Kth Smallest Element in a Sorted Matrix
+## 问题：
+>Given a n x n matrix where each of the rows and columns are sorted in ascending order, find the kth smallest element in the matrix.
+>
+>Note that it is the kth smallest element in the sorted order, not the kth distinct element.
+>
+>Example:
+>
+> ![](http://upload-images.jianshu.io/upload_images/9075967-d9d58f5e739a0060.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>k = 8,
+>
+>return 13.
+>
+>Note: 
+>
+>You may assume k is always valid, 1 ≤ k ≤ n2.
+
+## 大意：
+>给出一个 n * n的矩阵，每一行每一列都是升序的，找到矩阵中第 k 小的元素。
+>
+>注意是整个顺序第 k 小的数，不是第 k 个元素。
+>
+>例：
+>
+> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-346a5a2e07effb3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>k = 8,
+>
+>返回 13。
+>
+>注意：
+>
+>你可以假设 k 始终有效，1 ≤ k ≤ n2。
+
+## 思路：
+题目给出的矩阵只是每一行和每一列是升序的，但是一个元素的下一个行元素和下一个列元素之间的大小是不定的。
+
+我们要找第 k 小的元素，那么用一个 k 遍的循环来从小开始找。
+
+我们用一个数组来记录每行现在前多少个元素已经记录过了，当前要找的时候从这一行第几个元素开始找，不过要注意如果这一行都找完了就不找了。
+
+每次找当前最小值的时候都从这一行的当前该找的位置开始，这个位置可能每一行都是不同的，找到最小的记录下来，就是这一轮找到最小的数。一直到第 k 轮找到的最小的数就是我们要的结果。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        if (matrix.length == 0 || matrix[0].length == 0) return 0;
+        int[] index = new int[matrix.length];
+        int pos = 0;
+        int small = matrix[matrix.length-1][matrix[0].length-1];;
+        for (; k > 0; k--) {
+            small = matrix[matrix.length-1][matrix[0].length-1];
+            for (int i = 0; i < matrix.length; i++) {
+                if (index[i] >= matrix[i].length) continue;
+                if (matrix[i][index[i]] <= small) {
+                    small = matrix[i][index[i]];
+                    pos = i;
+                }
+            }
+            index[pos]++;
+        }
+        return small;
     }
 }
 ```
