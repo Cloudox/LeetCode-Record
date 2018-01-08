@@ -122,6 +122,7 @@ LeetCode笔记
   * [494. Target Sum](#494)
   * [144. Binary Tree Preorder Traversal](#144)
   * [378. Kth Smallest Element in a Sorted Matrix](#378)
+  * [216. Combination Sum III](#216)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9602,6 +9603,93 @@ public class Solution {
             index[pos]++;
         }
         return small;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="216"/>216. Combination Sum III
+## 问题：
+>Find all possible combinations of k numbers that add up to a number n, given that only numbers from 1 to 9 can be used and each combination should be a unique set of numbers.
+>
+>Example 1:
+>
+>Input: k = 3, n = 7
+>
+>Output:
+>
+>>[[1,2,4]]
+>
+>Example 2:
+>
+>Input: k = 3, n = 9
+>
+>Output:
+>
+>>[[1,2,6], [1,3,5], [2,3,4]]
+
+## 大意：
+>找到所有可能的k个数字相加得到n的组合，只有1到9这些数字可以用，并且组合中的每个数字必须都只使用一次。
+>
+>例1：
+>
+>输入：k = 3，n = 7
+>
+>输出：
+>
+>>[[1,2,4]]
+>
+>例2：
+>
+>输入：k = 3，n = 9
+>
+>输出：
+>
+>>[[1,2,6], [1,3,5], [2,3,4]]
+
+## 思路：
+题目有几个要求，数字个数必须为k，只能用1到9这些数字，每个组合里数字不能重复，数字相加为n。
+
+因为可能性有很多，我们用递归来做。
+
+因为只能用1到9的数字，我们就从1到9分别遍历，依次以某个数字开始，往后找进行加数字，每递归一次，后面还有多少个数字就有多少种组合的方法，所以其实组合的方法有9*8*7*6....每次递归我们判断成功的条件是目前加起来的和正好等于目的数字n，且组合中的数字个数正好为k。如果我们用到的数字超过9了或者个数超过k了，就不要继续递归了。注意每次递归时因为要循环使用参数，所以我们每次都要创建新的变量来进行操作，避免影响参数本身的值。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        
+        for (int i = 1; i <= 9; i++) {
+            int sum = i;
+            List<Integer> list = new ArrayList<Integer>();
+            list.add(i);
+            find(k-1, n, list, sum, i+1, res);
+        }
+        
+        return res;
+    }
+    
+    public void find(int k, int n, List<Integer> list, int sum, int start, List<List<Integer>> res) {
+        if (sum == n && k == 0) {
+            res.add(list);
+        } else if (sum < n) {
+            if (k <= 0 || start > 9) return;
+            else {
+                for (int i = start; i <= 9; i++) {
+                    int newSum = sum;
+                    newSum += i;
+                    List<Integer> newList = new ArrayList<Integer>();
+                    newList.addAll(list);
+                    newList.add(i);
+                    find(k-1, n, newList, newSum, i+1, res);
+                }
+            }
+        }
     }
 }
 ```
