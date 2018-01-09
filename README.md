@@ -123,6 +123,7 @@ LeetCode笔记
   * [144. Binary Tree Preorder Traversal](#144)
   * [378. Kth Smallest Element in a Sorted Matrix](#378)
   * [216. Combination Sum III](#216)
+  * [423. Reconstruct Original Digits from English](#423)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9690,6 +9691,164 @@ public class Solution {
                 }
             }
         }
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="423"/>423. Reconstruct Original Digits from English
+## 问题：
+>Given a non-empty string containing an out-of-order English representation of digits 0-9, output the digits in ascending order.
+>
+>Note:
+>
+>1、Input contains only lowercase English letters.
+>2、Input is guaranteed to be valid and can be transformed to its original digits. That means invalid inputs such as "abc" or "zerone" are not permitted.
+>3、Input length is less than 50,000.
+>
+>Example 1:
+>
+>Input: "owoztneoer"
+>
+>Output: "012"
+>
+>Example 2:
+>
+>Input: "fviefuro"
+>
+>Output: "45"
+
+## 大意：
+>给出一个非空字符串，由数字0~9的英文单词的乱序组成，以升序的方式输出所有的数字。
+>
+>注意：
+>1、输入只包含小写英文字母。
+>2、输入保证是有效的而且可以被转换成原始数字。也就是说无效的输入比如“abc”或者“zerone”是不允许的。
+>3、输入长度小于5000。
+>
+>例1：
+>
+>输入：“owoztneoer”
+>
+>输出：“012”
+>
+>例2：
+>
+>输入：“fviefuro”
+>
+>输出：“45”
+
+## 思路：
+题目的意思是会将多个数字的英文单词的字母打乱放置。
+
+首先我们看看0~9数字对应的单词：“zero”、“one”、“two”、“three”、“four”、“five”、“six”、“seven”、“eight”、“nine”。
+
+在这些单词中，我们先找到唯一存在的字母，这样就可以根据这些字母直接推断出存在该数字的英文单词。唯一存在的字母有：0的‘z’、2的‘w’、4的‘u’、6的‘x’、8的‘g’，如果我们的字符串中有这些字母，那一定有这些数字，从而可以将相应的单词中的字母全部清除一遍。
+
+上面唯一的全部找完之后，剩下1、3、5、7、9，这些本身没有唯一的字母，但是当上一批清除干净后，就又存在一些唯一的字母了：1的‘o’、3的‘t’、5的‘f’。从而又可以根据这些目前唯一的字母清除一批数字的所有字母。
+
+这时，剩下的7、9之间也有一些唯一的字母了，如7的‘s’、9的‘n’。从而也可以找出他们来。
+
+要注意的是，每个数字并不是只会出现一次，而由于我们后面的数字的寻找需要将前面唯一的数字清楚干净，所以我们一个是要按照顺序来清，另一个是要循环将一个数字全部清干净了再清下一个。
+
+在实现过程中我第一个做法是直接对字符串进行操作，截取字符串来清除字母，但这个做法其实会很慢，即使用了StringBuffer也很慢，对于大量数据来说时就超时了。要注意题目说了所有字母都是小写字母，我们其实可以用一个26位数字来记录每个字母出现了几次，在清楚字母时直接将对应位置的值减一就可以了，这样对数组的操作会快很多。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public String originalDigits(String s) {
+        int[] num = new int[10];
+        int[] totalChar = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            totalChar[s.charAt(i) - 'a']++;
+        }
+        
+        while (totalChar['z'-'a'] > 0) {
+            num[0]++;
+            totalChar['z'-'a']--;
+            totalChar['e'-'a']--;
+            totalChar['r'-'a']--;
+            totalChar['o'-'a']--;
+        }
+        while (totalChar['w'-'a'] > 0) {
+            num[2]++;
+            totalChar['t'-'a']--;
+            totalChar['w'-'a']--;
+            totalChar['o'-'a']--;
+        }
+        while (totalChar['u'-'a'] > 0) {
+            num[4]++;
+            totalChar['f'-'a']--;
+            totalChar['o'-'a']--;
+            totalChar['u'-'a']--;
+            totalChar['r'-'a']--;
+        }
+        while (totalChar['x'-'a'] > 0) {
+            num[6]++;
+            totalChar['s'-'a']--;
+            totalChar['i'-'a']--;
+            totalChar['x'-'a']--;
+        }
+        while (totalChar['g'-'a'] > 0) {
+            num[8]++;
+            totalChar['e'-'a']--;
+            totalChar['i'-'a']--;
+            totalChar['g'-'a']--;
+            totalChar['h'-'a']--;
+            totalChar['t'-'a']--;
+        }
+        while (totalChar['o'-'a'] > 0) {
+            num[1]++;
+            totalChar['o'-'a']--;
+            totalChar['n'-'a']--;
+            totalChar['e'-'a']--;
+        }
+        while (totalChar['t'-'a'] > 0) {
+            num[3]++;
+            totalChar['t'-'a']--;
+            totalChar['h'-'a']--;
+            totalChar['r'-'a']--;
+            totalChar['e'-'a']--;
+            totalChar['e'-'a']--;
+        }
+        while (totalChar['f'-'a'] > 0) {
+            num[5]++;
+            totalChar['f'-'a']--;
+            totalChar['i'-'a']--;
+            totalChar['v'-'a']--;
+            totalChar['e'-'a']--;
+        }
+        while (totalChar['s'-'a'] > 0) {
+            num[7]++;
+            totalChar['s'-'a']--;
+            totalChar['e'-'a']--;
+            totalChar['v'-'a']--;
+            totalChar['e'-'a']--;
+            totalChar['n'-'a']--;
+        }
+        while (totalChar['n'-'a'] > 0) {
+            num[9]++;
+            totalChar['n'-'a']--;
+            totalChar['i'-'a']--;
+            totalChar['n'-'a']--;
+            totalChar['e'-'a']--;
+        }
+        
+        String res = "";
+        StringBuffer sb = new StringBuffer(res);
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] > 0) {
+                for (int j = 0; j < num[i]; j++)
+                    sb.append(String.valueOf(i));
+            }
+        }
+        res = sb.toString();
+        
+        return res;
     }
 }
 ```
