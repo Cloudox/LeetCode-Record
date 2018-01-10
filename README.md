@@ -124,6 +124,7 @@ LeetCode笔记
   * [378. Kth Smallest Element in a Sorted Matrix](#378)
   * [216. Combination Sum III](#216)
   * [423. Reconstruct Original Digits from English](#423)
+  * [328. Odd Even Linked List](#328)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9849,6 +9850,83 @@ public class Solution {
         res = sb.toString();
         
         return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="328"/>328. Odd Even Linked List
+## 问题
+>Given a singly linked list, group all odd nodes together followed by the even nodes. Please note here we are talking about the node number and not the value in the nodes.
+>
+>You should try to do it in place. The program should run in O(1) space complexity and O(nodes) time complexity.
+>
+>Example:
+>
+>Given 1->2->3->4->5->NULL,
+>
+>return 1->3->5->2->4->NULL.
+>
+>Note:
+> 1. The relative order inside both the even and odd groups should remain as it was in the input. 
+> 2. The first node is considered odd, the second node even and so on ...
+
+## 大意：
+>给出一个简单链表，集合所有奇数位置的节点，后面跟着所有偶数位置的节点。请注意这里我们说的是节点的位置而不是节点值。
+>
+>你应该尝试在固定空间做。程序应该在O（1）的空间复杂度和O（nodes）的时间复杂度下运行。
+>
+>例子：
+>
+>给出 1->2->3->4->5->NULL，
+>
+>返回 1->3->5->2->4->NULL。
+>
+>注意：
+> 1. 偶数和奇数组中节点的相对位置要保持不变。
+> 2. 第一个节点被认为是奇数，第二个是偶数，如此往复。
+
+## 思路：
+题目的要求根据例子就可以明白，奇数和偶数位置的节点分成两段来排列，关键是要在O（1）的空间复杂度下做，否则直接用一个新链表就可以简单完成。
+
+O（1）的空间下也好做，我们用两个头结点，一个为奇数的头结点，一个为偶数的头结点，然后遍历链表，奇数位置的节点就记录在奇数头结点后面，偶数位置的节点就记录在偶数头结点后面，两者是交替记录的，因为我们用的还是原来的节点，只是next指针指向的节点变了，所以并没有增加空间。遍历完后我们得到了奇偶两条链表，将偶链表的头结点接到奇链表的最尾端就可以了。
+
+要注意一些节点为Null的处理。
+
+## 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        
+        ListNode even = head.next;
+        ListNode evenNext = even;
+        ListNode oddNext = head;
+        while (evenNext != null) {
+            oddNext.next = evenNext.next;
+            
+            if (oddNext.next != null) {
+                oddNext = oddNext.next;
+                evenNext.next = oddNext.next;
+                evenNext = evenNext.next;
+            } else {
+                break;
+            }
+        }
+        oddNext.next = even;
+        return head;
     }
 }
 ```
