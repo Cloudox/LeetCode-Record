@@ -125,6 +125,7 @@ LeetCode笔记
   * [216. Combination Sum III](#216)
   * [423. Reconstruct Original Digits from English](#423)
   * [328. Odd Even Linked List](#328)
+  * [319. Bulb Switcher](#319)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9927,6 +9928,69 @@ public class Solution {
         }
         oddNext.next = even;
         return head;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="319"/>319. Bulb Switcher
+## 问题：
+>There are n bulbs that are initially off. You first turn on all the bulbs. Then, you turn off every second bulb. On the third round, you toggle every third bulb (turning on if it's off or turning off if it's on). For the ith round, you toggle every i bulb. For the nth round, you only toggle the last bulb. Find how many bulbs are on after n rounds.
+>
+>Example:
+>
+>Given n = 3. 
+>
+>At first, the three bulbs are [off, off, off].
+>
+>After first round, the three bulbs are [on, on, on].
+>
+>After second round, the three bulbs are [on, off, on].
+>
+>After third round, the three bulbs are [on, off, off]. 
+>
+>So you should return 1, because there is only one bulb is on.
+
+## 大意：
+>有n个灯泡初始是关着的。你首先把所有灯泡打开。然后每数到两个灯泡时关闭它。第三轮，将每数到第三个灯泡时改变它的状态（如果它是关着的就打开，如果是打开的就关闭）。第i轮，都将每数到第i个灯泡时切换状态。第n轮，你只用切换最后一个灯泡的状态。判断n轮后有多少灯泡开着。
+>
+>例：
+>
+>给出 n = 3。
+>
+>首先，三个灯泡是 [关，关，关]。
+>
+>第一轮后，三个灯泡是 [开，开，开]。
+>
+>第二轮后，三个灯泡是 [开，关，开]。
+>
+>第三轮后，三个灯泡是 [开，关，关]。
+>
+>所以你应该返回 1，因为只有一个灯泡是开着的。
+
+## 思路：
+这个问题如果要用暴力方法去一轮轮遍历地做也能做，但是当遇到大数的时候会超时。
+
+所以我们要找找规律。
+
+其实第一轮的全开就是每数到一个灯泡时就转换状态。也就是说，对于每个灯泡而言，第i轮，只要i是它的约数，都会让它转换一次状态。初始状态是关，所以要想最后状态是开，那么就需要转换奇数次状态。
+
+一个数的约数一般都是成对出现的，比如1和它本身，如果约数都是成对出现的，最后的转换次数就是偶数，一定是关着的状态。所以只有那些平方数，额外拥有一次单次的转换次数，比如4是2*2,9是3*3，这些数字在遇到2、3的时候都会额外单独转换一次，那最后就一定是关着的，所以我们的目的变成了找1到n中平方数的个数。
+
+我们对n开平方根，会得到小于n的最大的一个平方数的平方根R，而1是最小的一个平方数，其实1~R之间的每个数，平方后都是小于n的，也就是说他们平方后的数都正好是最后状态为开着的灯泡序号。所以1~R之间有多少个数，就表示最后又多少个灯泡是开着的！
+
+所以问题变得很简单，对n开平方根取整就行了！
+
+## 代码：
+
+```java
+public class Solution {
+    public int bulbSwitch(int n) {
+        return (int)Math.sqrt(n);
     }
 }
 ```
