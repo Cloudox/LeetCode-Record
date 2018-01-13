@@ -127,6 +127,7 @@ LeetCode笔记
   * [328. Odd Even Linked List](#328)
   * [319. Bulb Switcher](#319)
   * [46. Permutations](#46)
+  * [424. Longest Repeating Character Replacement](#424)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10086,6 +10087,131 @@ public class Solution {
                 doPermute(nums, resList, newList, newUsed);
             }
         }
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="424"/>424. Longest Repeating Character Replacement
+## 问题：
+>Given a string that consists of only uppercase English letters, you can replace any letter in the string with another letter at most k times. Find the length of a longest substring containing all repeating letters you can get after performing the above operations.
+>
+>Note:
+>
+>Both the string's length and k will not exceed 104.
+>
+>Example 1:
+>
+>Input:
+>
+>s = "ABAB", k = 2
+>
+>Output:
+>
+>4
+>
+>Explanation:
+>
+>Replace the two 'A's with two 'B's or vice versa.
+>
+>Example 2:
+>
+>Input:
+>
+>s = "AABABBA", k = 1
+>
+>Output:
+>
+>4
+>
+>Explanation:
+>
+>Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+>
+>The substring "BBBB" has the longest repeating letters, which is 4.
+
+## 大意：
+>给出一个只由大写字母组成的字符串，你最多可以替换其中的字母k次。寻找执行替换操作后最长的相同字母的长度。
+>
+>注意：
+>
+>所有字符串的长度和k都不会超过10的4次方。
+>
+>例1：
+>
+>输入：
+>
+>s = "ABAB", k = 2
+>
+>输出：
+>
+>4
+>
+>解释：
+>
+>用两个B替换两个A或者反过来。
+>
+>例2：
+>
+>输入：
+>
+>s = "AABABBA", k = 1
+>
+>输出：
+>
+>4
+>
+>解释：
+>
+>用B替换中间的一个A得到“AABBBBA”。
+>
+>子字符串“BBBB”有最长的重复字母的长度4。
+
+## 思路：
+题目的意思比较清楚，不过可能的情况有很多，不可能用代码去寻找最佳的替换位置，所以这里采用一种滑动窗口的方法。
+
+定义start和end两个标记，中间的内容即是窗口，计算窗口内所有字母出现的次数，因为全是大写字母，所以可以用一个26位的数组来记录窗口内每个字母出现的次数。
+
+找到窗口内出现最多的次数，加上允许替换的字母数k，看是否超过窗口宽度，如果超过了，说明窗口还可以更长， 也就是说窗口内重复的字母的长度可以更长，就将end右移一位，形成新的窗口，然后继续重复上面的步骤。如果没超过，说明能构成的最长的重复字母长度已经到顶了，这时应该将start右移一位，来寻找新的可能的更长重复字母长度。
+
+每次计算重复字母长度时，当出现更长的可能时，都更新最终的结果。
+
+为了减少时间复杂度，我们不去每次都遍历窗口来计算出现的字母次数，而是在移动end或者start时，将对应位置的字母的次数加一或者减一。
+
+要注意各种边界条件是什么。
+
+## 代码：
+
+```java
+public class Solution {
+    public int characterReplacement(String s, int k) {
+        if (s.length() < 1) return 0;
+        
+        int start = 0;
+        int end = 0;
+        int res = 0;
+        int[] charNum = new int[26];
+        charNum[s.charAt(0) - 'A']++;
+        while (s.length() > end) {
+            int maxChar = 0;
+            for (int i = 0; i < 26; i++) {
+                if (charNum[i] > maxChar) maxChar = charNum[i];
+            }
+            
+            if (maxChar + k > end - start) {
+                end++;
+                if (end < s.length()) charNum[s.charAt(end) - 'A']++;
+            } else {
+                charNum[s.charAt(start) - 'A']--;
+                start++;
+            }
+            
+            if (maxChar + k > res) res = maxChar + k <= s.length() ? maxChar + k : s.length();
+        }
+        return res;
     }
 }
 ```
