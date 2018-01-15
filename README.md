@@ -128,6 +128,7 @@ LeetCode笔记
   * [319. Bulb Switcher](#319)
   * [46. Permutations](#46)
   * [424. Longest Repeating Character Replacement](#424)
+  * [394. Decode String](#394)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10212,6 +10213,94 @@ public class Solution {
             if (maxChar + k > res) res = maxChar + k <= s.length() ? maxChar + k : s.length();
         }
         return res;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="394"/>394. Decode String
+## 问题：
+>Given an encoded string, return it's decoded string.
+>
+>The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+>
+>You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.
+>
+>Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won't be input like 3a or 2[4].
+>
+>Examples:
+>
+>s = "3[a]2[bc]", return "aaabcbc".
+>
+>s = "3[a2[c]]", return "accaccacc".
+>
+>s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+
+## 大意：
+>给出一个编码了的字符串，返回它的解码字符串。
+>
+>编码规则是：k[编码字符串]，方括号里的编码字符串会重复k次。注意k保证是一个正整数。
+>
+>你可以假设输入的字符串都是有效的；没有额外的空格，方括号是能够匹配的，等等。
+>
+>此外，你可以假设原始数据不包含任何数字，数字只用来表示重复次数k。比如，不会有 3a 或者 2[4] 这样的输入。
+>
+>例子：
+>
+>s = "3[a]2[bc]", return "aaabcbc".
+>
+>s = "3[a2[c]]", return "accaccacc".
+>
+>s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+
+## 思路：
+这个思路比较直，遍历字符串，遇到数字后，记录下数字，获取方括号内的字符串，重复k次添加到结果字符串中。
+
+需要注意的有两个地方，一个是方括号中可能嵌套重复的内容，所以一是要准确找到左括号对应的右括号是哪个，我们用一个变量来记录遇到的左括号和右括号数量就可以了，二是要用递归来操作内容的重复，因为里面还可能包含着重复的内容需要解码。另一个要注意的是数字不一定是一位数，还可能是多位数，因此当遇到数字后，要看看后面是不是还是数字，是的话要记录下来换算成真正的重复次数。
+
+```java
+public class Solution {
+    public String decodeString(String s) {
+        return decodeSub(s, 1);
+    }
+    
+    public String decodeSub(String sub, int count) {
+        String trueStr = "";
+        for (int i = 0; i < sub.length(); i++) {
+            if (sub.charAt(i) - '1' >= 0 && sub.charAt(i) - '9' <= 0) {
+                int subCount = sub.charAt(i) - '0';
+                while (sub.charAt(i+1) - '0' >= 0 && sub.charAt(i+1) - '9' <= 0) {
+                    i++;
+                    subCount = subCount * 10 + sub.charAt(i) - '0';
+                }
+                
+                int start = i+2;
+                int num = 1;
+                String subsub = "";
+                for (i = i+2; i < sub.length(); i++) {
+                    if (sub.charAt(i) - '[' == 0) num++;
+                    else if (sub.charAt(i) - ']' == 0) num--;
+                    
+                    if (num == 0) {
+                        subsub = sub.substring(start, i);
+                        break;
+                    }
+                }
+                trueStr = trueStr + decodeSub(subsub, subCount);
+                
+            } else {
+                trueStr = trueStr + sub.substring(i, i+1);
+            }
+        }
+        String decodeRes = "";
+        for (int i = 0; i < count; i++) {
+            decodeRes = decodeRes + trueStr;
+        }
+        return decodeRes;
     }
 }
 ```
