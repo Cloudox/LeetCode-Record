@@ -129,6 +129,7 @@ LeetCode笔记
   * [46. Permutations](#46)
   * [424. Longest Repeating Character Replacement](#424)
   * [394. Decode String](#394)
+  * [524. Longest Word in Dictionary through Deleting](#524)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10301,6 +10302,107 @@ public class Solution {
             decodeRes = decodeRes + trueStr;
         }
         return decodeRes;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="524"/>524. Longest Word in Dictionary through Deleting
+## 问题：
+>Given a string and a string dictionary, find the longest string in the dictionary that can be formed by deleting some characters of the given string. If there are more than one possible results, return the longest word with the smallest lexicographical order. If there is no possible result, return the empty string.
+>
+>Example 1:
+>
+>Input:
+>
+>s = "abpcplea", d = ["ale","apple","monkey","plea"]
+>
+>Output: 
+>
+>"apple"
+>
+>Example 2:
+>
+>Input:
+>
+>s = "abpcplea", d = ["a","b","c"]
+>
+>Output: 
+>
+>"a"
+>
+>Note:
+>1. All the strings in the input will only contain lower-case letters.
+>2. The size of the dictionary won't exceed 1,000.
+>3. The length of all the strings in the input won't exceed 1,000.
+
+## 大意：
+>给出一个字符串和字符串字典，找到字典中能够通过删除目标字符串一些字符来匹配到的最长的字符串。如果有多个结果，返回最长字符串中词典顺序最小的一个。如果没有结果，返回空字符串。
+>
+>例1：
+>
+>输入：
+>
+>s = "abpcplea", d = ["ale","apple","monkey","plea"]
+>
+>输出：
+>
+>"apple"
+>
+>例2：
+>
+>输入：
+>
+>>s = "abpcplea", d = ["a","b","c"]
+>
+>输出：
+>
+>"a"
+>
+>注意：
+>1. 所有输入的字符串都只包含小写字母
+>2. 字典的大小不会超过1000。
+>3. 所有输入的字符串的长度不会超过1000。
+
+## 思路：
+遍历字典中的字符串，对每个字符串的每个字符按照顺序在目标字符串中找位置，为了保持顺序，每次找下一个字符的位置时都要从上一个找到的位置之后开始找，一旦某个字符找不到，就说明不匹配。
+
+如果一个字符串能够匹配到，那么就看他的长度是多少，根据长度来更新记录的结果，如果长度一致，那就要根据两个字符串中的字符顺序来判断留哪个了。
+
+## 代码：
+
+```java
+public class Solution {
+    public String findLongestWord(String s, List<String> d) {
+        String res = "";
+        int longest = 0;
+        for (int i = 0; i < d.size(); i++) {
+            String temp = d.get(i);
+            int last = 0;
+            boolean match = true;
+            for (int j = 0; j < temp.length(); j++) {
+                int index = s.indexOf(temp.substring(j, j+1), last) + 1;
+                if (index == 0) match = false;
+                else last = index;
+            }
+            if (match && temp.length() > longest) {
+                longest = temp.length();
+                res = temp;
+            } else if (match && temp.length() == longest) {
+                for (int j = 0; j < temp.length(); j++) {
+                    if (temp.charAt(j) - res.charAt(j) < 0) {
+                        res = temp;
+                        break;
+                    } else if (temp.charAt(j) - res.charAt(j) > 0) {
+                        break;
+                    }
+                }
+            }
+        }
+        return res;
     }
 }
 ```
