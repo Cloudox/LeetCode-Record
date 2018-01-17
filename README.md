@@ -130,6 +130,7 @@ LeetCode笔记
   * [424. Longest Repeating Character Replacement](#424)
   * [394. Decode String](#394)
   * [524. Longest Word in Dictionary through Deleting](#524)
+  * [137. Single Number II](#137)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10403,6 +10404,51 @@ public class Solution {
             }
         }
         return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="137"/>137. Single Number II
+## 问题：
+>Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one.
+>
+>Note:
+>
+>Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+## 大意：
+>给出整数数组，每个元素都出现三次，只有一个元素只出现一次，找到它。
+>
+>注意：
+>
+>你的算法应该是线性时间复杂度。能不用额外的空间来做吗？
+
+## 思路：
+用哈希表也可以做到线性时间复杂度，但是用了额外空间。
+
+这里我们参考这个思路来做：[传送门：算法题总结之找到数组中出现次数唯一不同的数字](http://www.jianshu.com/p/684dd52a2d78)
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int singleNumber(int[] nums) {
+        int x1 = 0;
+        int x2 = 0;
+        int mask = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            x2 ^= x1 & num;
+            x1 ^= num;
+            mask = ~(x1 & x2);
+            x2 = x2 & mask;
+            x1 = x1 & mask;
+        }
+        return x1;
     }
 }
 ```
