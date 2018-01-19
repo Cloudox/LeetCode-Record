@@ -122,6 +122,17 @@ LeetCode笔记
   * [494. Target Sum](#494)
   * [144. Binary Tree Preorder Traversal](#144)
   * [378. Kth Smallest Element in a Sorted Matrix](#378)
+  * [216. Combination Sum III](#216)
+  * [423. Reconstruct Original Digits from English](#423)
+  * [328. Odd Even Linked List](#328)
+  * [319. Bulb Switcher](#319)
+  * [46. Permutations](#46)
+  * [424. Longest Repeating Character Replacement](#424)
+  * [394. Decode String](#394)
+  * [524. Longest Word in Dictionary through Deleting](#524)
+  * [137. Single Number II](#137)
+  * [386. Lexicographical Numbers](#386)
+  * [96. Unique Binary Search Trees](#96)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -9545,7 +9556,7 @@ public class Solution {
 >
 >Example:
 >
-> ![](http://upload-images.jianshu.io/upload_images/9075967-d9d58f5e739a0060.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> ![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/378Image.png)
 >
 >k = 8,
 >
@@ -9562,7 +9573,7 @@ public class Solution {
 >
 >例：
 >
-> ![image.png](http://upload-images.jianshu.io/upload_images/9075967-346a5a2e07effb3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+> ![image.png](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/378Image.png)
 >
 >k = 8,
 >
@@ -9602,6 +9613,964 @@ public class Solution {
             index[pos]++;
         }
         return small;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="216"/>216. Combination Sum III
+## 问题：
+>Find all possible combinations of k numbers that add up to a number n, given that only numbers from 1 to 9 can be used and each combination should be a unique set of numbers.
+>
+>Example 1:
+>
+>Input: k = 3, n = 7
+>
+>Output:
+>
+>>[[1,2,4]]
+>
+>Example 2:
+>
+>Input: k = 3, n = 9
+>
+>Output:
+>
+>>[[1,2,6], [1,3,5], [2,3,4]]
+
+## 大意：
+>找到所有可能的k个数字相加得到n的组合，只有1到9这些数字可以用，并且组合中的每个数字必须都只使用一次。
+>
+>例1：
+>
+>输入：k = 3，n = 7
+>
+>输出：
+>
+>>[[1,2,4]]
+>
+>例2：
+>
+>输入：k = 3，n = 9
+>
+>输出：
+>
+>>[[1,2,6], [1,3,5], [2,3,4]]
+
+## 思路：
+题目有几个要求，数字个数必须为k，只能用1到9这些数字，每个组合里数字不能重复，数字相加为n。
+
+因为可能性有很多，我们用递归来做。
+
+因为只能用1到9的数字，我们就从1到9分别遍历，依次以某个数字开始，往后找进行加数字，每递归一次，后面还有多少个数字就有多少种组合的方法，所以其实组合的方法有9*8*7*6....每次递归我们判断成功的条件是目前加起来的和正好等于目的数字n，且组合中的数字个数正好为k。如果我们用到的数字超过9了或者个数超过k了，就不要继续递归了。注意每次递归时因为要循环使用参数，所以我们每次都要创建新的变量来进行操作，避免影响参数本身的值。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        
+        for (int i = 1; i <= 9; i++) {
+            int sum = i;
+            List<Integer> list = new ArrayList<Integer>();
+            list.add(i);
+            find(k-1, n, list, sum, i+1, res);
+        }
+        
+        return res;
+    }
+    
+    public void find(int k, int n, List<Integer> list, int sum, int start, List<List<Integer>> res) {
+        if (sum == n && k == 0) {
+            res.add(list);
+        } else if (sum < n) {
+            if (k <= 0 || start > 9) return;
+            else {
+                for (int i = start; i <= 9; i++) {
+                    int newSum = sum;
+                    newSum += i;
+                    List<Integer> newList = new ArrayList<Integer>();
+                    newList.addAll(list);
+                    newList.add(i);
+                    find(k-1, n, newList, newSum, i+1, res);
+                }
+            }
+        }
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="423"/>423. Reconstruct Original Digits from English
+## 问题：
+>Given a non-empty string containing an out-of-order English representation of digits 0-9, output the digits in ascending order.
+>
+>Note:
+>
+>1、Input contains only lowercase English letters.
+>2、Input is guaranteed to be valid and can be transformed to its original digits. That means invalid inputs such as "abc" or "zerone" are not permitted.
+>3、Input length is less than 50,000.
+>
+>Example 1:
+>
+>Input: "owoztneoer"
+>
+>Output: "012"
+>
+>Example 2:
+>
+>Input: "fviefuro"
+>
+>Output: "45"
+
+## 大意：
+>给出一个非空字符串，由数字0~9的英文单词的乱序组成，以升序的方式输出所有的数字。
+>
+>注意：
+>1、输入只包含小写英文字母。
+>2、输入保证是有效的而且可以被转换成原始数字。也就是说无效的输入比如“abc”或者“zerone”是不允许的。
+>3、输入长度小于5000。
+>
+>例1：
+>
+>输入：“owoztneoer”
+>
+>输出：“012”
+>
+>例2：
+>
+>输入：“fviefuro”
+>
+>输出：“45”
+
+## 思路：
+题目的意思是会将多个数字的英文单词的字母打乱放置。
+
+首先我们看看0~9数字对应的单词：“zero”、“one”、“two”、“three”、“four”、“five”、“six”、“seven”、“eight”、“nine”。
+
+在这些单词中，我们先找到唯一存在的字母，这样就可以根据这些字母直接推断出存在该数字的英文单词。唯一存在的字母有：0的‘z’、2的‘w’、4的‘u’、6的‘x’、8的‘g’，如果我们的字符串中有这些字母，那一定有这些数字，从而可以将相应的单词中的字母全部清除一遍。
+
+上面唯一的全部找完之后，剩下1、3、5、7、9，这些本身没有唯一的字母，但是当上一批清除干净后，就又存在一些唯一的字母了：1的‘o’、3的‘t’、5的‘f’。从而又可以根据这些目前唯一的字母清除一批数字的所有字母。
+
+这时，剩下的7、9之间也有一些唯一的字母了，如7的‘s’、9的‘n’。从而也可以找出他们来。
+
+要注意的是，每个数字并不是只会出现一次，而由于我们后面的数字的寻找需要将前面唯一的数字清楚干净，所以我们一个是要按照顺序来清，另一个是要循环将一个数字全部清干净了再清下一个。
+
+在实现过程中我第一个做法是直接对字符串进行操作，截取字符串来清除字母，但这个做法其实会很慢，即使用了StringBuffer也很慢，对于大量数据来说时就超时了。要注意题目说了所有字母都是小写字母，我们其实可以用一个26位数字来记录每个字母出现了几次，在清楚字母时直接将对应位置的值减一就可以了，这样对数组的操作会快很多。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public String originalDigits(String s) {
+        int[] num = new int[10];
+        int[] totalChar = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            totalChar[s.charAt(i) - 'a']++;
+        }
+        
+        while (totalChar['z'-'a'] > 0) {
+            num[0]++;
+            totalChar['z'-'a']--;
+            totalChar['e'-'a']--;
+            totalChar['r'-'a']--;
+            totalChar['o'-'a']--;
+        }
+        while (totalChar['w'-'a'] > 0) {
+            num[2]++;
+            totalChar['t'-'a']--;
+            totalChar['w'-'a']--;
+            totalChar['o'-'a']--;
+        }
+        while (totalChar['u'-'a'] > 0) {
+            num[4]++;
+            totalChar['f'-'a']--;
+            totalChar['o'-'a']--;
+            totalChar['u'-'a']--;
+            totalChar['r'-'a']--;
+        }
+        while (totalChar['x'-'a'] > 0) {
+            num[6]++;
+            totalChar['s'-'a']--;
+            totalChar['i'-'a']--;
+            totalChar['x'-'a']--;
+        }
+        while (totalChar['g'-'a'] > 0) {
+            num[8]++;
+            totalChar['e'-'a']--;
+            totalChar['i'-'a']--;
+            totalChar['g'-'a']--;
+            totalChar['h'-'a']--;
+            totalChar['t'-'a']--;
+        }
+        while (totalChar['o'-'a'] > 0) {
+            num[1]++;
+            totalChar['o'-'a']--;
+            totalChar['n'-'a']--;
+            totalChar['e'-'a']--;
+        }
+        while (totalChar['t'-'a'] > 0) {
+            num[3]++;
+            totalChar['t'-'a']--;
+            totalChar['h'-'a']--;
+            totalChar['r'-'a']--;
+            totalChar['e'-'a']--;
+            totalChar['e'-'a']--;
+        }
+        while (totalChar['f'-'a'] > 0) {
+            num[5]++;
+            totalChar['f'-'a']--;
+            totalChar['i'-'a']--;
+            totalChar['v'-'a']--;
+            totalChar['e'-'a']--;
+        }
+        while (totalChar['s'-'a'] > 0) {
+            num[7]++;
+            totalChar['s'-'a']--;
+            totalChar['e'-'a']--;
+            totalChar['v'-'a']--;
+            totalChar['e'-'a']--;
+            totalChar['n'-'a']--;
+        }
+        while (totalChar['n'-'a'] > 0) {
+            num[9]++;
+            totalChar['n'-'a']--;
+            totalChar['i'-'a']--;
+            totalChar['n'-'a']--;
+            totalChar['e'-'a']--;
+        }
+        
+        String res = "";
+        StringBuffer sb = new StringBuffer(res);
+        for (int i = 0; i < num.length; i++) {
+            if (num[i] > 0) {
+                for (int j = 0; j < num[i]; j++)
+                    sb.append(String.valueOf(i));
+            }
+        }
+        res = sb.toString();
+        
+        return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="328"/>328. Odd Even Linked List
+## 问题
+>Given a singly linked list, group all odd nodes together followed by the even nodes. Please note here we are talking about the node number and not the value in the nodes.
+>
+>You should try to do it in place. The program should run in O(1) space complexity and O(nodes) time complexity.
+>
+>Example:
+>
+>Given 1->2->3->4->5->NULL,
+>
+>return 1->3->5->2->4->NULL.
+>
+>Note:
+> 1. The relative order inside both the even and odd groups should remain as it was in the input. 
+> 2. The first node is considered odd, the second node even and so on ...
+
+## 大意：
+>给出一个简单链表，集合所有奇数位置的节点，后面跟着所有偶数位置的节点。请注意这里我们说的是节点的位置而不是节点值。
+>
+>你应该尝试在固定空间做。程序应该在O（1）的空间复杂度和O（nodes）的时间复杂度下运行。
+>
+>例子：
+>
+>给出 1->2->3->4->5->NULL，
+>
+>返回 1->3->5->2->4->NULL。
+>
+>注意：
+> 1. 偶数和奇数组中节点的相对位置要保持不变。
+> 2. 第一个节点被认为是奇数，第二个是偶数，如此往复。
+
+## 思路：
+题目的要求根据例子就可以明白，奇数和偶数位置的节点分成两段来排列，关键是要在O（1）的空间复杂度下做，否则直接用一个新链表就可以简单完成。
+
+O（1）的空间下也好做，我们用两个头结点，一个为奇数的头结点，一个为偶数的头结点，然后遍历链表，奇数位置的节点就记录在奇数头结点后面，偶数位置的节点就记录在偶数头结点后面，两者是交替记录的，因为我们用的还是原来的节点，只是next指针指向的节点变了，所以并没有增加空间。遍历完后我们得到了奇偶两条链表，将偶链表的头结点接到奇链表的最尾端就可以了。
+
+要注意一些节点为Null的处理。
+
+## 代码（Java）：
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        
+        ListNode even = head.next;
+        ListNode evenNext = even;
+        ListNode oddNext = head;
+        while (evenNext != null) {
+            oddNext.next = evenNext.next;
+            
+            if (oddNext.next != null) {
+                oddNext = oddNext.next;
+                evenNext.next = oddNext.next;
+                evenNext = evenNext.next;
+            } else {
+                break;
+            }
+        }
+        oddNext.next = even;
+        return head;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="319"/>319. Bulb Switcher
+## 问题：
+>There are n bulbs that are initially off. You first turn on all the bulbs. Then, you turn off every second bulb. On the third round, you toggle every third bulb (turning on if it's off or turning off if it's on). For the ith round, you toggle every i bulb. For the nth round, you only toggle the last bulb. Find how many bulbs are on after n rounds.
+>
+>Example:
+>
+>Given n = 3. 
+>
+>At first, the three bulbs are [off, off, off].
+>
+>After first round, the three bulbs are [on, on, on].
+>
+>After second round, the three bulbs are [on, off, on].
+>
+>After third round, the three bulbs are [on, off, off]. 
+>
+>So you should return 1, because there is only one bulb is on.
+
+## 大意：
+>有n个灯泡初始是关着的。你首先把所有灯泡打开。然后每数到两个灯泡时关闭它。第三轮，将每数到第三个灯泡时改变它的状态（如果它是关着的就打开，如果是打开的就关闭）。第i轮，都将每数到第i个灯泡时切换状态。第n轮，你只用切换最后一个灯泡的状态。判断n轮后有多少灯泡开着。
+>
+>例：
+>
+>给出 n = 3。
+>
+>首先，三个灯泡是 [关，关，关]。
+>
+>第一轮后，三个灯泡是 [开，开，开]。
+>
+>第二轮后，三个灯泡是 [开，关，开]。
+>
+>第三轮后，三个灯泡是 [开，关，关]。
+>
+>所以你应该返回 1，因为只有一个灯泡是开着的。
+
+## 思路：
+这个问题如果要用暴力方法去一轮轮遍历地做也能做，但是当遇到大数的时候会超时。
+
+所以我们要找找规律。
+
+其实第一轮的全开就是每数到一个灯泡时就转换状态。也就是说，对于每个灯泡而言，第i轮，只要i是它的约数，都会让它转换一次状态。初始状态是关，所以要想最后状态是开，那么就需要转换奇数次状态。
+
+一个数的约数一般都是成对出现的，比如1和它本身，如果约数都是成对出现的，最后的转换次数就是偶数，一定是关着的状态。所以只有那些平方数，额外拥有一次单次的转换次数，比如4是2*2,9是3*3，这些数字在遇到2、3的时候都会额外单独转换一次，那最后就一定是关着的，所以我们的目的变成了找1到n中平方数的个数。
+
+我们对n开平方根，会得到小于n的最大的一个平方数的平方根R，而1是最小的一个平方数，其实1-R之间的每个数，平方后都是小于n的，也就是说他们平方后的数都正好是最后状态为开着的灯泡序号。所以1-R之间有多少个数，就表示最后又多少个灯泡是开着的！
+
+所以问题变得很简单，对n开平方根取整就行了！
+
+## 代码：
+
+```java
+public class Solution {
+    public int bulbSwitch(int n) {
+        return (int)Math.sqrt(n);
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="46"/>46. Permutations
+## 问题：
+>Given a collection of distinct numbers, return all possible permutations.
+>
+>For example,
+>
+>[1,2,3] have the following permutations:
+>
+>[
+>
+>  [1,2,3],
+>
+>  [1,3,2],
+>
+>  [2,1,3],
+>
+>  [2,3,1],
+>
+>  [3,1,2],
+>
+>  [3,2,1]
+>
+>]
+
+## 大意：
+>给出一个不同数字的集合，返回所有可能的排列。
+>
+>比如：
+>
+>[1,2,3] 有下面这些排列：
+>
+>[
+>
+>  [1,2,3],
+>
+>  [1,3,2],
+>
+>  [2,1,3],
+>
+>  [2,3,1],
+>
+>  [3,1,2],
+>
+>  [3,2,1]
+>
+>]
+
+## 思路：
+这就是中学时排列组合的题目，要极尽所有排列，我们就要从第一个位置开始所有的元素都有可能放一遍，第二个位置在放了第一个位置的数字后剩下的数字又都可能放一遍，第三个位置也是类似，一直到最后一个位置。
+
+对于这种操作用递归最合适，在我们创建的函数中对于第i个位置，每个当前还剩下的数字都去尝试放一次，并且继续往下递归，最后就会得到所有可能的排列。
+
+要注意的一点就是在递归中我们的List和数组都要进行深拷贝然后添加元素，否则不同的放置方式操作的都是同一个List或者数组，没有意义。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> resList = new ArrayList<List<Integer>>();
+        for (int i = 0; i < nums.length; i++) {
+            List<Integer> list = new ArrayList<Integer>();
+            list.add(nums[i]);
+            int[] hasUsed = new int[nums.length];
+            hasUsed[i] = 1;
+            doPermute(nums, resList, list, hasUsed);
+        }
+        return resList;
+    }
+    
+    public void doPermute(int[] nums, List<List<Integer>> resList, List<Integer> list, int[] hasUsed) {
+        if (list.size() == nums.length) {
+            resList.add(list);
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (hasUsed[i] == 0) {
+                List<Integer> newList = new ArrayList<Integer>();
+                newList.addAll(list);
+                newList.add(nums[i]);
+                int[] newUsed = hasUsed.clone();
+                newUsed[i] = 1;
+                doPermute(nums, resList, newList, newUsed);
+            }
+        }
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="424"/>424. Longest Repeating Character Replacement
+## 问题：
+>Given a string that consists of only uppercase English letters, you can replace any letter in the string with another letter at most k times. Find the length of a longest substring containing all repeating letters you can get after performing the above operations.
+>
+>Note:
+>
+>Both the string's length and k will not exceed 104.
+>
+>Example 1:
+>
+>Input:
+>
+>s = "ABAB", k = 2
+>
+>Output:
+>
+>4
+>
+>Explanation:
+>
+>Replace the two 'A's with two 'B's or vice versa.
+>
+>Example 2:
+>
+>Input:
+>
+>s = "AABABBA", k = 1
+>
+>Output:
+>
+>4
+>
+>Explanation:
+>
+>Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+>
+>The substring "BBBB" has the longest repeating letters, which is 4.
+
+## 大意：
+>给出一个只由大写字母组成的字符串，你最多可以替换其中的字母k次。寻找执行替换操作后最长的相同字母的长度。
+>
+>注意：
+>
+>所有字符串的长度和k都不会超过10的4次方。
+>
+>例1：
+>
+>输入：
+>
+>s = "ABAB", k = 2
+>
+>输出：
+>
+>4
+>
+>解释：
+>
+>用两个B替换两个A或者反过来。
+>
+>例2：
+>
+>输入：
+>
+>s = "AABABBA", k = 1
+>
+>输出：
+>
+>4
+>
+>解释：
+>
+>用B替换中间的一个A得到“AABBBBA”。
+>
+>子字符串“BBBB”有最长的重复字母的长度4。
+
+## 思路：
+题目的意思比较清楚，不过可能的情况有很多，不可能用代码去寻找最佳的替换位置，所以这里采用一种滑动窗口的方法。
+
+定义start和end两个标记，中间的内容即是窗口，计算窗口内所有字母出现的次数，因为全是大写字母，所以可以用一个26位的数组来记录窗口内每个字母出现的次数。
+
+找到窗口内出现最多的次数，加上允许替换的字母数k，看是否超过窗口宽度，如果超过了，说明窗口还可以更长， 也就是说窗口内重复的字母的长度可以更长，就将end右移一位，形成新的窗口，然后继续重复上面的步骤。如果没超过，说明能构成的最长的重复字母长度已经到顶了，这时应该将start右移一位，来寻找新的可能的更长重复字母长度。
+
+每次计算重复字母长度时，当出现更长的可能时，都更新最终的结果。
+
+为了减少时间复杂度，我们不去每次都遍历窗口来计算出现的字母次数，而是在移动end或者start时，将对应位置的字母的次数加一或者减一。
+
+要注意各种边界条件是什么。
+
+## 代码：
+
+```java
+public class Solution {
+    public int characterReplacement(String s, int k) {
+        if (s.length() < 1) return 0;
+        
+        int start = 0;
+        int end = 0;
+        int res = 0;
+        int[] charNum = new int[26];
+        charNum[s.charAt(0) - 'A']++;
+        while (s.length() > end) {
+            int maxChar = 0;
+            for (int i = 0; i < 26; i++) {
+                if (charNum[i] > maxChar) maxChar = charNum[i];
+            }
+            
+            if (maxChar + k > end - start) {
+                end++;
+                if (end < s.length()) charNum[s.charAt(end) - 'A']++;
+            } else {
+                charNum[s.charAt(start) - 'A']--;
+                start++;
+            }
+            
+            if (maxChar + k > res) res = maxChar + k <= s.length() ? maxChar + k : s.length();
+        }
+        return res;
+    }
+}
+```
+
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="394"/>394. Decode String
+## 问题：
+>Given an encoded string, return it's decoded string.
+>
+>The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+>
+>You may assume that the input string is always valid; No extra white spaces, square brackets are well-formed, etc.
+>
+>Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there won't be input like 3a or 2[4].
+>
+>Examples:
+>
+>s = "3[a]2[bc]", return "aaabcbc".
+>
+>s = "3[a2[c]]", return "accaccacc".
+>
+>s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+
+## 大意：
+>给出一个编码了的字符串，返回它的解码字符串。
+>
+>编码规则是：k[编码字符串]，方括号里的编码字符串会重复k次。注意k保证是一个正整数。
+>
+>你可以假设输入的字符串都是有效的；没有额外的空格，方括号是能够匹配的，等等。
+>
+>此外，你可以假设原始数据不包含任何数字，数字只用来表示重复次数k。比如，不会有 3a 或者 2[4] 这样的输入。
+>
+>例子：
+>
+>s = "3[a]2[bc]", return "aaabcbc".
+>
+>s = "3[a2[c]]", return "accaccacc".
+>
+>s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+
+## 思路：
+这个思路比较直，遍历字符串，遇到数字后，记录下数字，获取方括号内的字符串，重复k次添加到结果字符串中。
+
+需要注意的有两个地方，一个是方括号中可能嵌套重复的内容，所以一是要准确找到左括号对应的右括号是哪个，我们用一个变量来记录遇到的左括号和右括号数量就可以了，二是要用递归来操作内容的重复，因为里面还可能包含着重复的内容需要解码。另一个要注意的是数字不一定是一位数，还可能是多位数，因此当遇到数字后，要看看后面是不是还是数字，是的话要记录下来换算成真正的重复次数。
+
+```java
+public class Solution {
+    public String decodeString(String s) {
+        return decodeSub(s, 1);
+    }
+    
+    public String decodeSub(String sub, int count) {
+        String trueStr = "";
+        for (int i = 0; i < sub.length(); i++) {
+            if (sub.charAt(i) - '1' >= 0 && sub.charAt(i) - '9' <= 0) {
+                int subCount = sub.charAt(i) - '0';
+                while (sub.charAt(i+1) - '0' >= 0 && sub.charAt(i+1) - '9' <= 0) {
+                    i++;
+                    subCount = subCount * 10 + sub.charAt(i) - '0';
+                }
+                
+                int start = i+2;
+                int num = 1;
+                String subsub = "";
+                for (i = i+2; i < sub.length(); i++) {
+                    if (sub.charAt(i) - '[' == 0) num++;
+                    else if (sub.charAt(i) - ']' == 0) num--;
+                    
+                    if (num == 0) {
+                        subsub = sub.substring(start, i);
+                        break;
+                    }
+                }
+                trueStr = trueStr + decodeSub(subsub, subCount);
+                
+            } else {
+                trueStr = trueStr + sub.substring(i, i+1);
+            }
+        }
+        String decodeRes = "";
+        for (int i = 0; i < count; i++) {
+            decodeRes = decodeRes + trueStr;
+        }
+        return decodeRes;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="524"/>524. Longest Word in Dictionary through Deleting
+## 问题：
+>Given a string and a string dictionary, find the longest string in the dictionary that can be formed by deleting some characters of the given string. If there are more than one possible results, return the longest word with the smallest lexicographical order. If there is no possible result, return the empty string.
+>
+>Example 1:
+>
+>Input:
+>
+>s = "abpcplea", d = ["ale","apple","monkey","plea"]
+>
+>Output: 
+>
+>"apple"
+>
+>Example 2:
+>
+>Input:
+>
+>s = "abpcplea", d = ["a","b","c"]
+>
+>Output: 
+>
+>"a"
+>
+>Note:
+>1. All the strings in the input will only contain lower-case letters.
+>2. The size of the dictionary won't exceed 1,000.
+>3. The length of all the strings in the input won't exceed 1,000.
+
+## 大意：
+>给出一个字符串和字符串字典，找到字典中能够通过删除目标字符串一些字符来匹配到的最长的字符串。如果有多个结果，返回最长字符串中词典顺序最小的一个。如果没有结果，返回空字符串。
+>
+>例1：
+>
+>输入：
+>
+>s = "abpcplea", d = ["ale","apple","monkey","plea"]
+>
+>输出：
+>
+>"apple"
+>
+>例2：
+>
+>输入：
+>
+>>s = "abpcplea", d = ["a","b","c"]
+>
+>输出：
+>
+>"a"
+>
+>注意：
+>1. 所有输入的字符串都只包含小写字母
+>2. 字典的大小不会超过1000。
+>3. 所有输入的字符串的长度不会超过1000。
+
+## 思路：
+遍历字典中的字符串，对每个字符串的每个字符按照顺序在目标字符串中找位置，为了保持顺序，每次找下一个字符的位置时都要从上一个找到的位置之后开始找，一旦某个字符找不到，就说明不匹配。
+
+如果一个字符串能够匹配到，那么就看他的长度是多少，根据长度来更新记录的结果，如果长度一致，那就要根据两个字符串中的字符顺序来判断留哪个了。
+
+## 代码：
+
+```java
+public class Solution {
+    public String findLongestWord(String s, List<String> d) {
+        String res = "";
+        int longest = 0;
+        for (int i = 0; i < d.size(); i++) {
+            String temp = d.get(i);
+            int last = 0;
+            boolean match = true;
+            for (int j = 0; j < temp.length(); j++) {
+                int index = s.indexOf(temp.substring(j, j+1), last) + 1;
+                if (index == 0) match = false;
+                else last = index;
+            }
+            if (match && temp.length() > longest) {
+                longest = temp.length();
+                res = temp;
+            } else if (match && temp.length() == longest) {
+                for (int j = 0; j < temp.length(); j++) {
+                    if (temp.charAt(j) - res.charAt(j) < 0) {
+                        res = temp;
+                        break;
+                    } else if (temp.charAt(j) - res.charAt(j) > 0) {
+                        break;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="137"/>137. Single Number II
+## 问题：
+>Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one.
+>
+>Note:
+>
+>Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+## 大意：
+>给出整数数组，每个元素都出现三次，只有一个元素只出现一次，找到它。
+>
+>注意：
+>
+>你的算法应该是线性时间复杂度。能不用额外的空间来做吗？
+
+## 思路：
+用哈希表也可以做到线性时间复杂度，但是用了额外空间。
+
+这里我们参考这个思路来做：[传送门：算法题总结之找到数组中出现次数唯一不同的数字](http://www.jianshu.com/p/684dd52a2d78)
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int singleNumber(int[] nums) {
+        int x1 = 0;
+        int x2 = 0;
+        int mask = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            x2 ^= x1 & num;
+            x1 ^= num;
+            mask = ~(x1 & x2);
+            x2 = x2 & mask;
+            x1 = x1 & mask;
+        }
+        return x1;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="386"/>386. Lexicographical Numbers
+## 问题：
+>Given an integer n, return 1 - n in lexicographical order.
+>
+>For example, given 13, return: [1,10,11,12,13,2,3,4,5,6,7,8,9].
+>
+>Please optimize your algorithm to use less time and space. The input size may be as large as 5,000,000.
+
+## 思路：
+>给出一个整数n，返回 1 到 n 的词典顺序。
+>
+>比如，给出13，返回 [1,10,11,12,13,2,3,4,5,6,7,8,9]。
+>
+>请优化你的代码来使用更少的时间和空间。输入范围会达到5000000。
+
+## 思路：
+问题的关键在于理清“词典顺序”是什么样的。
+
+词典顺序就是10比2靠前，101比11靠前，110比11靠后，你可以简单的尝试一下把数字都转换成字符串数组，然后对字符串数组进行 Arrays.sort()，就会得到字符串下词典顺序的数字。但是这个方法因为用了排序，是会超时的。
+
+所以我们的做法大致顺序如下：
+
+1、如果一个数乘以十以后没有超过n，那它后面紧挨着的应该是它的十倍，比如1,10,100。
+2、如果不满足1，那就应该是直接加一，比如n为13的时候，前一个数为12，120超过了n，那接着的应该是13。但是这里要注意如果前一个数的个位已经是9或者是它就是n了，那就不能加一了，比如 n = 25，前一个数为19，下一个数应该为2而不是19+1=20。25的下一个也没有26了。
+3、如果不满足2，比如19后面应该接2而不是20，这时候应该将19除以10再加一，比如n=500，399的下一个应该是4，那就是除以十，个位还是9，继续除以10，得到3，加一得到4。
+
+将上面的过程整理成代码就可以了，循环的次数就是n，也就是总个数。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public List<Integer> lexicalOrder(int n) {
+        List<Integer> res = new ArrayList<Integer>();
+        int cur = 1;
+        for (int i = 1; i <= n; i++) {
+            res.add(cur);
+            if (cur * 10 <= n) {
+                cur = cur * 10;
+            } else if (cur % 10 != 9 && cur + 1 <= n) {
+                cur++;
+            } else {
+                while ((cur / 10) % 10 == 9) {
+                    cur = cur / 10;
+                }
+                cur = cur / 10 + 1;
+            }
+        }
+        return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="96"/>96. Unique Binary Search Trees
+## 问题：
+>Given n, how many structurally unique BST's (binary search trees) that store values 1...n?
+>
+>For example,
+>
+>Given n = 3, there are a total of 5 unique BST's.
+>
+>![image.png](http://upload-images.jianshu.io/upload_images/9075967-9f5386ae8c5259a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+## 大意：
+>给出n，包含1~n这些节点可以形成多少个不同的BST（二叉查找树）？
+>
+>比如，
+>
+>给出n = 3，有5个不同的BST：
+>
+>![image.png](http://upload-images.jianshu.io/upload_images/9075967-9f5386ae8c5259a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 思路：
+二叉查找树的性质是左子节点一定小于父节点，右子节点一定大于父节点。
+
+我们思考一下可以发现，要形成不同的二叉树，最基本的分类是1~n各自都做一次根节点。在它们作为根节点时，又分别还有多少种不同的组合方式呢？由于这是一个二叉查找树，那么根节点的左边一定都是小于他的数，右边一定都是大于它的数，所以1~n就会被分成两部分去放置，这时候由可以分别把左子节点、右子节点分别看成要安放一部分数字的根节点，又变成了一样的规律。
+
+所以假设以i为根节点，可能的组合情况为F（i，n），而G（n）为输入n后的结果。则
+
+F（i，n） = G（i-1）*G（n-i）
+
+也就是左子节点以下的可能数量乘以右子节点以下的可能数量。
+
+而因为1~n都可能作为根节点，所以最终的值是它们的和，也就是
+
+G（n） = F（1，n） + Ｆ（２，ｎ）　＋　……　＋Ｆ（ｎ，ｎ）
+
+换算一下就是
+
+Ｇ（ｎ）　＝　Ｇ（０） * G（n-1） + G（1） * G（n-2） ＋ …… ＋ G（n-1） *Ｇ（０）
+
+其中我们可以直接看出　Ｇ（０）　＝　Ｇ（１）　＝　１。这个作为初始值来递归计算就可以了，要知道G（n），我们必须把前面的数都计算出来。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int numTrees(int n) {
+        int[] res = new int[n+1];
+        res[0] = 1;
+        res[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                res[i] += res[j-1] * res[i-j];
+            }
+        }
+        return res[n];
     }
 }
 ```
