@@ -10524,7 +10524,7 @@ public class Solution {
 >
 >Given n = 3, there are a total of 5 unique BST's.
 >
->![image.png](http://upload-images.jianshu.io/upload_images/9075967-9f5386ae8c5259a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/96Image.png)
 
 
 ## 大意：
@@ -10534,7 +10534,7 @@ public class Solution {
 >
 >给出n = 3，有5个不同的BST：
 >
->![image.png](http://upload-images.jianshu.io/upload_images/9075967-9f5386ae8c5259a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/96Image.png)
 
 ## 思路：
 二叉查找树的性质是左子节点一定小于父节点，右子节点一定大于父节点。
