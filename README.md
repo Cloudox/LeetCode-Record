@@ -132,6 +132,7 @@ LeetCode笔记
   * [524. Longest Word in Dictionary through Deleting](#524)
   * [137. Single Number II](#137)
   * [386. Lexicographical Numbers](#386)
+  * [96. Unique Binary Search Trees](#96)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10507,6 +10508,69 @@ public class Solution {
             }
         }
         return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="96"/>96. Unique Binary Search Trees
+## 问题：
+>Given n, how many structurally unique BST's (binary search trees) that store values 1...n?
+>
+>For example,
+>
+>Given n = 3, there are a total of 5 unique BST's.
+>
+>![image.png](http://upload-images.jianshu.io/upload_images/9075967-9f5386ae8c5259a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+## 大意：
+>给出n，包含1~n这些节点可以形成多少个不同的BST（二叉查找树）？
+>
+>比如，
+>
+>给出n = 3，有5个不同的BST：
+>
+>![image.png](http://upload-images.jianshu.io/upload_images/9075967-9f5386ae8c5259a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 思路：
+二叉查找树的性质是左子节点一定小于父节点，右子节点一定大于父节点。
+
+我们思考一下可以发现，要形成不同的二叉树，最基本的分类是1~n各自都做一次根节点。在它们作为根节点时，又分别还有多少种不同的组合方式呢？由于这是一个二叉查找树，那么根节点的左边一定都是小于他的数，右边一定都是大于它的数，所以1~n就会被分成两部分去放置，这时候由可以分别把左子节点、右子节点分别看成要安放一部分数字的根节点，又变成了一样的规律。
+
+所以假设以i为根节点，可能的组合情况为F（i，n），而G（n）为输入n后的结果。则
+
+F（i，n） = G（i-1）*G（n-i）
+
+也就是左子节点以下的可能数量乘以右子节点以下的可能数量。
+
+而因为1~n都可能作为根节点，所以最终的值是它们的和，也就是
+
+G（n） = F（1，n） + Ｆ（２，ｎ）　＋　……　＋Ｆ（ｎ，ｎ）
+
+换算一下就是
+
+Ｇ（ｎ）　＝　Ｇ（０） * G（n-1） + G（1） * G（n-2） ＋ …… ＋ G（n-1） *Ｇ（０）
+
+其中我们可以直接看出　Ｇ（０）　＝　Ｇ（１）　＝　１。这个作为初始值来递归计算就可以了，要知道G（n），我们必须把前面的数都计算出来。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int numTrees(int n) {
+        int[] res = new int[n+1];
+        res[0] = 1;
+        res[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                res[i] += res[j-1] * res[i-j];
+            }
+        }
+        return res[n];
     }
 }
 ```
