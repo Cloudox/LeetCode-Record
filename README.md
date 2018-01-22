@@ -133,6 +133,7 @@ LeetCode笔记
   * [137. Single Number II](#137)
   * [386. Lexicographical Numbers](#386)
   * [96. Unique Binary Search Trees](#96)
+  * [435. Non-overlapping Intervals](#435)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10573,6 +10574,110 @@ public class Solution {
         return res[n];
     }
 }
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="435"/>435. Non-overlapping Intervals
+## 问题：
+>Given a collection of intervals, find the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
+>
+>Note:
+>1. You may assume the interval's end point is always bigger than its start point.
+>2. Intervals like [1,2] and [2,3] have borders "touching" but they don't overlap each other.
+>
+>Example 1:
+>
+>Input: [ [1,2], [2,3], [3,4], [1,3] ]
+>
+>Output: 1
+>
+>Explanation: [1,3] can be removed and the rest of intervals are non-overlapping.
+>
+>Example 2:
+>
+>Input: [ [1,2], [1,2], [1,2] ]
+>
+>Output: 2
+>
+>Explanation: You need to remove two [1,2] to make the rest of intervals non-overlapping.
+>
+>Example 3:
+>
+>Input: [ [1,2], [2,3] ]
+>
+>Output: 0
+>
+>Explanation: You don't need to remove any of the intervals since they're already non-overlapping.
+
+## 大意：
+>给出一个间隔的集合，找到需要移除的间隔来保证剩余的间隔不发成范围重叠的最小间隔数量。
+>
+>注意：
+>1. 你可以假设间隔的end永远比start大。
+>2. 类似[1,2]和[2,3]的间隔边界是重复的，但是不算做重叠。
+>
+>例1：
+>
+>输入：[ [1,2], [2,3], [3,4], [1,3] ]
+>
+>输出：1
+>
+>解释：[1,3]需要被移除就可以让剩余的无重叠。
+>
+>例2：
+>
+>输入：[ [1,2], [1,2], [1,2] ]
+>
+>输出：2
+>
+>解释：需要移除两个[1,2]来让剩余的无重叠。
+>
+>例3：
+>
+>输入：[ [1,2], [2,3] ]
+>
+>输出：0
+>
+>解释：不需要移除任何间隔，就已经是无重叠的了。
+
+## 思路：
+要移除尽可能少的间隔数，那么首先要知道有哪些部分是重叠了的，发生重叠后，就要尽量移除范围更大的，来保证更多范围小的可以留下。
+
+为了知道有哪些是重叠的，我们先给所有的间隔排个序，这样就可以一个一个地看是否有重叠，间隔排序不像数字排序那么直接，需要自己进行定义，到底是比end的大小还是比start的大小呢？我们选择比end，如果比start，有可能一个start更小但范围很大的间隔，却包含了后面好几个start更大但是范围很小的间隔，而比end就没有这个问题，end基本就限制了你的范围。
+
+那么比较end如果相同，还需要判断start吗？其实不需要了，对于同一个end值的两个间隔，无论我们留哪一个（只要能留，也就是说只要范围没重叠），另一个都一定会被抛弃，且对后续的间隔没有任何影响。
+
+排序我们就可以遍历间隔数组，比较后一个间隔的start是否大于前一个的end，大于则无重叠，我们就留下来，否则就抛弃掉。最后得出抛弃掉的数量就可以了。
+
+```java
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public int eraseOverlapIntervals(Interval[] intervals) {
+        if (intervals.length == 0) return 0;
+        Arrays.sort(intervals, (a, b) -> (a.end - b.end));
+        int end = intervals[0].end;
+        int count = 1;
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i].start >= end) {
+                end = intervals[i].end;
+                count++;
+            }
+        }
+        return intervals.length-count;
+    }
+}
+
 ```
 
 [回到目录](#Catalogue)
