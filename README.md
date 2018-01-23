@@ -134,6 +134,7 @@ LeetCode笔记
   * [386. Lexicographical Numbers](#386)
   * [96. Unique Binary Search Trees](#96)
   * [435. Non-overlapping Intervals](#435)
+  * [89. Gray Code](#89)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10678,6 +10679,101 @@ public class Solution {
     }
 }
 
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="89"/>89. Gray Code
+## 问题：
+>The gray code is a binary numeral system where two successive values differ in only one bit.
+>
+>Given a non-negative integer n representing the total number of bits in the code, print the sequence of gray code. A gray code sequence must begin with 0.
+>
+>For example, given n = 2, return [0,1,3,2]. Its gray code sequence is:
+>
+>00 - 0
+>
+>01 - 1
+>
+>11 - 3
+>
+>10 - 2
+>
+>Note:
+>1. For a given n, a gray code sequence is not uniquely defined.
+>2. For example, [0,1,3,2] is also a valid gray code sequence according to the above definition.
+>3. For now, the judge is able to judge based on one instance of gray code sequence. Sorry about that.
+
+## 大意：
+>格雷码是一种二进制编码系统，相邻的两个值之间只有一位是不同的。
+>
+>给出一个非负数n，表示编码的总位数，输出格雷码序列。格雷码必须从0开始。
+>
+>比如，给出n=2，返回[0,1,3,2]。它的格雷码序列是：
+>
+>00 - 0
+>
+>01 - 1
+>
+>11 - 3
+>
+>10 - 2
+>
+>注意：
+>1. 对于给出的n，格雷码序列并不是唯一的。
+>2. 比如，[0,2,3,1]也是一种满足上面要求的序列。
+>3. 现在，判断程序只支持一种格雷码序列，很抱歉。
+
+## 思路：
+格雷码是很经典的问题，规则其实很简单，在二进制形式下，任何响铃的两个值的二进制表示形式只有一位是不同的，我们可以找找规律。
+
+一位就是简单的：0,1
+
+两位是：00,01,11,10
+
+三位是：000,001,011,010,110,111,101,100
+
+发现什么规律没有？我们把一位的两个数，前面加上0，就是二位的头两个数，前面加上1再反序，就是二位的后两个数。把二位的前面加上0，就是三位的头四个数，把二位的前面加上1再反过来，就是三位的后四个数。
+
+也就是说，对于每多一位的格雷码，前面一半的第一位都是0，后面一半的第一位都是1，其余的位，前后两半正好是中间对称的，前面一半就是少一位的格雷码序列，后面一半时把其反序。
+
+知道这个规律就好做了，我们可以递归来做，每次取n-1位的格雷码来做上述操作，对于一位的格雷码，直接赋值是0,1就可以了。
+
+不过题目要求返回的是十进制数，而不是字符串，所以我们最好直接操作十进制数，这里前面加0其实就不用做什么，前面加1的话可以将1左移n-1位然后与各个数字相加即可。
+
+注意题目说的n是非负数，所以要考虑n=0的情况，测试用例的n=0时返回的是0。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> res = new ArrayList<Integer>();
+        if (n == 0) {
+            res.add(0);
+            return res;
+        } else if (n == 1) {
+            res.add(0);
+            res.add(1);
+            return res;
+        }
+        
+        List<Integer> last = grayCode(n-1);
+        
+        for (int i = 0; i < last.size()*2; i++) {
+            if (i < last.size()) res.add(last.get(i));
+            else {
+                int temp = last.get(last.size()-(i-last.size())-1);
+                temp += 1 << (n-1);
+                res.add(temp);
+            }
+        }
+        
+        return res;
+    }
+}
 ```
 
 [回到目录](#Catalogue)
