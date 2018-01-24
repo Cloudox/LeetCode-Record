@@ -135,6 +135,7 @@ LeetCode笔记
   * [96. Unique Binary Search Trees](#96)
   * [435. Non-overlapping Intervals](#435)
   * [89. Gray Code](#89)
+  * [309. Best Time to Buy and Sell Stock with Cooldown](#309)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10772,6 +10773,91 @@ public class Solution {
         }
         
         return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="309"/>309. Best Time to Buy and Sell Stock with Cooldown
+## 问题：
+>Say you have an array for which the ith element is the price of a given stock on day i.
+>
+>Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times) with the following restrictions:
+> * You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+> * After you sell your stock, you cannot buy stock on next day. (ie, cooldown 1 day)
+>
+>Example:
+>
+>prices = [1, 2, 3, 0, 2]
+>
+>maxProfit = 3
+>
+>transactions = [buy, sell, cooldown, buy, sell]
+
+## 大意：
+>你有一个数组，第i个元素表示股票第i天的金额。
+>
+>设计一个算法来找到最大收益。你可以随意交易多次（比如多次买入卖出），但要遵循下面的规则：
+> * 你不能同时做多次操作（也就是卖出之前必须买入）。
+> * 你卖出股票后，接下来那一天不能买股票。（需要冷却一天）
+>
+>例子：
+>
+>prices = [1, 2, 3, 0, 2]
+>
+>maxProfit = 3
+>
+>交易 = [买入, 卖出, 冷却, 买入, 卖出]
+
+## 思路：
+这是一个典型的需要动态规划来做的题，有三种操作类型：买入（buy）、卖出（sell）、休息（rest）。根据动态规划的方法，我们需要列出三种操作的计算方程，三个方程分别表示，以这三种操作作为最后一次操作的情况下的最终最大收益。
+
+根据定义，我们来一个个看：
+
+买入的前一天必须是休息，最后一天如果要是买入，那最后还需要消耗一笔金钱，这笔金钱是当日的股票价price，那么方程是：
+
+buy[i] = max{rest[i-1]-price, buy[i-1]}
+
+卖出的前一天必须是买入，最后一天卖出后，会多得到当日的股价price，那么方程是：
+
+sell[i] = max{buy[i-1]+price, sell[i-1]}
+
+休息的话有多种情况，最后一天休息的话，前一天可以是买入、卖出或者休息，且最后一天也不会有进账或者消费，那么方程是：
+
+rest[i] = max{buy[i-1], sell[i-1], rest[i-1]}
+
+但是稍微想一下就知道，最后一天买入后的收益一定小于最后一天休息的收益，由小于最后一天卖出的收益，即：
+
+buy[i] <= rest[i] <= sell[i]
+
+那么我们rest的方程就可以变为：
+
+rest[i] = sell[i-1]
+
+代入buy和sell的方程就是：
+
+buy[i] = max{sell[i-2]-price, buy[i-1]}
+
+sell[i] = max{buy[i-1]+price, sell[i-1]}
+
+由于每次计算第i个值时我们只用到了最多前两个sell和前一个buy，所以我们不需要记录整个数组的buy和sell，将空间复杂度降低到O（1），只需要记录前两个sell和前一个buy，根据代码的写法，我们甚至只需要记录前一个sell，将对sell的计算放在buy之后，那么自然而然就变成前两个sell了。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int maxProfit(int[] prices) {
+        int sell = 0, prev_sell = 0, buy = Integer.MIN_VALUE, prev_buy;
+        for (int price : prices) {
+            prev_buy = buy;
+            buy = Math.max(prev_sell - price, prev_buy);
+            prev_sell = sell;
+            sell = Math.max(prev_buy + price, prev_sell);
+        }
+        return sell;
     }
 }
 ```
