@@ -87,6 +87,7 @@ LeetCode笔记
   * [189. Rotate Array](#189)
   * [165. Compare Version Numbers](#165)
   * [8. String to Integer (atoi)](#8)
+  * [461. Hamming Distance](#461)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -136,7 +137,6 @@ LeetCode笔记
   * [435. Non-overlapping Intervals](#435)
   * [89. Gray Code](#89)
   * [309. Best Time to Buy and Sell Stock with Cooldown](#309)
-  * [461. Hamming Distance](#461)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -6474,6 +6474,92 @@ public class Solution {
 
 -------------------------
 
+## <a name="461"/>461. Hamming Distance
+## 问题（*Easy*）：
+>The[Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance)between two integers is the number of positions at which the corresponding bits are different.
+>
+>Given two integers`x`and`y`, calculate the Hamming distance.
+>
+>**Note:**
+>
+>
+>0 ≤`x`,`y`< 2<sup>31</sup>.
+>**Example:**
+>
+>Input: x = 1, y = 4
+>
+>Output: 2
+>
+>Explanation:
+>
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/461Image.png)
+>
+>The above arrows point to positions where the corresponding bits are different.
+
+## 大意：
+>两个数之间的汉明距离是指其比特位的不同的个数。
+>
+>给出两个整数x和y，计算汉明距离。
+>
+>**注意:**
+>
+>0 ≤`x`,`y`< 2<sup>31</sup>.
+>
+>**例子:**
+>
+>输入: x = 1, y = 4
+>
+>输出: 2
+>
+>解释:
+>
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/461Image.png)
+>
+>上面的箭头指向的位置就是比特位不同的地方。
+
+## 思路
+题目很简单，就是比较两个数字的比特位不同之处，那就从右到左一个个比较就好了，也就是要从右往左一个个比较每比特位数字是否相同。因为实际上整数在计算机中就是以二进制存储的，所以可以用右移操作符来操作，更直白的也可以不断地除以2来右移，同时对2取模来得到每次最右边的那个数字，看看两个数取模得到的数是否一样，不一样则距离加一。需要注意的就是每次除以2时要判断数字是否已经变成0了，同样的方式判断循环是否终止。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int x1,y1,res = 0;
+        while (x > 0 || y > 0) {
+            x1 = x % 2;
+            y1 = y % 2;
+            if (x1 != y1) res++;
+            
+            if (x > 0) x = x / 2;
+            if (y > 0) y = y / 2;
+        }
+        return res;
+    }
+};
+```
+
+## 他山之石：
+用异或这个位操作符就可以记录下两个数字所有比特位不同的地方，然后同样的一个个去记录不同的个数，这里他用了一种很巧妙的方式，自己距离推演一下就知道怎么有效的了。
+
+```cpp
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int dist = 0, n = x ^ y;
+        while (n) {
+            ++dist;
+            n &= n - 1;
+        }
+        return dist;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
 ## <a name="419"/>419. Battleships in a Board
 ### 问题：
 >Given an 2D board, count how many different battleships are in it. The battleships are represented with 'X's, empty slots are represented with '.'s. You may assume the following rules:
@@ -10865,91 +10951,7 @@ public class Solution {
 
 [回到目录](#Catalogue)
 
--------------------------
 
-## <a name="461"/>461. Hamming Distance
-## 问题（*Easy*）：
->The[Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance)between two integers is the number of positions at which the corresponding bits are different.
->
->Given two integers`x`and`y`, calculate the Hamming distance.
->
->**Note:**
->
->
->0 ≤`x`,`y`< 2<sup>31</sup>.
->**Example:**
->
->Input: x = 1, y = 4
->
->Output: 2
->
->Explanation:
->
->![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/461Image.png)
->
->The above arrows point to positions where the corresponding bits are different.
-
-## 大意：
->两个数之间的汉明距离是指其比特位的不同的个数。
->
->给出两个整数x和y，计算汉明距离。
->
->**注意:**
->
->0 ≤`x`,`y`< 2<sup>31</sup>.
->
->**例子:**
->
->输入: x = 1, y = 4
->
->输出: 2
->
->解释:
->
->![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/461Image.png)
->
->上面的箭头指向的位置就是比特位不同的地方。
-
-## 思路
-题目很简单，就是比较两个数字的比特位不同之处，那就从右到左一个个比较就好了，也就是要从右往左一个个比较每比特位数字是否相同。因为实际上整数在计算机中就是以二进制存储的，所以可以用右移操作符来操作，更直白的也可以不断地除以2来右移，同时对2取模来得到每次最右边的那个数字，看看两个数取模得到的数是否一样，不一样则距离加一。需要注意的就是每次除以2时要判断数字是否已经变成0了，同样的方式判断循环是否终止。
-
-## 代码（C++）：
-```cpp
-class Solution {
-public:
-    int hammingDistance(int x, int y) {
-        int x1,y1,res = 0;
-        while (x > 0 || y > 0) {
-            x1 = x % 2;
-            y1 = y % 2;
-            if (x1 != y1) res++;
-            
-            if (x > 0) x = x / 2;
-            if (y > 0) y = y / 2;
-        }
-        return res;
-    }
-};
-```
-
-## 他山之石：
-用异或这个位操作符就可以记录下两个数字所有比特位不同的地方，然后同样的一个个去记录不同的个数，这里他用了一种很巧妙的方式，自己距离推演一下就知道怎么有效的了。
-
-```cpp
-class Solution {
-public:
-    int hammingDistance(int x, int y) {
-        int dist = 0, n = x ^ y;
-        while (n) {
-            ++dist;
-            n &= n - 1;
-        }
-        return dist;
-    }
-};
-```
-
-[回到目录](#Catalogue)
 
 -------------------------
 
