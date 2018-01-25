@@ -10885,7 +10885,7 @@ public class Solution {
 >
 >Explanation:
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-8e2ed5d41a45f2ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/461Image.png)
 >
 >The above arrows point to positions where the corresponding bits are different.
 
@@ -10906,7 +10906,7 @@ public class Solution {
 >
 >解释:
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-8e2ed5d41a45f2ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/461Image.png)
 >
 >上面的箭头指向的位置就是比特位不同的地方。
 
