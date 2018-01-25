@@ -133,6 +133,10 @@ LeetCode笔记
   * [137. Single Number II](#137)
   * [386. Lexicographical Numbers](#386)
   * [96. Unique Binary Search Trees](#96)
+  * [435. Non-overlapping Intervals](#435)
+  * [89. Gray Code](#89)
+  * [309. Best Time to Buy and Sell Stock with Cooldown](#309)
+  * [461. Hamming Distance](#461)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -10524,7 +10528,7 @@ public class Solution {
 >
 >Given n = 3, there are a total of 5 unique BST's.
 >
->![image.png](http://upload-images.jianshu.io/upload_images/9075967-9f5386ae8c5259a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/96Image.png)
 
 
 ## 大意：
@@ -10534,7 +10538,7 @@ public class Solution {
 >
 >给出n = 3，有5个不同的BST：
 >
->![image.png](http://upload-images.jianshu.io/upload_images/9075967-9f5386ae8c5259a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/96Image.png)
 
 ## 思路：
 二叉查找树的性质是左子节点一定小于父节点，右子节点一定大于父节点。
@@ -10573,6 +10577,376 @@ public class Solution {
         return res[n];
     }
 }
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="435"/>435. Non-overlapping Intervals
+## 问题：
+>Given a collection of intervals, find the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
+>
+>Note:
+>1. You may assume the interval's end point is always bigger than its start point.
+>2. Intervals like [1,2] and [2,3] have borders "touching" but they don't overlap each other.
+>
+>Example 1:
+>
+>Input: [ [1,2], [2,3], [3,4], [1,3] ]
+>
+>Output: 1
+>
+>Explanation: [1,3] can be removed and the rest of intervals are non-overlapping.
+>
+>Example 2:
+>
+>Input: [ [1,2], [1,2], [1,2] ]
+>
+>Output: 2
+>
+>Explanation: You need to remove two [1,2] to make the rest of intervals non-overlapping.
+>
+>Example 3:
+>
+>Input: [ [1,2], [2,3] ]
+>
+>Output: 0
+>
+>Explanation: You don't need to remove any of the intervals since they're already non-overlapping.
+
+## 大意：
+>给出一个间隔的集合，找到需要移除的间隔来保证剩余的间隔不发成范围重叠的最小间隔数量。
+>
+>注意：
+>1. 你可以假设间隔的end永远比start大。
+>2. 类似[1,2]和[2,3]的间隔边界是重复的，但是不算做重叠。
+>
+>例1：
+>
+>输入：[ [1,2], [2,3], [3,4], [1,3] ]
+>
+>输出：1
+>
+>解释：[1,3]需要被移除就可以让剩余的无重叠。
+>
+>例2：
+>
+>输入：[ [1,2], [1,2], [1,2] ]
+>
+>输出：2
+>
+>解释：需要移除两个[1,2]来让剩余的无重叠。
+>
+>例3：
+>
+>输入：[ [1,2], [2,3] ]
+>
+>输出：0
+>
+>解释：不需要移除任何间隔，就已经是无重叠的了。
+
+## 思路：
+要移除尽可能少的间隔数，那么首先要知道有哪些部分是重叠了的，发生重叠后，就要尽量移除范围更大的，来保证更多范围小的可以留下。
+
+为了知道有哪些是重叠的，我们先给所有的间隔排个序，这样就可以一个一个地看是否有重叠，间隔排序不像数字排序那么直接，需要自己进行定义，到底是比end的大小还是比start的大小呢？我们选择比end，如果比start，有可能一个start更小但范围很大的间隔，却包含了后面好几个start更大但是范围很小的间隔，而比end就没有这个问题，end基本就限制了你的范围。
+
+那么比较end如果相同，还需要判断start吗？其实不需要了，对于同一个end值的两个间隔，无论我们留哪一个（只要能留，也就是说只要范围没重叠），另一个都一定会被抛弃，且对后续的间隔没有任何影响。
+
+排序我们就可以遍历间隔数组，比较后一个间隔的start是否大于前一个的end，大于则无重叠，我们就留下来，否则就抛弃掉。最后得出抛弃掉的数量就可以了。
+
+```java
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public int eraseOverlapIntervals(Interval[] intervals) {
+        if (intervals.length == 0) return 0;
+        Arrays.sort(intervals, (a, b) -> (a.end - b.end));
+        int end = intervals[0].end;
+        int count = 1;
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i].start >= end) {
+                end = intervals[i].end;
+                count++;
+            }
+        }
+        return intervals.length-count;
+    }
+}
+
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="89"/>89. Gray Code
+## 问题：
+>The gray code is a binary numeral system where two successive values differ in only one bit.
+>
+>Given a non-negative integer n representing the total number of bits in the code, print the sequence of gray code. A gray code sequence must begin with 0.
+>
+>For example, given n = 2, return [0,1,3,2]. Its gray code sequence is:
+>
+>00 - 0
+>
+>01 - 1
+>
+>11 - 3
+>
+>10 - 2
+>
+>Note:
+>1. For a given n, a gray code sequence is not uniquely defined.
+>2. For example, [0,1,3,2] is also a valid gray code sequence according to the above definition.
+>3. For now, the judge is able to judge based on one instance of gray code sequence. Sorry about that.
+
+## 大意：
+>格雷码是一种二进制编码系统，相邻的两个值之间只有一位是不同的。
+>
+>给出一个非负数n，表示编码的总位数，输出格雷码序列。格雷码必须从0开始。
+>
+>比如，给出n=2，返回[0,1,3,2]。它的格雷码序列是：
+>
+>00 - 0
+>
+>01 - 1
+>
+>11 - 3
+>
+>10 - 2
+>
+>注意：
+>1. 对于给出的n，格雷码序列并不是唯一的。
+>2. 比如，[0,2,3,1]也是一种满足上面要求的序列。
+>3. 现在，判断程序只支持一种格雷码序列，很抱歉。
+
+## 思路：
+格雷码是很经典的问题，规则其实很简单，在二进制形式下，任何响铃的两个值的二进制表示形式只有一位是不同的，我们可以找找规律。
+
+一位就是简单的：0,1
+
+两位是：00,01,11,10
+
+三位是：000,001,011,010,110,111,101,100
+
+发现什么规律没有？我们把一位的两个数，前面加上0，就是二位的头两个数，前面加上1再反序，就是二位的后两个数。把二位的前面加上0，就是三位的头四个数，把二位的前面加上1再反过来，就是三位的后四个数。
+
+也就是说，对于每多一位的格雷码，前面一半的第一位都是0，后面一半的第一位都是1，其余的位，前后两半正好是中间对称的，前面一半就是少一位的格雷码序列，后面一半时把其反序。
+
+知道这个规律就好做了，我们可以递归来做，每次取n-1位的格雷码来做上述操作，对于一位的格雷码，直接赋值是0,1就可以了。
+
+不过题目要求返回的是十进制数，而不是字符串，所以我们最好直接操作十进制数，这里前面加0其实就不用做什么，前面加1的话可以将1左移n-1位然后与各个数字相加即可。
+
+注意题目说的n是非负数，所以要考虑n=0的情况，测试用例的n=0时返回的是0。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> res = new ArrayList<Integer>();
+        if (n == 0) {
+            res.add(0);
+            return res;
+        } else if (n == 1) {
+            res.add(0);
+            res.add(1);
+            return res;
+        }
+        
+        List<Integer> last = grayCode(n-1);
+        
+        for (int i = 0; i < last.size()*2; i++) {
+            if (i < last.size()) res.add(last.get(i));
+            else {
+                int temp = last.get(last.size()-(i-last.size())-1);
+                temp += 1 << (n-1);
+                res.add(temp);
+            }
+        }
+        
+        return res;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="309"/>309. Best Time to Buy and Sell Stock with Cooldown
+## 问题：
+>Say you have an array for which the ith element is the price of a given stock on day i.
+>
+>Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times) with the following restrictions:
+> * You may not engage in multiple transactions at the same time (ie, you must sell the stock before you buy again).
+> * After you sell your stock, you cannot buy stock on next day. (ie, cooldown 1 day)
+>
+>Example:
+>
+>prices = [1, 2, 3, 0, 2]
+>
+>maxProfit = 3
+>
+>transactions = [buy, sell, cooldown, buy, sell]
+
+## 大意：
+>你有一个数组，第i个元素表示股票第i天的金额。
+>
+>设计一个算法来找到最大收益。你可以随意交易多次（比如多次买入卖出），但要遵循下面的规则：
+> * 你不能同时做多次操作（也就是卖出之前必须买入）。
+> * 你卖出股票后，接下来那一天不能买股票。（需要冷却一天）
+>
+>例子：
+>
+>prices = [1, 2, 3, 0, 2]
+>
+>maxProfit = 3
+>
+>交易 = [买入, 卖出, 冷却, 买入, 卖出]
+
+## 思路：
+这是一个典型的需要动态规划来做的题，有三种操作类型：买入（buy）、卖出（sell）、休息（rest）。根据动态规划的方法，我们需要列出三种操作的计算方程，三个方程分别表示，以这三种操作作为最后一次操作的情况下的最终最大收益。
+
+根据定义，我们来一个个看：
+
+买入的前一天必须是休息，最后一天如果要是买入，那最后还需要消耗一笔金钱，这笔金钱是当日的股票价price，那么方程是：
+
+buy[i] = max{rest[i-1]-price, buy[i-1]}
+
+卖出的前一天必须是买入，最后一天卖出后，会多得到当日的股价price，那么方程是：
+
+sell[i] = max{buy[i-1]+price, sell[i-1]}
+
+休息的话有多种情况，最后一天休息的话，前一天可以是买入、卖出或者休息，且最后一天也不会有进账或者消费，那么方程是：
+
+rest[i] = max{buy[i-1], sell[i-1], rest[i-1]}
+
+但是稍微想一下就知道，最后一天买入后的收益一定小于最后一天休息的收益，由小于最后一天卖出的收益，即：
+
+buy[i] <= rest[i] <= sell[i]
+
+那么我们rest的方程就可以变为：
+
+rest[i] = sell[i-1]
+
+代入buy和sell的方程就是：
+
+buy[i] = max{sell[i-2]-price, buy[i-1]}
+
+sell[i] = max{buy[i-1]+price, sell[i-1]}
+
+由于每次计算第i个值时我们只用到了最多前两个sell和前一个buy，所以我们不需要记录整个数组的buy和sell，将空间复杂度降低到O（1），只需要记录前两个sell和前一个buy，根据代码的写法，我们甚至只需要记录前一个sell，将对sell的计算放在buy之后，那么自然而然就变成前两个sell了。
+
+## 代码（Java）：
+
+```java
+public class Solution {
+    public int maxProfit(int[] prices) {
+        int sell = 0, prev_sell = 0, buy = Integer.MIN_VALUE, prev_buy;
+        for (int price : prices) {
+            prev_buy = buy;
+            buy = Math.max(prev_sell - price, prev_buy);
+            prev_sell = sell;
+            sell = Math.max(prev_buy + price, prev_sell);
+        }
+        return sell;
+    }
+}
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="461"/>461. Hamming Distance
+## 问题（*Easy*）：
+>The[Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance)between two integers is the number of positions at which the corresponding bits are different.
+>
+>Given two integers`x`and`y`, calculate the Hamming distance.
+>
+>**Note:**
+>
+>
+>0 ≤`x`,`y`< 2<sup>31</sup>.
+>**Example:**
+>
+>Input: x = 1, y = 4
+>
+>Output: 2
+>
+>Explanation:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-8e2ed5d41a45f2ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>The above arrows point to positions where the corresponding bits are different.
+
+## 大意：
+>两个数之间的汉明距离是指其比特位的不同的个数。
+>
+>给出两个整数x和y，计算汉明距离。
+>
+>**注意:**
+>
+>0 ≤`x`,`y`< 2<sup>31</sup>.
+>
+>**例子:**
+>
+>输入: x = 1, y = 4
+>
+>输出: 2
+>
+>解释:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-8e2ed5d41a45f2ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>上面的箭头指向的位置就是比特位不同的地方。
+
+## 思路
+题目很简单，就是比较两个数字的比特位不同之处，那就从右到左一个个比较就好了，也就是要从右往左一个个比较每比特位数字是否相同。因为实际上整数在计算机中就是以二进制存储的，所以可以用右移操作符来操作，更直白的也可以不断地除以2来右移，同时对2取模来得到每次最右边的那个数字，看看两个数取模得到的数是否一样，不一样则距离加一。需要注意的就是每次除以2时要判断数字是否已经变成0了，同样的方式判断循环是否终止。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int x1,y1,res = 0;
+        while (x > 0 || y > 0) {
+            x1 = x % 2;
+            y1 = y % 2;
+            if (x1 != y1) res++;
+            
+            if (x > 0) x = x / 2;
+            if (y > 0) y = y / 2;
+        }
+        return res;
+    }
+};
+```
+
+## 他山之石：
+用异或这个位操作符就可以记录下两个数字所有比特位不同的地方，然后同样的一个个去记录不同的个数，这里他用了一种很巧妙的方式，自己距离推演一下就知道怎么有效的了。
+
+```cpp
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int dist = 0, n = x ^ y;
+        while (n) {
+            ++dist;
+            n &= n - 1;
+        }
+        return dist;
+    }
+};
 ```
 
 [回到目录](#Catalogue)
