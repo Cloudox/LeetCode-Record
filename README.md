@@ -88,6 +88,7 @@ LeetCode笔记
   * [165. Compare Version Numbers](#165)
   * [8. String to Integer (atoi)](#8)
   * [461. Hamming Distance](#461)
+  * [657. Judge Route Circle](#657)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -6552,6 +6553,69 @@ public:
             n &= n - 1;
         }
         return dist;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="657"/>657. Judge Route Circle
+## 问题（*Easy*）：
+>Initially, there is a Robot at position (0, 0). Given a sequence of its moves, judge if this robot makes a circle, which means it moves back to the original place.
+>
+>The move sequence is represented by a string. And each move is represent by a character. The valid robot moves are R (Right), L (Left), U (Up) and D (down). The output should be true or false representing whether the robot makes a circle.
+>
+>Example 1:
+>
+>Input: "UD"
+>
+>Output: true
+>
+>Example 2:
+>
+>Input: "LL"
+>
+>Output: false
+
+## 大意：
+>一开始，有一个机器在（0,0）的位置。给出一个移动序列，判断机器是否运动了一个环，所谓环就是运动回了初始位置。
+>
+>移动序列由字符串表示。每次移动由一个字符表示。有效的机器移动是R（右）、L（左）、U（上）和D（下）。输出应该是true和false来表示机器是否运动了一个环。
+>
+>例1：
+>
+>输入：“UD”
+>
+>输出：true
+>
+>例2：
+>
+>输入：“LL”
+>
+>输出：false
+
+## 思路：
+题目已经指出了做法的关键——坐标。定义x、y两个坐标，初始为0，根据上下左右的移动方式来修改x和y的值，最后看x和y是不是还是0，如果是则是回到了原味了。
+
+需要注意的是，虽然没尝试，但看题目的意思应该是有陷阱在于输入的字符串不仅仅包含着四个字母，还可能有别的，所以要对这四个字母专门判断（else if），不能随便用个else。还有就是C++创建int变量并不会默认初始化为0，而是一个最大值，需要手动初始化为0。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        int x = 0,y = 0;
+        for (int i = 0; i < moves.size(); i++) {
+            if (moves[i] == 'U') y++;
+            else if (moves[i] == 'D') y--;
+            else if (moves[i] == 'L') x--;
+            else if (moves[i] == 'R') x++;
+        }
+        // std::cout << "x:" << x << " y:" << y << std::endl;
+        if (x == 0 && y == 0) return true;
+        else return false;
     }
 };
 ```
