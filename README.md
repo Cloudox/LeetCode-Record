@@ -89,6 +89,7 @@ LeetCode笔记
   * [8. String to Integer (atoi)](#8)
   * [461. Hamming Distance](#461)
   * [657. Judge Route Circle](#657)
+  * [728. Self Dividing Numbers](#728)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -6616,6 +6617,84 @@ public:
         // std::cout << "x:" << x << " y:" << y << std::endl;
         if (x == 0 && y == 0) return true;
         else return false;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="728"/>728. Self Dividing Numbers
+## 问题（*Easy*）：
+>A self-dividing number is a number that is divisible by every digit it contains.
+>
+>For example, 128 is a self-dividing number because 128 % 1 == 0, 128 % 2 == 0, and 128 % 8 == 0.
+>
+>Also, a self-dividing number is not allowed to contain the digit zero.
+>
+>Given a lower and upper number bound, output a list of every possible self dividing number, including the bounds if possible.
+>
+>Example 1:
+>
+>Input: 
+>
+>left = 1, right = 22
+>
+>>Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22]
+>
+>Note:
+>
+>The boundaries of each input argument are 1 <= left <= right <= 10000.
+
+## 大意：
+>一个自分数是指能够被自己包含的每个数字整除的数。
+>
+>比如说，128就是个自分数，因为 128 % 1 == 0, 128 % 2 == 0, 并且 128 % 8 == 0。
+>
+>同时，一个自分数不允许包含数字0。
+>
+>给出一个数字区间，输出其中所有自分数的清单，包含区间两端的数。
+>
+>例1：
+>
+>输入：
+>
+>left=1，right=22；
+>
+>输出： [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22]
+>
+>注意：
+>
+>每个输入参数的范围为 1 <= left <= right <= 10000。
+
+## 思路：
+只需要遍历区间内所有数字，对每个数依次得到每一位的数字，然后试试能不能整除就可以了，很简单，这里我把判断的代码写到另一个函数里，看起来更清晰。
+
+本来还考虑了如果区间包含负数和0该怎么办，后来发现题目说明了都是正数，那就更容易了。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    bool isselfDividing(int num) {
+        if (num == 0) return false;
+        int origin = num;
+        while (abs(num)  > 0) {
+            int temp = num % 10;
+            if (temp == 0) return false;
+            if (origin % temp != 0) return false;
+            num = num / 10;
+        }
+        return true;
+    }
+    
+    vector<int> selfDividingNumbers(int left, int right) {
+        vector<int> res;
+        for (int i = left; i <= right; i++) {
+            if (isselfDividing(i)) res.push_back(i);
+        }
+        return res;
     }
 };
 ```
