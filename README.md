@@ -90,6 +90,7 @@ LeetCode笔记
   * [461. Hamming Distance](#461)
   * [657. Judge Route Circle](#657)
   * [728. Self Dividing Numbers](#728)
+  * [617. Merge Two Binary Trees](#617)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -6695,6 +6696,91 @@ public:
             if (isselfDividing(i)) res.push_back(i);
         }
         return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="617"/>617. Merge Two Binary Trees
+## 问题（*Easy*）:
+>Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not.
+>
+>You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.
+>
+>Example 1:
+>
+>Input: 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-cc020b878790e827.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Output: 
+>
+>Merged tree:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-7d9791d4f0aa2afc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Note: The merging process must start from the root nodes of both trees.
+
+## 大意：
+>给出两个二叉树，想象用一个来覆盖另一个，两棵树中有些节点位置会重叠，有些不会。
+>
+>你需要将它们合并到一个新二叉树。合并规则是如果两个节点重叠了，结果节点的值是两个节点值的和，如果没重叠，就取其中非null的节点作为新树的节点。
+>
+>例1:
+>
+>输入: 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-cc020b878790e827.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>输出: 
+>
+>合并成的树:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-7d9791d4f0aa2afc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>注意：合并过程必须从两棵树的根节点开始。
+
+## 思路：
+从两个根节点开始，先判断根节点是否为空，都不为空则利用递归，将根节点的值相加，然后判断左右子节点是否分别为空，有一个为空则直接取另一个节点，都不为空则递归处理。
+
+这里我们总是以第一颗树作为返回的新树，所以如果要相加节点值，则都加到第一颗树节点上，如果第二颗树的节点为null，则直接取第一颗树的节点，如果第一颗树的节点为null，则将第二颗树的节点复制到第一颗树来，需要注意的树不能直接让节点本身做赋值，要将节点赋值给父节点的子节点指针才算是建立了树关系。
+
+## 代码（C++）：
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void merge(TreeNode *t1, TreeNode *t2) {
+        t1->val += t2->val;
+        
+        if (t1->left == NULL) t1->left = t2->left;
+        else 
+            if (t2->left != NULL) merge(t1->left, t2->left);
+        
+        if (t1->right == NULL) t1->right = t2->right;
+        else 
+            if (t2->right != NULL) merge(t1->right, t2->right);
+        
+    }
+    
+    TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
+        if (t1 == NULL) return t2;
+        if (t2 == NULL) return t1;
+        
+        merge(t1, t2);
+        
+        return t1;
     }
 };
 ```
