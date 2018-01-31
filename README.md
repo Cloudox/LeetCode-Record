@@ -6714,13 +6714,13 @@ public:
 >
 >Input: 
 >
->![]https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image1.png)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image2.png)
 >
 >Output: 
 >
 >Merged tree:
 >
->![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image2.png)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image1.png)
 >
 >Note: The merging process must start from the root nodes of both trees.
 
@@ -6733,13 +6733,13 @@ public:
 >
 >输入: 
 >
->![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image1.png)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image2.png)
 >
 >输出: 
 >
 >合并成的树:
 >
->![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image2.png)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image1.png)
 >
 >注意：合并过程必须从两棵树的根节点开始。
 
