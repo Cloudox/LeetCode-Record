@@ -87,6 +87,10 @@ LeetCode笔记
   * [189. Rotate Array](#189)
   * [165. Compare Version Numbers](#165)
   * [8. String to Integer (atoi)](#8)
+  * [461. Hamming Distance](#461)
+  * [657. Judge Route Circle](#657)
+  * [728. Self Dividing Numbers](#728)
+  * [617. Merge Two Binary Trees](#617)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -136,7 +140,6 @@ LeetCode笔记
   * [435. Non-overlapping Intervals](#435)
   * [89. Gray Code](#89)
   * [309. Best Time to Buy and Sell Stock with Cooldown](#309)
-  * [461. Hamming Distance](#461)
  
 ## <a name="292"/>292.Nim Game
 ### 问题：
@@ -6474,6 +6477,318 @@ public class Solution {
 
 -------------------------
 
+## <a name="461"/>461. Hamming Distance
+## 问题（*Easy*）：
+>The[Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance)between two integers is the number of positions at which the corresponding bits are different.
+>
+>Given two integers`x`and`y`, calculate the Hamming distance.
+>
+>**Note:**
+>
+>
+>0 ≤`x`,`y`< 2<sup>31</sup>.
+>**Example:**
+>
+>Input: x = 1, y = 4
+>
+>Output: 2
+>
+>Explanation:
+>
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/461Image.png)
+>
+>The above arrows point to positions where the corresponding bits are different.
+
+## 大意：
+>两个数之间的汉明距离是指其比特位的不同的个数。
+>
+>给出两个整数x和y，计算汉明距离。
+>
+>**注意:**
+>
+>0 ≤`x`,`y`< 2<sup>31</sup>.
+>
+>**例子:**
+>
+>输入: x = 1, y = 4
+>
+>输出: 2
+>
+>解释:
+>
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/461Image.png)
+>
+>上面的箭头指向的位置就是比特位不同的地方。
+
+## 思路
+题目很简单，就是比较两个数字的比特位不同之处，那就从右到左一个个比较就好了，也就是要从右往左一个个比较每比特位数字是否相同。因为实际上整数在计算机中就是以二进制存储的，所以可以用右移操作符来操作，更直白的也可以不断地除以2来右移，同时对2取模来得到每次最右边的那个数字，看看两个数取模得到的数是否一样，不一样则距离加一。需要注意的就是每次除以2时要判断数字是否已经变成0了，同样的方式判断循环是否终止。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int x1,y1,res = 0;
+        while (x > 0 || y > 0) {
+            x1 = x % 2;
+            y1 = y % 2;
+            if (x1 != y1) res++;
+            
+            if (x > 0) x = x / 2;
+            if (y > 0) y = y / 2;
+        }
+        return res;
+    }
+};
+```
+
+## 他山之石：
+用异或这个位操作符就可以记录下两个数字所有比特位不同的地方，然后同样的一个个去记录不同的个数，这里他用了一种很巧妙的方式，自己距离推演一下就知道怎么有效的了。
+
+```cpp
+class Solution {
+public:
+    int hammingDistance(int x, int y) {
+        int dist = 0, n = x ^ y;
+        while (n) {
+            ++dist;
+            n &= n - 1;
+        }
+        return dist;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="657"/>657. Judge Route Circle
+## 问题（*Easy*）：
+>Initially, there is a Robot at position (0, 0). Given a sequence of its moves, judge if this robot makes a circle, which means it moves back to the original place.
+>
+>The move sequence is represented by a string. And each move is represent by a character. The valid robot moves are R (Right), L (Left), U (Up) and D (down). The output should be true or false representing whether the robot makes a circle.
+>
+>Example 1:
+>
+>Input: "UD"
+>
+>Output: true
+>
+>Example 2:
+>
+>Input: "LL"
+>
+>Output: false
+
+## 大意：
+>一开始，有一个机器在（0,0）的位置。给出一个移动序列，判断机器是否运动了一个环，所谓环就是运动回了初始位置。
+>
+>移动序列由字符串表示。每次移动由一个字符表示。有效的机器移动是R（右）、L（左）、U（上）和D（下）。输出应该是true和false来表示机器是否运动了一个环。
+>
+>例1：
+>
+>输入：“UD”
+>
+>输出：true
+>
+>例2：
+>
+>输入：“LL”
+>
+>输出：false
+
+## 思路：
+题目已经指出了做法的关键——坐标。定义x、y两个坐标，初始为0，根据上下左右的移动方式来修改x和y的值，最后看x和y是不是还是0，如果是则是回到了原味了。
+
+需要注意的是，虽然没尝试，但看题目的意思应该是有陷阱在于输入的字符串不仅仅包含着四个字母，还可能有别的，所以要对这四个字母专门判断（else if），不能随便用个else。还有就是C++创建int变量并不会默认初始化为0，而是一个最大值，需要手动初始化为0。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        int x = 0,y = 0;
+        for (int i = 0; i < moves.size(); i++) {
+            if (moves[i] == 'U') y++;
+            else if (moves[i] == 'D') y--;
+            else if (moves[i] == 'L') x--;
+            else if (moves[i] == 'R') x++;
+        }
+        // std::cout << "x:" << x << " y:" << y << std::endl;
+        if (x == 0 && y == 0) return true;
+        else return false;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="728"/>728. Self Dividing Numbers
+## 问题（*Easy*）：
+>A self-dividing number is a number that is divisible by every digit it contains.
+>
+>For example, 128 is a self-dividing number because 128 % 1 == 0, 128 % 2 == 0, and 128 % 8 == 0.
+>
+>Also, a self-dividing number is not allowed to contain the digit zero.
+>
+>Given a lower and upper number bound, output a list of every possible self dividing number, including the bounds if possible.
+>
+>Example 1:
+>
+>Input: 
+>
+>left = 1, right = 22
+>
+>Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22]
+>
+>Note:
+>
+>The boundaries of each input argument are 1 <= left <= right <= 10000.
+
+## 大意：
+>一个自分数是指能够被自己包含的每个数字整除的数。
+>
+>比如说，128就是个自分数，因为 128 % 1 == 0, 128 % 2 == 0, 并且 128 % 8 == 0。
+>
+>同时，一个自分数不允许包含数字0。
+>
+>给出一个数字区间，输出其中所有自分数的清单，包含区间两端的数。
+>
+>例1：
+>
+>输入：
+>
+>left=1，right=22；
+>
+>输出： [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22]
+>
+>注意：
+>
+>每个输入参数的范围为 1 <= left <= right <= 10000。
+
+## 思路：
+只需要遍历区间内所有数字，对每个数依次得到每一位的数字，然后试试能不能整除就可以了，很简单，这里我把判断的代码写到另一个函数里，看起来更清晰。
+
+本来还考虑了如果区间包含负数和0该怎么办，后来发现题目说明了都是正数，那就更容易了。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    bool isselfDividing(int num) {
+        if (num == 0) return false;
+        int origin = num;
+        while (abs(num)  > 0) {
+            int temp = num % 10;
+            if (temp == 0) return false;
+            if (origin % temp != 0) return false;
+            num = num / 10;
+        }
+        return true;
+    }
+    
+    vector<int> selfDividingNumbers(int left, int right) {
+        vector<int> res;
+        for (int i = left; i <= right; i++) {
+            if (isselfDividing(i)) res.push_back(i);
+        }
+        return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="617"/>617. Merge Two Binary Trees
+## 问题（*Easy*）:
+>Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not.
+>
+>You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.
+>
+>Example 1:
+>
+>Input: 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-cc020b878790e827.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Output: 
+>
+>Merged tree:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-7d9791d4f0aa2afc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Note: The merging process must start from the root nodes of both trees.
+
+## 大意：
+>给出两个二叉树，想象用一个来覆盖另一个，两棵树中有些节点位置会重叠，有些不会。
+>
+>你需要将它们合并到一个新二叉树。合并规则是如果两个节点重叠了，结果节点的值是两个节点值的和，如果没重叠，就取其中非null的节点作为新树的节点。
+>
+>例1:
+>
+>输入: 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-cc020b878790e827.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>输出: 
+>
+>合并成的树:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-7d9791d4f0aa2afc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>注意：合并过程必须从两棵树的根节点开始。
+
+## 思路：
+从两个根节点开始，先判断根节点是否为空，都不为空则利用递归，将根节点的值相加，然后判断左右子节点是否分别为空，有一个为空则直接取另一个节点，都不为空则递归处理。
+
+这里我们总是以第一颗树作为返回的新树，所以如果要相加节点值，则都加到第一颗树节点上，如果第二颗树的节点为null，则直接取第一颗树的节点，如果第一颗树的节点为null，则将第二颗树的节点复制到第一颗树来，需要注意的树不能直接让节点本身做赋值，要将节点赋值给父节点的子节点指针才算是建立了树关系。
+
+## 代码（C++）：
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void merge(TreeNode *t1, TreeNode *t2) {
+        t1->val += t2->val;
+        
+        if (t1->left == NULL) t1->left = t2->left;
+        else 
+            if (t2->left != NULL) merge(t1->left, t2->left);
+        
+        if (t1->right == NULL) t1->right = t2->right;
+        else 
+            if (t2->right != NULL) merge(t1->right, t2->right);
+        
+    }
+    
+    TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
+        if (t1 == NULL) return t2;
+        if (t2 == NULL) return t1;
+        
+        merge(t1, t2);
+        
+        return t1;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
 ## <a name="419"/>419. Battleships in a Board
 ### 问题：
 >Given an 2D board, count how many different battleships are in it. The battleships are represented with 'X's, empty slots are represented with '.'s. You may assume the following rules:
@@ -10865,91 +11180,7 @@ public class Solution {
 
 [回到目录](#Catalogue)
 
--------------------------
 
-## <a name="461"/>461. Hamming Distance
-## 问题（*Easy*）：
->The[Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance)between two integers is the number of positions at which the corresponding bits are different.
->
->Given two integers`x`and`y`, calculate the Hamming distance.
->
->**Note:**
->
->
->0 ≤`x`,`y`< 2<sup>31</sup>.
->**Example:**
->
->Input: x = 1, y = 4
->
->Output: 2
->
->Explanation:
->
->![](http://upload-images.jianshu.io/upload_images/9075967-8e2ed5d41a45f2ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
->
->The above arrows point to positions where the corresponding bits are different.
-
-## 大意：
->两个数之间的汉明距离是指其比特位的不同的个数。
->
->给出两个整数x和y，计算汉明距离。
->
->**注意:**
->
->0 ≤`x`,`y`< 2<sup>31</sup>.
->
->**例子:**
->
->输入: x = 1, y = 4
->
->输出: 2
->
->解释:
->
->![](http://upload-images.jianshu.io/upload_images/9075967-8e2ed5d41a45f2ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
->
->上面的箭头指向的位置就是比特位不同的地方。
-
-## 思路
-题目很简单，就是比较两个数字的比特位不同之处，那就从右到左一个个比较就好了，也就是要从右往左一个个比较每比特位数字是否相同。因为实际上整数在计算机中就是以二进制存储的，所以可以用右移操作符来操作，更直白的也可以不断地除以2来右移，同时对2取模来得到每次最右边的那个数字，看看两个数取模得到的数是否一样，不一样则距离加一。需要注意的就是每次除以2时要判断数字是否已经变成0了，同样的方式判断循环是否终止。
-
-## 代码（C++）：
-```cpp
-class Solution {
-public:
-    int hammingDistance(int x, int y) {
-        int x1,y1,res = 0;
-        while (x > 0 || y > 0) {
-            x1 = x % 2;
-            y1 = y % 2;
-            if (x1 != y1) res++;
-            
-            if (x > 0) x = x / 2;
-            if (y > 0) y = y / 2;
-        }
-        return res;
-    }
-};
-```
-
-## 他山之石：
-用异或这个位操作符就可以记录下两个数字所有比特位不同的地方，然后同样的一个个去记录不同的个数，这里他用了一种很巧妙的方式，自己距离推演一下就知道怎么有效的了。
-
-```cpp
-class Solution {
-public:
-    int hammingDistance(int x, int y) {
-        int dist = 0, n = x ^ y;
-        while (n) {
-            ++dist;
-            n &= n - 1;
-        }
-        return dist;
-    }
-};
-```
-
-[回到目录](#Catalogue)
 
 -------------------------
 
