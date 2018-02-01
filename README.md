@@ -1041,7 +1041,7 @@ private ListNode reverseListInt(ListNode head, ListNode newHead) {
 >
 >Given s = "hello", return "olleh".
 
-###大意：
+## 大意：
 >写一个函数获取输入的字符串然后返回反转后后的字符串。
 >
 >比如：
