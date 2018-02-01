@@ -15,6 +15,7 @@ LeetCode笔记
   * [217. Contains Duplicate](#217)
   * [169. Majority Element](#169)
   * [206. Reverse Linked List](#206)
+  * [344. Reverse String](#344)
   * [326. Power of Three](#326)
   * [231. Power of Two](#231)
   * [202. Happy Number](#202)
@@ -1026,6 +1027,79 @@ private ListNode reverseListInt(ListNode head, ListNode newHead) {
     head.next = newHead;
     return reverseListInt(next, head);
 }
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="344"/>344. Reverse String
+###问题：
+>Write a function that takes a string as input and returns the string reversed.
+>
+>Example:
+>
+>Given s = "hello", return "olleh".
+
+###大意：
+>写一个函数获取输入的字符串然后返回反转后后的字符串。
+>
+>比如：
+>
+>给出s = "hello"，返回"olleh"
+
+###思路：
+思路很直接就想到，先把字符串拆分成一个个字符组成的数组，新建一个空字符串，然后从数组的最后一个字符往前遍历，每遍历一个都将其拼接到新字符处后面去，遍历完了就解决了。由于拼接的方式有很多，效率也各不相同，所以查了资料之后，选择了StringBuilder的方式，据说速度最快，但有线程安全的问题，而且只有JDK5支持。
+
+###代码（Java）：
+```java
+public class Solution {
+    public String reverseString(String s) {
+        char[] sCharArr = s.toCharArray();// 拆分成数组
+        StringBuilder sb = new StringBuilder();
+        for (int i = sCharArr.length - 1; i >= 0; i--) {
+	        // 遍历添加到末尾
+            sb.append(sCharArr[i]);
+        }
+        return sb.toString();
+    }
+}
+```
+由于数据不够，也看不出我的速度比起别人到底如何，但我在项目中确实发现简单的用"+"来拼接字符串在量大了以后真的会非常慢，所以有其他方法的话还是尽量不要直接用"+"号了。
+
+###他山之石：
+Discuss中看到一行代码解决的，也是用StringBuilder：
+```java
+public class Solution {
+    public String reverseString(String s) {
+        return  new StringBuilder(s).reverse().toString();
+    }
+}
+```
+所以熟悉原生支持的方法真的很重要= =
+
+## C++：
+其实C++的string本身就有一个reverse方法，接收开始和结束的迭代器，就可以做到反转了，但是提交后显示速度非常慢。
+
+后来想到用copy配合rbegin、rend的反向迭代器来做，或者不要copy了，直接就返回一个反向迭代器构造出的字符串，看讨论中其他人也用过这种方法，但是可能是后来新增了示例，遇到有换行的字符串就会报错，尴尬。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    string reverseString(string s) {
+        // 直接用reverse方法：
+        return reverse(s.begin(), s.end());
+
+        // copy搭配反向迭代器：
+        // string res;
+        // copy(s.rbegin(), s.rend(), res.begin());
+        // return res;
+
+        // 反向迭代器搭配构造函数：
+        // return string(s.rbegin(), s.rend());
+    }
+};
 ```
 
 [回到目录](#Catalogue)
