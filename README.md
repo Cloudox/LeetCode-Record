@@ -1034,7 +1034,7 @@ private ListNode reverseListInt(ListNode head, ListNode newHead) {
 -------------------------
 
 ## <a name="344"/>344. Reverse String
-###问题：
+## 问题：
 >Write a function that takes a string as input and returns the string reversed.
 >
 >Example:
@@ -1048,7 +1048,7 @@ private ListNode reverseListInt(ListNode head, ListNode newHead) {
 >
 >给出s = "hello"，返回"olleh"
 
-###思路：
+## 思路：
 思路很直接就想到，先把字符串拆分成一个个字符组成的数组，新建一个空字符串，然后从数组的最后一个字符往前遍历，每遍历一个都将其拼接到新字符处后面去，遍历完了就解决了。由于拼接的方式有很多，效率也各不相同，所以查了资料之后，选择了StringBuilder的方式，据说速度最快，但有线程安全的问题，而且只有JDK5支持。
 
 ###代码（Java）：
@@ -1067,7 +1067,7 @@ public class Solution {
 ```
 由于数据不够，也看不出我的速度比起别人到底如何，但我在项目中确实发现简单的用"+"来拼接字符串在量大了以后真的会非常慢，所以有其他方法的话还是尽量不要直接用"+"号了。
 
-###他山之石：
+## 他山之石：
 Discuss中看到一行代码解决的，也是用StringBuilder：
 ```java
 public class Solution {
