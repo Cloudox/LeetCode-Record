@@ -93,6 +93,7 @@ LeetCode笔记
   * [657. Judge Route Circle](#657)
   * [728. Self Dividing Numbers](#728)
   * [617. Merge Two Binary Trees](#617)
+  * [561. Array Partition I](#561)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -6927,6 +6928,63 @@ public:
         merge(t1, t2);
         
         return t1;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="561"/>561. Array Partition I
+## 问题（*Easy*）：
+>Given an array of 2n integers, your task is to group these integers into n pairs of integer, say (a1, b1), (a2, b2), ..., (an, bn) which makes sum of min(ai, bi) for all i from 1 to n as large as possible.
+>
+>Example 1:
+>
+>Input: [1,4,3,2]
+>
+>Output: 4
+>
+>Explanation: n is 2, and the maximum sum of pairs is 4 = min(1, 2) + min(3, 4).
+>
+>Note:
+>1. n is a positive integer, which is in the range of [1, 10000].
+>2. All the integers in the array will be in the range of [-10000, 10000].
+
+## 大意：
+>给出一个包含2n个整数的数组，你的任务是将这些整数组合成n对，成为 (a1, b1), (a2, b2), ..., (an, bn)，使n组队的min(ai, bi)之和最大。
+>
+>例1：
+>
+>输入：[1,4,3,2]
+>
+>输出：4
+>
+>解释：n是2，最大和的对是 4 = min(1, 2) + min(3, 4)。
+>
+>注意：
+>1. n是个正数，范围在[1, 10000]。
+>2. 数组中所有正数的范围都在[-10000, 10000]。
+
+## 思路：
+题目的意思就是2n个数分成n对，取每一对中较小的数相加，令和最大。要达到和最大，也就是要让每一对的较小数尽量大，怎么处理呢？只要确定每一对都是数组中大小相邻的两个数就可以了，比如例子中是1/2/3/4，那么就要相邻的1/2为一对，3/4为一对，这样才有可能把3留下来。这种操作的目的是尽量让大数有可能被算到和里去。
+
+因此要达到这个目的，需要先把数组排序，然后隔一个数取一个数算到最终和里去就可以了。
+
+这样做的时间复杂度是排序算法的时间复杂度，但是必须要确定整数的顺序，有的做法用空间换时间（题目明确了整数范围，因此可以确定空间大小）来达到以O（n）时间复杂度排序的目的，但是没太多必要其实。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int arrayPairSum(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int res = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (i % 2 == 0) res = res + nums[i];
+        }
+        return res;
     }
 };
 ```
