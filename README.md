@@ -94,6 +94,7 @@ LeetCode笔记
   * [728. Self Dividing Numbers](#728)
   * [617. Merge Two Binary Trees](#617)
   * [561. Array Partition I](#561)
+  * [557. Reverse Words in a String III](#557)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -6985,6 +6986,108 @@ public:
             if (i % 2 == 0) res = res + nums[i];
         }
         return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="557"/>557. Reverse Words in a String III
+## 问题（*Easy*）：
+>Given a string, you need to reverse the order of characters in each word within a sentence while still preserving whitespace and initial word order.
+>
+>Example 1:
+>
+>Input: "Let's take LeetCode contest"
+>
+>Output: "s'teL ekat edoCteeL tsetnoc"
+>
+>Note: In the string, each word is separated by single space and there will not be any extra space in the string.
+
+## 大意：
+>给出一个字符串，你需要翻转句子中每个单词的字母，但保证空格位置以及原始的单词顺序不变。
+>
+>例1：
+>
+>输入："Let's take LeetCode contest"
+>
+>输出： "s'teL ekat edoCteeL tsetnoc"
+>
+>注意：在字符串中，每个单词都被单个空格分开，不会有额外的空格。
+
+## 思路：
+遍历字符串，没遇到一个空格就开始处理前面的这个单词，将其用一些方式进行反转后存入新的字符串中，然后记得在新字符串后面加个空格（最后一个单词就不要加空格了）。
+
+如何对单词反转有多种方式，可以用一个临时容器来存储，遇到单词中每个字母都将其插入到容器首部，然后再将整个容器的内容放到字符串中就好了。这个容器可以是deque这种允许两端插入的，也可以就是string。但是用string（49ms）居然比用在首部插入应该更快的deque（768ms）要快得多。
+
+## 代码（C++）：
+```cpp
+// 用deque
+class Solution {
+public:
+    string reverseWords(string s) {
+        deque<char> que;
+        string res = "";
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] != ' ') {
+                que.push_front(s[i]);
+            } else {
+                auto iter = que.begin();
+                while (iter != que.end()) {
+                    res = res + *iter;
+                    iter++;
+                }
+                que.clear();
+                res = res + " ";
+            }
+        }
+        auto iter = que.begin();
+        while (iter != que.end()) {
+            res = res + *iter;
+            iter++;
+        }
+        return res;
+    }
+};
+
+// 用string
+class Solution {
+public:
+    string reverseWords(string s) {
+        string res = "";
+        int pos = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] != ' ') {
+                res.insert(pos, s.substr(i, 1));
+            } else {
+                res = res + " ";
+                pos = i + 1;
+            }
+        }
+        return res;
+    }
+};
+```
+
+## 他山之石：
+原来C++可以直接操作让string的部分区间进行反转，那就只需要记录空格的位置，然后将之间的区域进行反转就行了，也不用创建结果字符串，直接在原字符串上操作即可，速度快了一倍。
+
+```cpp
+class Solution {
+public:
+    string reverseWords(string s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] != ' ') {   // when i is a non-space
+                int j = i;
+                for (; j < s.length() && s[j] != ' '; j++) { } // move j to the next space
+                reverse(s.begin() + i, s.begin() + j);
+                i = j - 1;
+            }
+        }
+        
+        return s;
     }
 };
 ```
