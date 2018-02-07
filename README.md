@@ -95,6 +95,7 @@ LeetCode笔记
   * [617. Merge Two Binary Trees](#617)
   * [561. Array Partition I](#561)
   * [557. Reverse Words in a String III](#557)
+  * [500. Keyboard Row](#500)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -6626,7 +6627,7 @@ public class Solution {
 -------------------------
 
 ## <a name="461"/>461. Hamming Distance
-## 问题（*Easy*）：
+## 问题：
 >The[Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance)between two integers is the number of positions at which the corresponding bits are different.
 >
 >Given two integers`x`and`y`, calculate the Hamming distance.
@@ -6712,7 +6713,7 @@ public:
 -------------------------
 
 ## <a name="657"/>657. Judge Route Circle
-## 问题（*Easy*）：
+## 问题：
 >Initially, there is a Robot at position (0, 0). Given a sequence of its moves, judge if this robot makes a circle, which means it moves back to the original place.
 >
 >The move sequence is represented by a string. And each move is represent by a character. The valid robot moves are R (Right), L (Left), U (Up) and D (down). The output should be true or false representing whether the robot makes a circle.
@@ -6775,7 +6776,7 @@ public:
 -------------------------
 
 ## <a name="728"/>728. Self Dividing Numbers
-## 问题（*Easy*）：
+## 问题：
 >A self-dividing number is a number that is divisible by every digit it contains.
 >
 >For example, 128 is a self-dividing number because 128 % 1 == 0, 128 % 2 == 0, and 128 % 8 == 0.
@@ -6853,7 +6854,7 @@ public:
 -------------------------
 
 ## <a name="617"/>617. Merge Two Binary Trees
-## 问题（*Easy*）:
+## 问题:
 >Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not.
 >
 >You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.
@@ -6938,7 +6939,7 @@ public:
 -------------------------
 
 ## <a name="561"/>561. Array Partition I
-## 问题（*Easy*）：
+## 问题：
 >Given an array of 2n integers, your task is to group these integers into n pairs of integer, say (a1, b1), (a2, b2), ..., (an, bn) which makes sum of min(ai, bi) for all i from 1 to n as large as possible.
 >
 >Example 1:
@@ -6995,7 +6996,7 @@ public:
 -------------------------
 
 ## <a name="557"/>557. Reverse Words in a String III
-## 问题（*Easy*）：
+## 问题：
 >Given a string, you need to reverse the order of characters in each word within a sentence while still preserving whitespace and initial word order.
 >
 >Example 1:
@@ -7088,6 +7089,77 @@ public:
         }
         
         return s;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="500"/>500. Keyboard Row
+## 问题：
+>Given a List of words, return the words that can be typed using letters of**alphabet**
+on only one row's of American keyboard like the image below.
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-c9a193b0f3ebf6c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>**Example 1:**
+>
+>Input: ["Hello", "Alaska", "Dad", "Peace"]
+>
+>Output: ["Alaska", "Dad"]
+>
+>**Note:**
+>
+>1.  You may use one character in the keyboard more than once.
+>2.  You may assume the input string will only contain letters of alphabet.
+
+## 大意：
+>给出一系列单词，返回可以只用如下的美式键盘中一行字母打印出来的单词。
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-c9a193b0f3ebf6c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>**例1：**
+>
+>输入：["Hello", "Alaska", "Dad", "Peace"]
+>
+>输出：["Alaska", "Dad"]
+>
+>**注意：**
+>
+>1.  你可以使用一个字母多次。
+>2.  你可以假设输入只包含字母表的字母。
+
+## 思路：
+既然题目说只包含字母，那我们就用一个大小为26数组来记录每个字母在第几行。然后遍历容器，对于每个字符串，看看其中每个字母属于哪一行，这里要注意字母有大小写之分。为了方便，我们可以用一个变量来保存一个字符串中的字母的行，如果在遍历字母过程中出现了不一样的行，那就视为要剔除的字符串，否则就保留，这里我们可以用容易的删除操作，不用创建新容器来保存数据。这样做的速度最快。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    vector<string> findWords(vector<string>& words) {
+        int rows[] = {2,3,3,2,1,2,2,2,1,2,2,2,3,3,1,1,1,1,2,1,1,3,1,3,1,3};
+        auto iter = words.begin();
+        while (iter != words.end()) {
+            string str = *iter;
+            int row = 0;
+            bool pass = true;
+            for (int i = 0; i <str.length(); i++) {
+                int index = 0;
+                if (str[i] - 'a' < 0) index = str[i] - 'A';
+                else index = str[i] - 'a';
+                
+                if (row == 0) row = rows[index];
+                else if (rows[index] != row) {
+                    pass = false;
+                    break;
+                }
+            }
+            if (pass) iter++;
+            else iter = words.erase(iter, iter+1);
+        }
+        return words;
     }
 };
 ```
