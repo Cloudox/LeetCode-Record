@@ -7102,7 +7102,7 @@ public:
 >Given a List of words, return the words that can be typed using letters of**alphabet**
 on only one row's of American keyboard like the image below.
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-c9a193b0f3ebf6c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/500Image.png)
 >
 >**Example 1:**
 >
@@ -7118,7 +7118,7 @@ on only one row's of American keyboard like the image below.
 ## 大意：
 >给出一系列单词，返回可以只用如下的美式键盘中一行字母打印出来的单词。
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-c9a193b0f3ebf6c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/500Image.png)
 >
 >**例1：**
 >
