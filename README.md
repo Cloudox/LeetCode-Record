@@ -15,6 +15,8 @@ LeetCode笔记
   * [217. Contains Duplicate](#217)
   * [169. Majority Element](#169)
   * [206. Reverse Linked List](#206)
+  * [344. Reverse String](#344)
+  * [371. Sum of Two Integers](#371)
   * [326. Power of Three](#326)
   * [231. Power of Two](#231)
   * [202. Happy Number](#202)
@@ -91,6 +93,9 @@ LeetCode笔记
   * [657. Judge Route Circle](#657)
   * [728. Self Dividing Numbers](#728)
   * [617. Merge Two Binary Trees](#617)
+  * [561. Array Partition I](#561)
+  * [557. Reverse Words in a String III](#557)
+  * [500. Keyboard Row](#500)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -1027,6 +1032,150 @@ private ListNode reverseListInt(ListNode head, ListNode newHead) {
     return reverseListInt(next, head);
 }
 ```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="344"/>344. Reverse String
+## 问题：
+>Write a function that takes a string as input and returns the string reversed.
+>
+>Example:
+>
+>Given s = "hello", return "olleh".
+
+## 大意：
+>写一个函数获取输入的字符串然后返回反转后后的字符串。
+>
+>比如：
+>
+>给出s = "hello"，返回"olleh"
+
+## 思路：
+思路很直接就想到，先把字符串拆分成一个个字符组成的数组，新建一个空字符串，然后从数组的最后一个字符往前遍历，每遍历一个都将其拼接到新字符处后面去，遍历完了就解决了。由于拼接的方式有很多，效率也各不相同，所以查了资料之后，选择了StringBuilder的方式，据说速度最快，但有线程安全的问题，而且只有JDK5支持。
+
+###代码（Java）：
+```java
+public class Solution {
+    public String reverseString(String s) {
+        char[] sCharArr = s.toCharArray();// 拆分成数组
+        StringBuilder sb = new StringBuilder();
+        for (int i = sCharArr.length - 1; i >= 0; i--) {
+	        // 遍历添加到末尾
+            sb.append(sCharArr[i]);
+        }
+        return sb.toString();
+    }
+}
+```
+由于数据不够，也看不出我的速度比起别人到底如何，但我在项目中确实发现简单的用"+"来拼接字符串在量大了以后真的会非常慢，所以有其他方法的话还是尽量不要直接用"+"号了。
+
+## 他山之石：
+Discuss中看到一行代码解决的，也是用StringBuilder：
+```java
+public class Solution {
+    public String reverseString(String s) {
+        return  new StringBuilder(s).reverse().toString();
+    }
+}
+```
+所以熟悉原生支持的方法真的很重要= =
+
+## C++：
+其实C++的string本身就有一个reverse方法，接收开始和结束的迭代器，就可以做到反转了，但是提交后显示速度非常慢。
+
+后来想到用copy配合rbegin、rend的反向迭代器来做，或者不要copy了，直接就返回一个反向迭代器构造出的字符串，看讨论中其他人也用过这种方法，但是可能是后来新增了示例，遇到有换行的字符串就会报错，尴尬。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    string reverseString(string s) {
+        // 直接用reverse方法：
+        return reverse(s.begin(), s.end());
+
+        // copy搭配反向迭代器：
+        // string res;
+        // copy(s.rbegin(), s.rend(), res.begin());
+        // return res;
+
+        // 反向迭代器搭配构造函数：
+        // return string(s.rbegin(), s.rend());
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="371"/>371. Sum of Two Integers
+## 问题：
+> Calculate the sum of two integers a and b, but you are not allowed to use the operator + and -.
+>
+> Example:
+>
+Given a = 1 and b = 2, return 3.
+
+## 大意：
+> 计算a和b两个整数的和，但是不能用+或-运算符。
+>
+> 比如：
+>
+> 给出 a = 1 和 b = 2，返回 3.
+
+## 思路：
+这道题乍看之下很简单，计算两个数之和嘛，但问题在于不能直接使用加号和减号，这就尴尬了，不过如果不这样，也称不上一道题了。其实对于运算，我们知道计算机本身就是没有什么加减乘除的，一切都是二进制在进行一些位运算，所以这里很显然的一个思路也就是转换成位运算，当然如果你本来就知道加法的实现原理，那也可以直接拿来做了。
+
+我们先看个位数的二进制运算：
+1 + 1 = 10；
+1 + 0 = 1；
+0 + 1 = 1；
+0 + 0 = 0。
+
+如果我们用^，也就是位异或运算来做：
+1 ^ 1 = 0；
+1 ^ 0 = 1；
+0 ^ 1 = 1；
+0 ^ 0 = 0。
+
+其实观察可以看到，异或和直接的加唯一结果有区别的就是1+1这一条，但是换个想法，1+1是要进位的，进位后个位上还是变成0了，这样就一样了，只不过还需要有一个进位操作，而对于二进制，只有都是1的时候才会进位，这立马就可以联想到“与”操作了对不对：
+1 & 1 = 1；
+1 & 0 = 0；
+0 & 1 = 0；
+0 & 0 = 0。
+
+既然是进位，我们当然要将得出来的结果进一位，这里使用左移运算符就可以了，所以对于1+1这种的做法就是异或加上与的进位：
+1+1 = 1^1 + (1&1)<<1
+
+当然我们还是不能有加号，所以对上那个加法我们还是要使用同样的方法，这就是递归了，那要到什么时候为止呢，从逻辑上来说，到不再有进位就可以了。
+
+现在我们看一个二位数的加法：11+ 10 = 101
+
+首先11^10 = 01，
+然后11&10 = 10，左移一位得100，
+现在有进位，那么继续 01+100，
+01^100 = 101，
+01&100 = 000，
+这时候与操作后的结果为0了，可以停止运算了，最后的的结果应该是101，答案正确。说明思路是对的。
+
+## 代码（Java）
+```
+public class Solution {
+    public int getSum(int a, int b) {
+        if (b == 0) return a;
+        int sum,up;
+        sum = a^b;
+        up = (a&b)<<1;
+        return getSum(sum, up);
+    }
+}
+```
+
+代码很简单，递归调用，在每次调用中都先检查进位的计算是不是为0了，也就是是不是没有进位了，如果没有了说明异或运算就是最终结果了，如果还有进位就继续算下去，算异或和与之后的左移然后继续调用。
+
+看来这些看似理所当然的最简单的运算符，内里的门道也是需要了解清楚的。
 
 [回到目录](#Catalogue)
 
@@ -6478,7 +6627,7 @@ public class Solution {
 -------------------------
 
 ## <a name="461"/>461. Hamming Distance
-## 问题（*Easy*）：
+## 问题：
 >The[Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance)between two integers is the number of positions at which the corresponding bits are different.
 >
 >Given two integers`x`and`y`, calculate the Hamming distance.
@@ -6564,7 +6713,7 @@ public:
 -------------------------
 
 ## <a name="657"/>657. Judge Route Circle
-## 问题（*Easy*）：
+## 问题：
 >Initially, there is a Robot at position (0, 0). Given a sequence of its moves, judge if this robot makes a circle, which means it moves back to the original place.
 >
 >The move sequence is represented by a string. And each move is represent by a character. The valid robot moves are R (Right), L (Left), U (Up) and D (down). The output should be true or false representing whether the robot makes a circle.
@@ -6627,7 +6776,7 @@ public:
 -------------------------
 
 ## <a name="728"/>728. Self Dividing Numbers
-## 问题（*Easy*）：
+## 问题：
 >A self-dividing number is a number that is divisible by every digit it contains.
 >
 >For example, 128 is a self-dividing number because 128 % 1 == 0, 128 % 2 == 0, and 128 % 8 == 0.
@@ -6705,7 +6854,7 @@ public:
 -------------------------
 
 ## <a name="617"/>617. Merge Two Binary Trees
-## 问题（*Easy*）:
+## 问题:
 >Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not.
 >
 >You need to merge them into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of new tree.
@@ -6714,13 +6863,13 @@ public:
 >
 >Input: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-cc020b878790e827.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image2.png)
 >
 >Output: 
 >
 >Merged tree:
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-7d9791d4f0aa2afc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image1.png)
 >
 >Note: The merging process must start from the root nodes of both trees.
 
@@ -6733,13 +6882,13 @@ public:
 >
 >输入: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-cc020b878790e827.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image2.png)
 >
 >输出: 
 >
 >合并成的树:
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-7d9791d4f0aa2afc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/617Image1.png)
 >
 >注意：合并过程必须从两棵树的根节点开始。
 
@@ -6781,6 +6930,236 @@ public:
         merge(t1, t2);
         
         return t1;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="561"/>561. Array Partition I
+## 问题：
+>Given an array of 2n integers, your task is to group these integers into n pairs of integer, say (a1, b1), (a2, b2), ..., (an, bn) which makes sum of min(ai, bi) for all i from 1 to n as large as possible.
+>
+>Example 1:
+>
+>Input: [1,4,3,2]
+>
+>Output: 4
+>
+>Explanation: n is 2, and the maximum sum of pairs is 4 = min(1, 2) + min(3, 4).
+>
+>Note:
+>1. n is a positive integer, which is in the range of [1, 10000].
+>2. All the integers in the array will be in the range of [-10000, 10000].
+
+## 大意：
+>给出一个包含2n个整数的数组，你的任务是将这些整数组合成n对，成为 (a1, b1), (a2, b2), ..., (an, bn)，使n组队的min(ai, bi)之和最大。
+>
+>例1：
+>
+>输入：[1,4,3,2]
+>
+>输出：4
+>
+>解释：n是2，最大和的对是 4 = min(1, 2) + min(3, 4)。
+>
+>注意：
+>1. n是个正数，范围在[1, 10000]。
+>2. 数组中所有正数的范围都在[-10000, 10000]。
+
+## 思路：
+题目的意思就是2n个数分成n对，取每一对中较小的数相加，令和最大。要达到和最大，也就是要让每一对的较小数尽量大，怎么处理呢？只要确定每一对都是数组中大小相邻的两个数就可以了，比如例子中是1/2/3/4，那么就要相邻的1/2为一对，3/4为一对，这样才有可能把3留下来。这种操作的目的是尽量让大数有可能被算到和里去。
+
+因此要达到这个目的，需要先把数组排序，然后隔一个数取一个数算到最终和里去就可以了。
+
+这样做的时间复杂度是排序算法的时间复杂度，但是必须要确定整数的顺序，有的做法用空间换时间（题目明确了整数范围，因此可以确定空间大小）来达到以O（n）时间复杂度排序的目的，但是没太多必要其实。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int arrayPairSum(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int res = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (i % 2 == 0) res = res + nums[i];
+        }
+        return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="557"/>557. Reverse Words in a String III
+## 问题：
+>Given a string, you need to reverse the order of characters in each word within a sentence while still preserving whitespace and initial word order.
+>
+>Example 1:
+>
+>Input: "Let's take LeetCode contest"
+>
+>Output: "s'teL ekat edoCteeL tsetnoc"
+>
+>Note: In the string, each word is separated by single space and there will not be any extra space in the string.
+
+## 大意：
+>给出一个字符串，你需要翻转句子中每个单词的字母，但保证空格位置以及原始的单词顺序不变。
+>
+>例1：
+>
+>输入："Let's take LeetCode contest"
+>
+>输出： "s'teL ekat edoCteeL tsetnoc"
+>
+>注意：在字符串中，每个单词都被单个空格分开，不会有额外的空格。
+
+## 思路：
+遍历字符串，没遇到一个空格就开始处理前面的这个单词，将其用一些方式进行反转后存入新的字符串中，然后记得在新字符串后面加个空格（最后一个单词就不要加空格了）。
+
+如何对单词反转有多种方式，可以用一个临时容器来存储，遇到单词中每个字母都将其插入到容器首部，然后再将整个容器的内容放到字符串中就好了。这个容器可以是deque这种允许两端插入的，也可以就是string。但是用string（49ms）居然比用在首部插入应该更快的deque（768ms）要快得多。
+
+## 代码（C++）：
+```cpp
+// 用deque
+class Solution {
+public:
+    string reverseWords(string s) {
+        deque<char> que;
+        string res = "";
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] != ' ') {
+                que.push_front(s[i]);
+            } else {
+                auto iter = que.begin();
+                while (iter != que.end()) {
+                    res = res + *iter;
+                    iter++;
+                }
+                que.clear();
+                res = res + " ";
+            }
+        }
+        auto iter = que.begin();
+        while (iter != que.end()) {
+            res = res + *iter;
+            iter++;
+        }
+        return res;
+    }
+};
+
+// 用string
+class Solution {
+public:
+    string reverseWords(string s) {
+        string res = "";
+        int pos = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] != ' ') {
+                res.insert(pos, s.substr(i, 1));
+            } else {
+                res = res + " ";
+                pos = i + 1;
+            }
+        }
+        return res;
+    }
+};
+```
+
+## 他山之石：
+原来C++可以直接操作让string的部分区间进行反转，那就只需要记录空格的位置，然后将之间的区域进行反转就行了，也不用创建结果字符串，直接在原字符串上操作即可，速度快了一倍。
+
+```cpp
+class Solution {
+public:
+    string reverseWords(string s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] != ' ') {   // when i is a non-space
+                int j = i;
+                for (; j < s.length() && s[j] != ' '; j++) { } // move j to the next space
+                reverse(s.begin() + i, s.begin() + j);
+                i = j - 1;
+            }
+        }
+        
+        return s;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="500"/>500. Keyboard Row
+## 问题：
+>Given a List of words, return the words that can be typed using letters of**alphabet**
+on only one row's of American keyboard like the image below.
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-c9a193b0f3ebf6c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>**Example 1:**
+>
+>Input: ["Hello", "Alaska", "Dad", "Peace"]
+>
+>Output: ["Alaska", "Dad"]
+>
+>**Note:**
+>
+>1.  You may use one character in the keyboard more than once.
+>2.  You may assume the input string will only contain letters of alphabet.
+
+## 大意：
+>给出一系列单词，返回可以只用如下的美式键盘中一行字母打印出来的单词。
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-c9a193b0f3ebf6c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>**例1：**
+>
+>输入：["Hello", "Alaska", "Dad", "Peace"]
+>
+>输出：["Alaska", "Dad"]
+>
+>**注意：**
+>
+>1.  你可以使用一个字母多次。
+>2.  你可以假设输入只包含字母表的字母。
+
+## 思路：
+既然题目说只包含字母，那我们就用一个大小为26数组来记录每个字母在第几行。然后遍历容器，对于每个字符串，看看其中每个字母属于哪一行，这里要注意字母有大小写之分。为了方便，我们可以用一个变量来保存一个字符串中的字母的行，如果在遍历字母过程中出现了不一样的行，那就视为要剔除的字符串，否则就保留，这里我们可以用容易的删除操作，不用创建新容器来保存数据。这样做的速度最快。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    vector<string> findWords(vector<string>& words) {
+        int rows[] = {2,3,3,2,1,2,2,2,1,2,2,2,3,3,1,1,1,1,2,1,1,3,1,3,1,3};
+        auto iter = words.begin();
+        while (iter != words.end()) {
+            string str = *iter;
+            int row = 0;
+            bool pass = true;
+            for (int i = 0; i <str.length(); i++) {
+                int index = 0;
+                if (str[i] - 'a' < 0) index = str[i] - 'A';
+                else index = str[i] - 'a';
+                
+                if (row == 0) row = rows[index];
+                else if (rows[index] != row) {
+                    pass = false;
+                    break;
+                }
+            }
+            if (pass) iter++;
+            else iter = words.erase(iter, iter+1);
+        }
+        return words;
     }
 };
 ```
