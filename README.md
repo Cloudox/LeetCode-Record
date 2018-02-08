@@ -96,6 +96,7 @@ LeetCode笔记
   * [561. Array Partition I](#561)
   * [557. Reverse Words in a String III](#557)
   * [500. Keyboard Row](#500)
+  * [669. Trim a Binary Search Tree](#699)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7160,6 +7161,133 @@ public:
             else iter = words.erase(iter, iter+1);
         }
         return words;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="699"/>669. Trim a Binary Search Tree
+## 问题：
+>Given a binary search tree and the lowest and highest boundaries as L and R, trim the tree so that all its elements lies in [L, R] (R >= L). You might need to change the root of the tree, so the result should return the new root of the trimmed binary search tree.
+>
+>Example 1:
+>
+>Input: 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-a51263e0183622d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Output: 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-b24db8cd80632a3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Example 2:
+>
+>Input: 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-cf592b288fc4c450.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Output: 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-c7c6afeeea24b83b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 大意：
+>给出一个二叉查找树和最小、最大边界L和R，修剪树使其所有元素都在[L, R]（R >= L）中。你可能需要改变树的根节点，所以结果应该返回裁剪后的树的新跟节点。
+>
+>例1：
+>
+>输入：
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-a51263e0183622d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>输出： 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-b24db8cd80632a3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>例2：
+>
+>输入：
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-cf592b288fc4c450.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>输出： 
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-c7c6afeeea24b83b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 思路：
+题目的意思就是让树只保留L到R范围内的数字，但是还是要保证树是个二叉查找树，虽然题目说了可能要改变根节点，但实际上只有根节点不在范围内的时候才需要更改。
+
+思路就是递归遍历树的每个节点，将其看做根节点，判断是否为空、是否在范围内。如果不在，则要根据大小取左子节点或者右子节点作为新的根节点；如果在，则继续判断左右子节点。就直接用递归来做。
+
+要注意每次递归都会在一开始就判断根节点是否为空，所以不用在递归前又去判断子节点是否为空，实测这将节省大量时间
+
+## 代码：
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* trimBST(TreeNode* root, int L, int R) {
+        if (root == NULL) return NULL;
+        
+        TreeNode *res = root;
+        if (root->val > R) 
+            res = trimBST(root->left, L, R);
+        else if (root->val < L) 
+            res = trimBST(root->right, L, R);
+        else {
+            res->left = trimBST(res->left, L, R);
+            res->right = trimBST(res->right, L, R);
+        }
+        
+        return res;
+        
+    }
+};
+```
+
+## 他山之石：
+除了用递归，也可以用循环来做，就循环判断左右子树，看大小是否在范围内，在则继续往下，否则将其左/右子节点作为当前循环的节点。
+
+```cpp
+class Solution {
+public:
+    TreeNode* trimBST(TreeNode* root, int L, int R) {
+        
+       // find the proper root
+        while(root->val<L || root->val>R)
+        {
+            if(root->val<L) { root = root->right; }
+            else { root = root->left; }
+        }
+        
+        // temporary pointer for left and right subtree
+        TreeNode *Ltemp = root;
+        TreeNode *Rtemp = root;
+        
+        // remove the elements larger than L
+        while(Ltemp->left)
+        {
+            if( (Ltemp->left->val)<L ) { Ltemp->left = Ltemp->left->right; }
+            else { Ltemp = Ltemp->left; }
+        }
+         // remove the elements larger than R
+        while(Rtemp->right)
+        {
+            if( (Rtemp->right->val)>R) { Rtemp->right = Rtemp->right->left; }
+            else { Rtemp = Rtemp->right; }
+        }
+
+        return root;
     }
 };
 ```
