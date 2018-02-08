@@ -7177,21 +7177,21 @@ public:
 >
 >Input: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-a51263e0183622d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image1.png)
 >
 >Output: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-b24db8cd80632a3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image2.png)
 >
 >Example 2:
 >
 >Input: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-cf592b288fc4c450.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image3.png)
 >
 >Output: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-c7c6afeeea24b83b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image4.png)
 
 ## 大意：
 >给出一个二叉查找树和最小、最大边界L和R，修剪树使其所有元素都在[L, R]（R >= L）中。你可能需要改变树的根节点，所以结果应该返回裁剪后的树的新跟节点。
@@ -7200,21 +7200,21 @@ public:
 >
 >输入：
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-a51263e0183622d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image1.png)
 >
 >输出： 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-b24db8cd80632a3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image2.png)
 >
 >例2：
 >
 >输入：
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-cf592b288fc4c450.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image3.png)
 >
 >输出： 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-c7c6afeeea24b83b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image4.png)
 
 ## 思路：
 题目的意思就是让树只保留L到R范围内的数字，但是还是要保证树是个二叉查找树，虽然题目说了可能要改变根节点，但实际上只有根节点不在范围内的时候才需要更改。
