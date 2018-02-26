@@ -97,6 +97,7 @@ LeetCode笔记
   * [557. Reverse Words in a String III](#557)
   * [500. Keyboard Row](#500)
   * [669. Trim a Binary Search Tree](#699)
+  * [575. Distribute Candies](#575)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7288,6 +7289,134 @@ public:
         }
 
         return root;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="575"/>575. Distribute Candies
+## 问题（*Easy*）：
+>Given an integer array with even length, where different numbers in this array represent different kinds of candies. Each number means one candy of the corresponding kind. You need to distribute these candies equally in number to brother and sister. Return the maximum number of kinds of candies the sister could gain.
+>
+>Example 1:
+>
+>Input: candies = [1,1,2,2,3,3]
+>
+>Output: 3
+>
+>Explanation:
+>
+>There are three different kinds of candies (1, 2 and 3), and two candies for each kind.
+>
+>Optimal distribution: The sister has candies [1,2,3] and the brother has candies [1,2,3], too. 
+>
+>The sister has three different kinds of candies. 
+>
+>Example 2:
+>
+>Input: candies = [1,1,2,3]
+>
+>Output: 2
+>
+>Explanation: For example, the sister has candies [2,3] and the brother has candies [1,1]. 
+>
+>The sister has two different kinds of candies, the brother has only one kind of candies.
+>
+>Note:
+>1. The length of the given array is in range [2, 10,000], and will be even.
+>2. The number in given array is in range [-100,000, 100,000]. 
+
+## 大意：
+>给出一个偶数长度的证书数组，其中不同的数字表示不同类别的糖果。每个数字表示一个不同类别的糖果。你需要将这些糖果平均分给弟弟和妹妹。返回妹妹能得到的最大的糖果种类数。
+>
+>例1：
+>
+>输入：candies = [1,1,2,2,3,3]
+>
+>输出：3
+>
+>解释：
+>
+>有三种糖果（1，2，3），每种类别有两个糖果。
+>
+>可选的分布：妹妹得到糖果[1,2,3]，弟弟也得到通过[1,2,3]。
+>
+>妹妹得到了三种糖果。
+>
+>例2：
+>
+>输入：candies = [1,1,2,3]
+>
+>输出：2
+>
+>解释：比如，妹妹得到糖果[2,3]，弟弟得到糖果[1,1]。
+>
+>妹妹有两种糖果，而弟弟只有一种。
+>
+>注意：
+>1. 给出数组的长度在[2, 10000]，会是偶数。
+>2. 给出的数字的范围在[-100000, 100000]。
+
+## 思路1：
+其实就是看有多少个糖果种类，也就是多少个不同的数字，因为糖果一定是均分给两人的，如果种类数大于总数的一半，那妹妹能得到的最大种类数就是总数的一半。如果种类数小于总数的一半，那肯定最多能得到的就是种类数了。
+
+需要注意的是题目并没说给出的数组是排了序的，所以不能直接遍历看种类，需要用一些集合来记录出现过的种类（数字），遇到出现过的就不再记录了，遍历一遍后得到总种类数，再跟总数的一半比大小就知道了。
+
+## 代码1（C++）：
+```cpp
+class Solution {
+public:
+    int distributeCandies(vector<int>& candies) {
+        int num = candies.size() / 2;
+        int sort = 0;
+        map<int, int> maps;
+        auto iter = candies.begin();
+        while (iter != candies.end()) {
+            if (maps.find(*iter) == maps.end()) {
+                sort++;
+                maps.insert(pair<int, int>(*iter, 1));
+            }
+            iter++;
+        }
+        if (sort > num) return num;
+        else return sort;
+    }
+};
+```
+
+其实用set会更加方便一点，不用判断是否出现过，直接放set里放，最后统计set里的元素数，set保证一样的只会留一个。且最后的比较可以用min函数。
+
+## 代码1改进（C++）：
+```cpp
+class Solution {
+public:
+    int distributeCandies(vector<int>& candies) {
+        unordered_set<int> kinds;
+        for (int kind : candies) {
+            kinds.insert(kind);
+        }
+        return min(kinds.size(), candies.size() / 2);
+    }
+};
+```
+
+## 思路2：
+前面也说到了排序，如果先给集合排个序，那么就可以遍历集合来统计种类数了，只要遍历时跟前一个比较是否一样即可，这种方式因为要事先排序，时间复杂度会降低为排序的时间复杂度。
+
+## 代码2（C++）：
+```cpp
+class Solution {
+public:
+    int distributeCandies(vector<int>& candies) {
+        size_t kinds = 0;
+        sort(candies.begin(), candies.end());
+        for (int i = 0; i < candies.size(); i++) {
+            kinds += i == 0 || candies[i] != candies[i - 1];
+        }
+        return min(kinds, candies.size() / 2);
     }
 };
 ```
