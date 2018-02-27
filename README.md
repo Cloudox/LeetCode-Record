@@ -98,6 +98,7 @@ LeetCode笔记
   * [500. Keyboard Row](#500)
   * [669. Trim a Binary Search Tree](#699)
   * [575. Distribute Candies](#575)
+  * [566. Reshape the Matrix](#566)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7417,6 +7418,172 @@ public:
             kinds += i == 0 || candies[i] != candies[i - 1];
         }
         return min(kinds, candies.size() / 2);
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="566"/>566. Reshape the Matrix
+## 问题（*Easy*）：
+>In MATLAB, there is a very useful function called 'reshape', which can reshape a matrix into a new one with different size but keep its original data.
+>
+>You're given a matrix represented by a two-dimensional array, and two positive integers r and c representing the row number and column number of the wanted reshaped matrix, respectively.
+>
+>The reshaped matrix need to be filled with all the elements of the original matrix in the same row-traversing order as they were.
+>
+>If the 'reshape' operation with given parameters is possible and legal, output the new reshaped matrix; Otherwise, output the original matrix.
+>
+>Example 1:
+>
+>Input: 
+>
+>nums = 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>r = 1, c = 4
+>
+>Output: 
+>
+>[[1,2,3,4]]
+>
+>Explanation:
+>
+>The row-traversing of nums is [1,2,3,4]. The new reshaped matrix is a 1 * 4 matrix, fill it row by row by using the previous list.
+>
+>Example 2:
+>
+>Input: 
+>
+>nums = 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>r = 2, c = 4
+>
+>Output: 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>Explanation:
+>
+>There is no way to reshape a 2 * 2 matrix to a 2 * 4 matrix. So output the original matrix.
+>
+>Note:
+> 1. The height and width of the given matrix is in range [1, 100].
+> 2. The given r and c are all positive.
+
+## 大意：
+>在MATLAB中，有一个很有用的函数名为“reshape”，可以重构一个矩阵为另一个尺寸，并保持原始数据。
+>
+>给你一个由二维数组表示的矩阵，和两个正数r和c，分别表示想要重构成的新矩阵的行数和列数。
+>
+>重构的矩阵需要由所有原来矩阵的元素以同样的顺序填充。
+>
+>如果根据给出的参数进行重构操作是可能和合法的，就输出重构出的新矩阵，否则就输出原始矩阵。
+>
+>例1：
+>
+>输入：
+>
+>nums = 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>r = 1, c = 4
+>
+>输出：
+>
+>[[1,2,3,4]]
+>
+>解释：
+>
+>原矩阵的顺序是[1,2,3,4]。新重构的是个1*4的矩阵，可以用上面的列表来一行行填充。
+>
+>例2：
+>
+>输入：
+>
+>nums = 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>r = 2, c = 4
+>
+>输出：
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>解释：
+>
+>无法将2*2的矩阵重构为2*4的矩阵。因此输出原始矩阵。
+>
+>注意：
+> 1. 给出的矩阵高宽在[1,100]范围内。
+> 2. 给出的r和c是正数。
+
+## 思路：
+也没什么特别的思路，就是遍历原二维数组，来按照数量建立新的二位数组，C++中用容器实现。唯一要注意的就是操作前的参数判断：是否为空数组、是否元素数一致、是否没变化之类的。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+        if (nums.size() == 0) return nums;
+        if ((r * c) != (nums.size() * nums[0].size())) return nums;
+        if (r == nums.size()) return nums;
+        
+        vector<vector<int>> res;
+        int oldC = 0;
+        int oldR = 0;
+        for (int i = 0; i < r; i++) {
+            vector<int> newRow;
+            for (int j = 0; j < c; j++) {
+                if (oldC < nums[0].size()) {
+                    newRow.push_back(nums[oldR][oldC]);
+                    oldC++;
+                } else {
+                    oldR++;
+                    oldC = 0;
+                    newRow.push_back(nums[oldR][oldC]);
+                    oldC++;
+                }
+            }
+            res.push_back(newRow);
+        }
+        return res;
+    }
+};
+```
+
+## 他山之石：
+别人的代码就简洁很多：
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+        int m = nums.size(), n = nums[0].size(), o = m * n;
+        if (r * c != o) return nums;
+        vector<vector<int>> res(r, vector<int>(c, 0));
+        for (int i = 0; i < o; i++) res[i / c][i % c] = nums[i / n][i % n];
+        return res;
     }
 };
 ```
