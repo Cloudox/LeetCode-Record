@@ -99,6 +99,7 @@ LeetCode笔记
   * [669. Trim a Binary Search Tree](#699)
   * [575. Distribute Candies](#575)
   * [566. Reshape the Matrix](#566)
+  * [463. Island Perimeter](#463)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7584,6 +7585,112 @@ public:
         vector<vector<int>> res(r, vector<int>(c, 0));
         for (int i = 0; i < o; i++) res[i / c][i % c] = nums[i / n][i % n];
         return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="463"/>463. Island Perimeter
+## 问题（*Easy*）：
+>You are given a map in form of a two-dimensional integer grid where 1 represents land and 0 represents water. Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water, and there is exactly one island (i.e., one or more connected land cells). The island doesn't have "lakes" (water inside that isn't connected to the water around the island). One cell is a square with side length 1. The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
+>
+>Example:
+>
+>[[0,1,0,0],
+>
+> [1,1,1,0],
+>
+> [0,1,0,0],
+>
+> [1,1,0,0]]
+>
+>Answer: 16
+>
+>Explanation: The perimeter is the 16 yellow stripes in the image below:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-b64dc53c4bcd667e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 大意：
+>给你一个由二维整数网格组成的地图，其中1表示土地，0表示水。网格单元是水平/垂直接触的（不能斜对角）。网格完全被水包围，确定只会有一座岛屿（比如，一个或多个相连的土地单元）。岛屿没有湖（被岛屿包围的周围不与其他水相连的水）。一格单元是一个边长为1的方格。网格是矩形的，宽度和高度不会超过100。判断岛屿的边长。
+>
+>例：
+>
+>[[0,1,0,0],
+>
+> [1,1,1,0],
+>
+> [0,1,0,0],
+>
+> [1,1,0,0]]
+>
+>答案：16
+>
+>解释：边长是下图中16个黄色条纹：
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-b64dc53c4bcd667e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 思路：
+要注意对于边界上的土地单元，边界也算边长。我的想法是遍历每个格子，遇到土地时，判断前后左右是否是边界或水，是则给总边长加1。不过这样比较慢。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int islandPerimeter(vector<vector<int>>& grid) {
+        if (grid.size() == 0) return 0;
+        
+        int res = 0;
+        int m = grid.size();
+        int n = grid[0].size();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    int temp = 0;
+                    if (i-1 < 0) temp++;
+                    if (i+1 == m) temp++;
+                    if (j-1 < 0) temp++;
+                    if (j+1 == n) temp++;
+                    if (i > 0 && grid[i-1][j] == 0) temp++;
+                    if (i < m-1 && grid[i+1][j] == 0) temp++;
+                    if (j > 0 && grid[i][j-1] == 0) temp++;
+                    if (j < n-1 && grid[i][j+1] == 0) temp++;
+                    
+                    res = res + temp;
+                }
+            }
+        }
+        
+        return res;
+    }
+};
+```
+
+## 他山之石：
+可以不用判断那么多，首先记录有多少个土地格子，总边长乘以4，然后判断有无相邻的，有多少次相邻的，则要减去其两倍的边长数。
+
+这样做的速度会快一倍。
+
+```cpp
+class Solution {
+public:
+    int islandPerimeter(vector<vector<int>>& grid) {
+        int count=0, repeat=0;
+        for(int i=0;i<grid.size();i++)
+        {
+            for(int j=0; j<grid[i].size();j++)
+                {
+                    if(grid[i][j]==1)
+                    {
+                        count ++;
+                        if(i!=0 && grid[i-1][j] == 1) repeat++;
+                        if(j!=0 && grid[i][j-1] == 1) repeat++;
+                    }
+                }
+        }
+        return 4*count-repeat*2;
     }
 };
 ```
