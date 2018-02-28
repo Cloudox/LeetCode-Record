@@ -97,6 +97,9 @@ LeetCode笔记
   * [557. Reverse Words in a String III](#557)
   * [500. Keyboard Row](#500)
   * [669. Trim a Binary Search Tree](#699)
+  * [575. Distribute Candies](#575)
+  * [566. Reshape the Matrix](#566)
+  * [463. Island Perimeter](#463)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7177,21 +7180,21 @@ public:
 >
 >Input: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-a51263e0183622d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image1.png)
 >
 >Output: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-b24db8cd80632a3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image2.png)
 >
 >Example 2:
 >
 >Input: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-cf592b288fc4c450.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image3.png)
 >
 >Output: 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-c7c6afeeea24b83b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image4.png)
 
 ## 大意：
 >给出一个二叉查找树和最小、最大边界L和R，修剪树使其所有元素都在[L, R]（R >= L）中。你可能需要改变树的根节点，所以结果应该返回裁剪后的树的新跟节点。
@@ -7200,21 +7203,21 @@ public:
 >
 >输入：
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-a51263e0183622d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image1.png)
 >
 >输出： 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-b24db8cd80632a3b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image2.png)
 >
 >例2：
 >
 >输入：
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-cf592b288fc4c450.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image3.png)
 >
 >输出： 
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-c7c6afeeea24b83b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/699Image4.png)
 
 ## 思路：
 题目的意思就是让树只保留L到R范围内的数字，但是还是要保证树是个二叉查找树，虽然题目说了可能要改变根节点，但实际上只有根节点不在范围内的时候才需要更改。
@@ -7288,6 +7291,406 @@ public:
         }
 
         return root;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="575"/>575. Distribute Candies
+## 问题（*Easy*）：
+>Given an integer array with even length, where different numbers in this array represent different kinds of candies. Each number means one candy of the corresponding kind. You need to distribute these candies equally in number to brother and sister. Return the maximum number of kinds of candies the sister could gain.
+>
+>Example 1:
+>
+>Input: candies = [1,1,2,2,3,3]
+>
+>Output: 3
+>
+>Explanation:
+>
+>There are three different kinds of candies (1, 2 and 3), and two candies for each kind.
+>
+>Optimal distribution: The sister has candies [1,2,3] and the brother has candies [1,2,3], too. 
+>
+>The sister has three different kinds of candies. 
+>
+>Example 2:
+>
+>Input: candies = [1,1,2,3]
+>
+>Output: 2
+>
+>Explanation: For example, the sister has candies [2,3] and the brother has candies [1,1]. 
+>
+>The sister has two different kinds of candies, the brother has only one kind of candies.
+>
+>Note:
+>1. The length of the given array is in range [2, 10,000], and will be even.
+>2. The number in given array is in range [-100,000, 100,000]. 
+
+## 大意：
+>给出一个偶数长度的证书数组，其中不同的数字表示不同类别的糖果。每个数字表示一个不同类别的糖果。你需要将这些糖果平均分给弟弟和妹妹。返回妹妹能得到的最大的糖果种类数。
+>
+>例1：
+>
+>输入：candies = [1,1,2,2,3,3]
+>
+>输出：3
+>
+>解释：
+>
+>有三种糖果（1，2，3），每种类别有两个糖果。
+>
+>可选的分布：妹妹得到糖果[1,2,3]，弟弟也得到通过[1,2,3]。
+>
+>妹妹得到了三种糖果。
+>
+>例2：
+>
+>输入：candies = [1,1,2,3]
+>
+>输出：2
+>
+>解释：比如，妹妹得到糖果[2,3]，弟弟得到糖果[1,1]。
+>
+>妹妹有两种糖果，而弟弟只有一种。
+>
+>注意：
+>1. 给出数组的长度在[2, 10000]，会是偶数。
+>2. 给出的数字的范围在[-100000, 100000]。
+
+## 思路1：
+其实就是看有多少个糖果种类，也就是多少个不同的数字，因为糖果一定是均分给两人的，如果种类数大于总数的一半，那妹妹能得到的最大种类数就是总数的一半。如果种类数小于总数的一半，那肯定最多能得到的就是种类数了。
+
+需要注意的是题目并没说给出的数组是排了序的，所以不能直接遍历看种类，需要用一些集合来记录出现过的种类（数字），遇到出现过的就不再记录了，遍历一遍后得到总种类数，再跟总数的一半比大小就知道了。
+
+## 代码1（C++）：
+```cpp
+class Solution {
+public:
+    int distributeCandies(vector<int>& candies) {
+        int num = candies.size() / 2;
+        int sort = 0;
+        map<int, int> maps;
+        auto iter = candies.begin();
+        while (iter != candies.end()) {
+            if (maps.find(*iter) == maps.end()) {
+                sort++;
+                maps.insert(pair<int, int>(*iter, 1));
+            }
+            iter++;
+        }
+        if (sort > num) return num;
+        else return sort;
+    }
+};
+```
+
+其实用set会更加方便一点，不用判断是否出现过，直接放set里放，最后统计set里的元素数，set保证一样的只会留一个。且最后的比较可以用min函数。
+
+## 代码1改进（C++）：
+```cpp
+class Solution {
+public:
+    int distributeCandies(vector<int>& candies) {
+        unordered_set<int> kinds;
+        for (int kind : candies) {
+            kinds.insert(kind);
+        }
+        return min(kinds.size(), candies.size() / 2);
+    }
+};
+```
+
+## 思路2：
+前面也说到了排序，如果先给集合排个序，那么就可以遍历集合来统计种类数了，只要遍历时跟前一个比较是否一样即可，这种方式因为要事先排序，时间复杂度会降低为排序的时间复杂度。
+
+## 代码2（C++）：
+```cpp
+class Solution {
+public:
+    int distributeCandies(vector<int>& candies) {
+        size_t kinds = 0;
+        sort(candies.begin(), candies.end());
+        for (int i = 0; i < candies.size(); i++) {
+            kinds += i == 0 || candies[i] != candies[i - 1];
+        }
+        return min(kinds, candies.size() / 2);
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="566"/>566. Reshape the Matrix
+## 问题（*Easy*）：
+>In MATLAB, there is a very useful function called 'reshape', which can reshape a matrix into a new one with different size but keep its original data.
+>
+>You're given a matrix represented by a two-dimensional array, and two positive integers r and c representing the row number and column number of the wanted reshaped matrix, respectively.
+>
+>The reshaped matrix need to be filled with all the elements of the original matrix in the same row-traversing order as they were.
+>
+>If the 'reshape' operation with given parameters is possible and legal, output the new reshaped matrix; Otherwise, output the original matrix.
+>
+>Example 1:
+>
+>Input: 
+>
+>nums = 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>r = 1, c = 4
+>
+>Output: 
+>
+>[[1,2,3,4]]
+>
+>Explanation:
+>
+>The row-traversing of nums is [1,2,3,4]. The new reshaped matrix is a 1 * 4 matrix, fill it row by row by using the previous list.
+>
+>Example 2:
+>
+>Input: 
+>
+>nums = 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>r = 2, c = 4
+>
+>Output: 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>Explanation:
+>
+>There is no way to reshape a 2 * 2 matrix to a 2 * 4 matrix. So output the original matrix.
+>
+>Note:
+> 1. The height and width of the given matrix is in range [1, 100].
+> 2. The given r and c are all positive.
+
+## 大意：
+>在MATLAB中，有一个很有用的函数名为“reshape”，可以重构一个矩阵为另一个尺寸，并保持原始数据。
+>
+>给你一个由二维数组表示的矩阵，和两个正数r和c，分别表示想要重构成的新矩阵的行数和列数。
+>
+>重构的矩阵需要由所有原来矩阵的元素以同样的顺序填充。
+>
+>如果根据给出的参数进行重构操作是可能和合法的，就输出重构出的新矩阵，否则就输出原始矩阵。
+>
+>例1：
+>
+>输入：
+>
+>nums = 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>r = 1, c = 4
+>
+>输出：
+>
+>[[1,2,3,4]]
+>
+>解释：
+>
+>原矩阵的顺序是[1,2,3,4]。新重构的是个1*4的矩阵，可以用上面的列表来一行行填充。
+>
+>例2：
+>
+>输入：
+>
+>nums = 
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>r = 2, c = 4
+>
+>输出：
+>
+>[[1,2],
+>
+> [3,4]]
+>
+>解释：
+>
+>无法将2*2的矩阵重构为2*4的矩阵。因此输出原始矩阵。
+>
+>注意：
+> 1. 给出的矩阵高宽在[1,100]范围内。
+> 2. 给出的r和c是正数。
+
+## 思路：
+也没什么特别的思路，就是遍历原二维数组，来按照数量建立新的二位数组，C++中用容器实现。唯一要注意的就是操作前的参数判断：是否为空数组、是否元素数一致、是否没变化之类的。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+        if (nums.size() == 0) return nums;
+        if ((r * c) != (nums.size() * nums[0].size())) return nums;
+        if (r == nums.size()) return nums;
+        
+        vector<vector<int>> res;
+        int oldC = 0;
+        int oldR = 0;
+        for (int i = 0; i < r; i++) {
+            vector<int> newRow;
+            for (int j = 0; j < c; j++) {
+                if (oldC < nums[0].size()) {
+                    newRow.push_back(nums[oldR][oldC]);
+                    oldC++;
+                } else {
+                    oldR++;
+                    oldC = 0;
+                    newRow.push_back(nums[oldR][oldC]);
+                    oldC++;
+                }
+            }
+            res.push_back(newRow);
+        }
+        return res;
+    }
+};
+```
+
+## 他山之石：
+别人的代码就简洁很多：
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+        int m = nums.size(), n = nums[0].size(), o = m * n;
+        if (r * c != o) return nums;
+        vector<vector<int>> res(r, vector<int>(c, 0));
+        for (int i = 0; i < o; i++) res[i / c][i % c] = nums[i / n][i % n];
+        return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="463"/>463. Island Perimeter
+## 问题（*Easy*）：
+>You are given a map in form of a two-dimensional integer grid where 1 represents land and 0 represents water. Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water, and there is exactly one island (i.e., one or more connected land cells). The island doesn't have "lakes" (water inside that isn't connected to the water around the island). One cell is a square with side length 1. The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
+>
+>Example:
+>
+>[[0,1,0,0],
+>
+> [1,1,1,0],
+>
+> [0,1,0,0],
+>
+> [1,1,0,0]]
+>
+>Answer: 16
+>
+>Explanation: The perimeter is the 16 yellow stripes in the image below:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-b64dc53c4bcd667e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 大意：
+>给你一个由二维整数网格组成的地图，其中1表示土地，0表示水。网格单元是水平/垂直接触的（不能斜对角）。网格完全被水包围，确定只会有一座岛屿（比如，一个或多个相连的土地单元）。岛屿没有湖（被岛屿包围的周围不与其他水相连的水）。一格单元是一个边长为1的方格。网格是矩形的，宽度和高度不会超过100。判断岛屿的边长。
+>
+>例：
+>
+>[[0,1,0,0],
+>
+> [1,1,1,0],
+>
+> [0,1,0,0],
+>
+> [1,1,0,0]]
+>
+>答案：16
+>
+>解释：边长是下图中16个黄色条纹：
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-b64dc53c4bcd667e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## 思路：
+要注意对于边界上的土地单元，边界也算边长。我的想法是遍历每个格子，遇到土地时，判断前后左右是否是边界或水，是则给总边长加1。不过这样比较慢。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int islandPerimeter(vector<vector<int>>& grid) {
+        if (grid.size() == 0) return 0;
+        
+        int res = 0;
+        int m = grid.size();
+        int n = grid[0].size();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    int temp = 0;
+                    if (i-1 < 0) temp++;
+                    if (i+1 == m) temp++;
+                    if (j-1 < 0) temp++;
+                    if (j+1 == n) temp++;
+                    if (i > 0 && grid[i-1][j] == 0) temp++;
+                    if (i < m-1 && grid[i+1][j] == 0) temp++;
+                    if (j > 0 && grid[i][j-1] == 0) temp++;
+                    if (j < n-1 && grid[i][j+1] == 0) temp++;
+                    
+                    res = res + temp;
+                }
+            }
+        }
+        
+        return res;
+    }
+};
+```
+
+## 他山之石：
+可以不用判断那么多，首先记录有多少个土地格子，总边长乘以4，然后判断有无相邻的，有多少次相邻的，则要减去其两倍的边长数。
+
+这样做的速度会快一倍。
+
+```cpp
+class Solution {
+public:
+    int islandPerimeter(vector<vector<int>>& grid) {
+        int count=0, repeat=0;
+        for(int i=0;i<grid.size();i++)
+        {
+            for(int j=0; j<grid[i].size();j++)
+                {
+                    if(grid[i][j]==1)
+                    {
+                        count ++;
+                        if(i!=0 && grid[i-1][j] == 1) repeat++;
+                        if(j!=0 && grid[i][j-1] == 1) repeat++;
+                    }
+                }
+        }
+        return 4*count-repeat*2;
     }
 };
 ```
