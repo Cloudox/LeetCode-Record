@@ -7611,7 +7611,7 @@ public:
 >
 >Explanation: The perimeter is the 16 yellow stripes in the image below:
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-b64dc53c4bcd667e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/463Image.png)
 
 ## 大意：
 >给你一个由二维整数网格组成的地图，其中1表示土地，0表示水。网格单元是水平/垂直接触的（不能斜对角）。网格完全被水包围，确定只会有一座岛屿（比如，一个或多个相连的土地单元）。岛屿没有湖（被岛屿包围的周围不与其他水相连的水）。一格单元是一个边长为1的方格。网格是矩形的，宽度和高度不会超过100。判断岛屿的边长。
@@ -7630,7 +7630,7 @@ public:
 >
 >解释：边长是下图中16个黄色条纹：
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-b64dc53c4bcd667e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/463Image.png)
 
 ## 思路：
 要注意对于边界上的土地单元，边界也算边长。我的想法是遍历每个格子，遇到土地时，判断前后左右是否是边界或水，是则给总边长加1。不过这样比较慢。
