@@ -100,6 +100,7 @@ LeetCode笔记
   * [575. Distribute Candies](#575)
   * [566. Reshape the Matrix](#566)
   * [463. Island Perimeter](#463)
+  * [496. Next Greater Element I](#496)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7691,6 +7692,115 @@ public:
                 }
         }
         return 4*count-repeat*2;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="496"/>496. Next Greater Element I
+## 问题（*Easy*）：
+>You are given two arrays (without duplicates) nums1 and nums2 where nums1’s elements are subset of nums2. Find all the next greater numbers for nums1's elements in the corresponding places of nums2.
+>
+>The Next Greater Number of a number x in nums1 is the first greater number to its right in nums2. If it does not exist, output -1 for this number.
+>
+>Example 1:
+>
+>Input: nums1 = [4,1,2], nums2 = [1,3,4,2].
+>
+>Output: [-1,3,-1]
+>
+>Explanation:
+>
+>    For number 4 in the first array, you cannot find the next greater number for it in the second array, so output -1.
+>
+>    For number 1 in the first array, the next greater number for it in the second array is 3.
+>
+>    For number 2 in the first array, there is no next greater number for it in the second array, so output -1.
+>
+>Example 2:
+>
+>Input: nums1 = [2,4], nums2 = [1,2,3,4].
+>
+>Output: [3,-1]
+>
+>Explanation:
+>
+>    For number 2 in the first array, the next greater number for it in the second array is 3.
+>
+>    For number 4 in the first array, there is no next greater number for it in the second array, so output -1.
+>
+>Note:
+> 1. All elements in nums1 and nums2 are unique.
+> 2. The length of both nums1 and nums2 would not exceed 1000.
+
+## 大意：
+>给你两个数组（非复制）nums1和nums2，nums1的元素是nums2的子集。找到nums1中所有元素在nums2对应位置的下一个更大数。
+>
+>nums1中x的下一个更大数是其在nums2中右边遇到的第一个更大的数。如果不存在，则为这个数输出-1。
+>
+>例1：
+>
+>输入：nums1 = [4,1,2], nums2 = [1,3,4,2].
+>
+>输出： [-1,3,-1]
+>
+>解释：
+>
+>对于第一个数组的数字4，你无法在第二个数组找到下一个更大数，所以输出-1。
+>
+>对于第一个数组的数字1，第二个数组中下一个更大数是3。
+>
+>对于第一个数组的数字2，无法在第二个数组找到下一个更大数，所以输出-1。
+>
+>例2：
+>
+>输入：nums1 = [2,4], nums2 = [1,2,3,4].
+>
+>输出： [3,-1]
+>
+>解释：
+>
+>对于第一个数组的数字2，第二个数组中下一个更大数是3。
+>
+>对于第一个数组的数字4，无法在第二个数组找到下一个更大数，所以输出-1。
+>
+>注意：
+> 1. nums1和nums2中所有元素都是唯一的。
+> 2. nums1和nums2的长度都不超过1000。
+
+## 他山之石：
+最简单呆板的做法就是循环遍历，但是时间复杂度太高，肯定有更好的方法。
+
+数组1虽然是数组2的子集，但顺序并不一样，所以两个数组都不能修改。
+
+这里用一个stack来尝试得到数组二中每个数字后面的下一个更大数，用一个map来记录。遍历数组二，每次取栈顶的数字（也就是最近的上一个数字）判断当前数是否大于它，大于则说明此数就是栈顶数字的下一个更大数，记录到map中去，并继续循环取栈顶数比较（这很重要！），如果不大，那么放入stack，等待读取下一个数时做比较。这样遍历一次数组2就可以得到一个记录了有下一个更大数的map了，没记录在map中的说明就是没找到下一个更大数的。
+
+然后遍历数组1，因为是数组2的子集，所以直接看map中有没有记录，有则取出来，没有则输出位-1，这样就得到了，时间复杂度大大降低。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& findNums, vector<int>& nums) {
+        stack<int> s;
+        unordered_map<int, int> m;
+        for (int n : nums) {
+            while (s.size() > 0 && s.top() < n) {
+                m[s.top()] = n;
+                s.pop();
+            }
+            s.push(n);
+        }
+        
+        vector<int> res;
+        for (int n : findNums) {
+            if (m.count(n) > 0) res.push_back(m[n]);
+            else res.push_back(-1);
+        }
+        return res;
     }
 };
 ```
