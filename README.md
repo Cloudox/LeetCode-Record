@@ -101,6 +101,7 @@ LeetCode笔记
   * [566. Reshape the Matrix](#566)
   * [463. Island Perimeter](#463)
   * [496. Next Greater Element I](#496)
+  * [637. Average of Levels in Binary Tree](#637)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7799,6 +7800,95 @@ public:
         for (int n : findNums) {
             if (m.count(n) > 0) res.push_back(m[n]);
             else res.push_back(-1);
+        }
+        return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="637"/>637. Average of Levels in Binary Tree
+## 问题（*Easy*）：
+>Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
+>
+>Example 1:
+>
+>Input:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-61ab5813959f2db7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Output: [3, 14.5, 11]
+>
+>Explanation:
+>
+>The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11].
+>
+>Note:
+>1. The range of node's value is in the range of 32-bit signed integer.
+
+## 大意：
+>给出一个非空的二叉树，以数组的形式返回每一层的节点平均值。
+>
+>例1：
+>
+>输入：
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-61ab5813959f2db7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>输出： [3, 14.5, 11]
+>
+>解释：
+>
+>0层的平均值是3，1层的平均值是14.5，2层的平均值是11。所以返回 [3, 14.5, 11]。
+>
+>注意：
+>1. 节点值的范围为32比特的有符号整型。
+
+## 思路：
+要计算每一层的平均值，肯定用BFS的遍历方式了，使用一个队列来遍历二叉树，同时用一个数来记录每层的节点数，遍历队列的过程中不断把左右子节点加入到队列后，同时增加记录下一层数量的变量，且累加每个节点的值。遍历完这一层应有的节点数就可以计算该层的平均值了，都添加到一个数组中去即可。
+
+需要注意的是节点值范围比较大，需要用long型变量来记录和。
+
+## 代码（C++）：
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<double> averageOfLevels(TreeNode* root) {
+        vector<double> res;
+        if (root == NULL) return res;
+        queue<TreeNode> q;
+        q.push(*root);
+        int levelNum = 1;
+        while (!q.empty()) {
+            int temp = levelNum;
+            levelNum = 0;
+            long sum = 0;
+            for (int i = 0; i < temp; i++) {
+                TreeNode node = q.front();
+                q.pop();
+                sum = sum + node.val;
+                if (node.left != NULL) {
+                    q.push(*node.left);
+                    levelNum++;
+                }
+                if (node.right != NULL) {
+                    q.push(*node.right);
+                    levelNum++;
+                }
+            }
+            res.push_back((double)sum / (double)temp);
         }
         return res;
     }
