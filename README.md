@@ -7818,7 +7818,7 @@ public:
 >
 >Input:
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-61ab5813959f2db7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/637Image.png)
 >
 >Output: [3, 14.5, 11]
 >
@@ -7836,7 +7836,7 @@ public:
 >
 >输入：
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-61ab5813959f2db7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/637Image.png)
 >
 >输出： [3, 14.5, 11]
 >
