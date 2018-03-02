@@ -100,6 +100,8 @@ LeetCode笔记
   * [575. Distribute Candies](#575)
   * [566. Reshape the Matrix](#566)
   * [463. Island Perimeter](#463)
+  * [496. Next Greater Element I](#496)
+  * [637. Average of Levels in Binary Tree](#637)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7611,7 +7613,7 @@ public:
 >
 >Explanation: The perimeter is the 16 yellow stripes in the image below:
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-b64dc53c4bcd667e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/463Image.png)
 
 ## 大意：
 >给你一个由二维整数网格组成的地图，其中1表示土地，0表示水。网格单元是水平/垂直接触的（不能斜对角）。网格完全被水包围，确定只会有一座岛屿（比如，一个或多个相连的土地单元）。岛屿没有湖（被岛屿包围的周围不与其他水相连的水）。一格单元是一个边长为1的方格。网格是矩形的，宽度和高度不会超过100。判断岛屿的边长。
@@ -7630,7 +7632,7 @@ public:
 >
 >解释：边长是下图中16个黄色条纹：
 >
->![](http://upload-images.jianshu.io/upload_images/9075967-b64dc53c4bcd667e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>![](https://github.com/Cloudox/LeetCode-Record/blob/master/Image/463Image.png)
 
 ## 思路：
 要注意对于边界上的土地单元，边界也算边长。我的想法是遍历每个格子，遇到土地时，判断前后左右是否是边界或水，是则给总边长加1。不过这样比较慢。
@@ -7691,6 +7693,204 @@ public:
                 }
         }
         return 4*count-repeat*2;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="496"/>496. Next Greater Element I
+## 问题（*Easy*）：
+>You are given two arrays (without duplicates) nums1 and nums2 where nums1’s elements are subset of nums2. Find all the next greater numbers for nums1's elements in the corresponding places of nums2.
+>
+>The Next Greater Number of a number x in nums1 is the first greater number to its right in nums2. If it does not exist, output -1 for this number.
+>
+>Example 1:
+>
+>Input: nums1 = [4,1,2], nums2 = [1,3,4,2].
+>
+>Output: [-1,3,-1]
+>
+>Explanation:
+>
+>    For number 4 in the first array, you cannot find the next greater number for it in the second array, so output -1.
+>
+>    For number 1 in the first array, the next greater number for it in the second array is 3.
+>
+>    For number 2 in the first array, there is no next greater number for it in the second array, so output -1.
+>
+>Example 2:
+>
+>Input: nums1 = [2,4], nums2 = [1,2,3,4].
+>
+>Output: [3,-1]
+>
+>Explanation:
+>
+>    For number 2 in the first array, the next greater number for it in the second array is 3.
+>
+>    For number 4 in the first array, there is no next greater number for it in the second array, so output -1.
+>
+>Note:
+> 1. All elements in nums1 and nums2 are unique.
+> 2. The length of both nums1 and nums2 would not exceed 1000.
+
+## 大意：
+>给你两个数组（非复制）nums1和nums2，nums1的元素是nums2的子集。找到nums1中所有元素在nums2对应位置的下一个更大数。
+>
+>nums1中x的下一个更大数是其在nums2中右边遇到的第一个更大的数。如果不存在，则为这个数输出-1。
+>
+>例1：
+>
+>输入：nums1 = [4,1,2], nums2 = [1,3,4,2].
+>
+>输出： [-1,3,-1]
+>
+>解释：
+>
+>对于第一个数组的数字4，你无法在第二个数组找到下一个更大数，所以输出-1。
+>
+>对于第一个数组的数字1，第二个数组中下一个更大数是3。
+>
+>对于第一个数组的数字2，无法在第二个数组找到下一个更大数，所以输出-1。
+>
+>例2：
+>
+>输入：nums1 = [2,4], nums2 = [1,2,3,4].
+>
+>输出： [3,-1]
+>
+>解释：
+>
+>对于第一个数组的数字2，第二个数组中下一个更大数是3。
+>
+>对于第一个数组的数字4，无法在第二个数组找到下一个更大数，所以输出-1。
+>
+>注意：
+> 1. nums1和nums2中所有元素都是唯一的。
+> 2. nums1和nums2的长度都不超过1000。
+
+## 他山之石：
+最简单呆板的做法就是循环遍历，但是时间复杂度太高，肯定有更好的方法。
+
+数组1虽然是数组2的子集，但顺序并不一样，所以两个数组都不能修改。
+
+这里用一个stack来尝试得到数组二中每个数字后面的下一个更大数，用一个map来记录。遍历数组二，每次取栈顶的数字（也就是最近的上一个数字）判断当前数是否大于它，大于则说明此数就是栈顶数字的下一个更大数，记录到map中去，并继续循环取栈顶数比较（这很重要！），如果不大，那么放入stack，等待读取下一个数时做比较。这样遍历一次数组2就可以得到一个记录了有下一个更大数的map了，没记录在map中的说明就是没找到下一个更大数的。
+
+然后遍历数组1，因为是数组2的子集，所以直接看map中有没有记录，有则取出来，没有则输出位-1，这样就得到了，时间复杂度大大降低。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& findNums, vector<int>& nums) {
+        stack<int> s;
+        unordered_map<int, int> m;
+        for (int n : nums) {
+            while (s.size() > 0 && s.top() < n) {
+                m[s.top()] = n;
+                s.pop();
+            }
+            s.push(n);
+        }
+        
+        vector<int> res;
+        for (int n : findNums) {
+            if (m.count(n) > 0) res.push_back(m[n]);
+            else res.push_back(-1);
+        }
+        return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="637"/>637. Average of Levels in Binary Tree
+## 问题（*Easy*）：
+>Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
+>
+>Example 1:
+>
+>Input:
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-61ab5813959f2db7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>Output: [3, 14.5, 11]
+>
+>Explanation:
+>
+>The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11].
+>
+>Note:
+>1. The range of node's value is in the range of 32-bit signed integer.
+
+## 大意：
+>给出一个非空的二叉树，以数组的形式返回每一层的节点平均值。
+>
+>例1：
+>
+>输入：
+>
+>![](http://upload-images.jianshu.io/upload_images/9075967-61ab5813959f2db7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+>
+>输出： [3, 14.5, 11]
+>
+>解释：
+>
+>0层的平均值是3，1层的平均值是14.5，2层的平均值是11。所以返回 [3, 14.5, 11]。
+>
+>注意：
+>1. 节点值的范围为32比特的有符号整型。
+
+## 思路：
+要计算每一层的平均值，肯定用BFS的遍历方式了，使用一个队列来遍历二叉树，同时用一个数来记录每层的节点数，遍历队列的过程中不断把左右子节点加入到队列后，同时增加记录下一层数量的变量，且累加每个节点的值。遍历完这一层应有的节点数就可以计算该层的平均值了，都添加到一个数组中去即可。
+
+需要注意的是节点值范围比较大，需要用long型变量来记录和。
+
+## 代码（C++）：
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<double> averageOfLevels(TreeNode* root) {
+        vector<double> res;
+        if (root == NULL) return res;
+        queue<TreeNode> q;
+        q.push(*root);
+        int levelNum = 1;
+        while (!q.empty()) {
+            int temp = levelNum;
+            levelNum = 0;
+            long sum = 0;
+            for (int i = 0; i < temp; i++) {
+                TreeNode node = q.front();
+                q.pop();
+                sum = sum + node.val;
+                if (node.left != NULL) {
+                    q.push(*node.left);
+                    levelNum++;
+                }
+                if (node.right != NULL) {
+                    q.push(*node.right);
+                    levelNum++;
+                }
+            }
+            res.push_back((double)sum / (double)temp);
+        }
+        return res;
     }
 };
 ```
