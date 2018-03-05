@@ -102,6 +102,7 @@ LeetCode笔记
   * [463. Island Perimeter](#463)
   * [496. Next Greater Element I](#496)
   * [637. Average of Levels in Binary Tree](#637)
+  * [760. Find Anagram Mappings](#760)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7891,6 +7892,99 @@ public:
             res.push_back((double)sum / (double)temp);
         }
         return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="760"/>760. Find Anagram Mappings
+## 问题（*Easy*）：
+>Given two lists Aand B, and B is an anagram of A. B is an anagram of A means B is made by randomizing the order of the elements in A.
+>
+>We want to find an index mapping P, from A to B. A mapping P[i] = j means the ith element in A appears in B at index j.
+>
+>These lists A and B may contain duplicates. If there are multiple answers, output any of them.
+>
+>For example, given
+>
+>A = [12, 28, 46, 32, 50]
+>
+>B = [50, 12, 32, 46, 28]
+>
+>We should return
+>
+>[1, 4, 3, 2, 0]
+>
+>as P[0] = 1 because the 0th element of A appears at B[1], and P[1] = 4 because the 1st element of A appears at B[4], and so on.
+>
+>Note:
+>1. A, B have equal lengths in range [1, 100].
+>2. A[i], B[i] are integers in range [0, 10^5].
+
+## 大意：
+>给出两个列表A和B，B是A的异构体，所谓异构体是指B是由A中元素随机顺序组成。
+>
+>我们想要找到一个从A到B的序号映射P，映射P[i] = j表示A中的第i个元素在B中是序号j。
+>
+>这些列表A和B可能包含重复的，如果有多个答案，输出任何一个。
+>
+>比如，给出
+>
+>A = [12, 28, 46, 32, 50]
+>
+>B = [50, 12, 32, 46, 28]
+>
+>我们应该返回
+>
+>[1, 4, 3, 2, 0]
+>
+>P[0] = 1，因为A中第0个元素在B[1]出现，P[1] = 4，因为A中第1个元素在B[4]出现，等等。
+>
+>注意：
+>1. A、B有着相等的长度，范围在[1,100]。
+>2. A[i],B[i]都是范围在[0,10^5]的整数。
+
+## 思路：
+题目说了出现重复的随便取一个位置即可，测试了一下，即使两个元素都取一个位置也行，那就简单了，因为要确定序号，所以顺序也不能变，直接调用find函数，即可找到元素在B中的位置。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    vector<int> anagramMappings(vector<int>& A, vector<int>& B) {
+        vector<int> res;
+        auto iter = A.begin();
+        while (iter != A.end()) {
+            auto findB = find(B.begin(), B.end(), *iter);
+            res.push_back(findB-B.begin());
+            iter++;
+        }
+        return res;
+    }
+};
+```
+
+## 他山之石：
+可以用map存储B中每个元素的位置，然后遍历A，利用map找到其在B中的位置即可，速度比上面的方法要快。
+
+```cpp
+class Solution {
+public:
+    vector<int> anagramMappings(vector<int>& A, vector<int>& B) {
+        unordered_map<int, int> m;    //<values of b, index in b>
+        for(int i=0; i<B.size(); i++)
+            m[B[i]]=i;    
+        
+        vector<int> ans(A.size());
+        for(int i=0; i<A.size(); i++) {
+            auto loc = m.find(A[i]);
+            ans[i]=loc->second;
+        }
+        
+        return ans;
     }
 };
 ```
