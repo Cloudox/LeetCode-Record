@@ -7303,7 +7303,7 @@ public:
 -------------------------
 
 ## <a name="575"/>575. Distribute Candies
-## 问题（*Easy*）：
+## 问题：
 >Given an integer array with even length, where different numbers in this array represent different kinds of candies. Each number means one candy of the corresponding kind. You need to distribute these candies equally in number to brother and sister. Return the maximum number of kinds of candies the sister could gain.
 >
 >Example 1:
@@ -7431,7 +7431,7 @@ public:
 -------------------------
 
 ## <a name="566"/>566. Reshape the Matrix
-## 问题（*Easy*）：
+## 问题：
 >In MATLAB, there is a very useful function called 'reshape', which can reshape a matrix into a new one with different size but keep its original data.
 >
 >You're given a matrix represented by a two-dimensional array, and two positive integers r and c representing the row number and column number of the wanted reshaped matrix, respectively.
@@ -7597,7 +7597,7 @@ public:
 -------------------------
 
 ## <a name="463"/>463. Island Perimeter
-## 问题（*Easy*）：
+## 问题：
 >You are given a map in form of a two-dimensional integer grid where 1 represents land and 0 represents water. Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water, and there is exactly one island (i.e., one or more connected land cells). The island doesn't have "lakes" (water inside that isn't connected to the water around the island). One cell is a square with side length 1. The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
 >
 >Example:
@@ -7703,7 +7703,7 @@ public:
 -------------------------
 
 ## <a name="496"/>496. Next Greater Element I
-## 问题（*Easy*）：
+## 问题：
 >You are given two arrays (without duplicates) nums1 and nums2 where nums1’s elements are subset of nums2. Find all the next greater numbers for nums1's elements in the corresponding places of nums2.
 >
 >The Next Greater Number of a number x in nums1 is the first greater number to its right in nums2. If it does not exist, output -1 for this number.
@@ -7812,7 +7812,7 @@ public:
 -------------------------
 
 ## <a name="637"/>637. Average of Levels in Binary Tree
-## 问题（*Easy*）：
+## 问题：
 >Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
 >
 >Example 1:
@@ -7901,7 +7901,7 @@ public:
 -------------------------
 
 ## <a name="760"/>760. Find Anagram Mappings
-## 问题（*Easy*）：
+## 问题：
 >Given two lists Aand B, and B is an anagram of A. B is an anagram of A means B is made by randomizing the order of the elements in A.
 >
 >We want to find an index mapping P, from A to B. A mapping P[i] = j means the ith element in A appears in B at index j.
