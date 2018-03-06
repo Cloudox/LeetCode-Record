@@ -103,6 +103,7 @@ LeetCode笔记
   * [496. Next Greater Element I](#496)
   * [637. Average of Levels in Binary Tree](#637)
   * [760. Find Anagram Mappings](#760)
+  * [693. Binary Number with Alternating Bits](#693)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -7985,6 +7986,137 @@ public:
         }
         
         return ans;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="693"/>693. Binary Number with Alternating Bits
+## 问题（*Easy*）：
+>Given a positive integer, check whether it has alternating bits: namely, if two adjacent bits will always have different values.
+>
+>Example 1:
+>
+>Input: 5
+>
+>Output: True
+>
+>Explanation:
+>
+>The binary representation of 5 is: 101
+>
+>Example 2:
+>
+>Input: 7
+>
+>Output: False
+>
+>Explanation:
+>
+>The binary representation of 7 is: 111.
+>
+>Example 3:
+>
+>Input: 11
+>
+>Output: False
+>
+>Explanation:
+>
+>The binary representation of 11 is: 1011.
+>
+>Example 4:
+>
+>Input: 10
+>
+>Output: True
+>
+>Explanation:
+>
+>The binary representation of 10 is: 1010.
+
+## 大意：
+>给出一个正整数，检查其是否有交替的比特位：也就是说，如果相邻的两个比特位始终有不同的值。
+>
+>例1：
+>
+>输入：5
+>
+>输出：True
+>
+>解释：
+>
+>5的二进制表示是：101
+>
+>例2：
+>
+>输入：7
+>
+>输出：False
+>
+>解释：
+>
+>5的二进制表示是：111
+>
+>例3：
+>
+>输入：11
+>
+>输出：False
+>
+>解释：
+>
+>5的二进制表示是：1011
+>
+>例4：
+>
+>输入：10
+>
+>输出：True
+>
+>解释：
+>
+>5的二进制表示是：1010
+
+## 思路：
+最简单的就是循环右移并用模2来获得最低位的值，并依次进行比较看是否不同。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    bool hasAlternatingBits(int n) {
+        int temp = n % 2;
+        while (n > 0) {
+            n = n >> 1;
+            if (n % 2 == temp) return false;
+            temp = n % 2;
+        }
+        return true;
+    }
+};
+```
+
+## 他山之石：
+交替的比特位其实是个很有特点的排列，如果右移一次，得到的数可以刚好和原本的数互补，比如101010，右移得到10101：
+
+101010
+010101
+
+相加就会得到：
+
+11111
+
+我们可以利用这个特点，如果是交替的比特位，右移一位后相加可以得到一个全是1的数，再加1会的得到一个最高位为1，其余位为0的数，与全是1的数相与将为0，但如果不是交替的比特位，就没有这个特性，因此可以这样判断，速度更快。
+
+```cpp
+class Solution {
+public:
+    bool hasAlternatingBits(int n) {
+        return (((long)n + (n>>1) + 1) & ((long)n + (n>>1))) == 0;
     }
 };
 ```
