@@ -7995,7 +7995,7 @@ public:
 -------------------------
 
 ## <a name="693"/>693. Binary Number with Alternating Bits
-## 问题（*Easy*）：
+## 问题：
 >Given a positive integer, check whether it has alternating bits: namely, if two adjacent bits will always have different values.
 >
 >Example 1:
