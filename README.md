@@ -104,6 +104,7 @@ LeetCode笔记
   * [637. Average of Levels in Binary Tree](#637)
   * [760. Find Anagram Mappings](#760)
   * [693. Binary Number with Alternating Bits](#693)
+  * [762. Prime Number of Set Bits in Binary Representation](#762)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -8117,6 +8118,147 @@ class Solution {
 public:
     bool hasAlternatingBits(int n) {
         return (((long)n + (n>>1) + 1) & ((long)n + (n>>1))) == 0;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="762"/>762. Prime Number of Set Bits in Binary Representation
+## 问题（*Easy*）：
+>Given two integers L and R, find the count of numbers in the range [L, R] (inclusive) having a prime number of set bits in their binary representation.
+>
+>(Recall that the number of set bits an integer has is the number of 1s present when written in binary. For example, 21 written in binary is 10101 which has 3 set bits. Also, 1 is not a prime.)
+>
+>Example 1:
+>
+>Input: L = 6, R = 10
+>
+>Output: 4
+>
+>Explanation:
+>
+>6 -> 110 (2 set bits, 2 is prime)
+>
+>7 -> 111 (3 set bits, 3 is prime)
+>
+>9 -> 1001 (2 set bits , 2 is prime)
+>
+>10->1010 (2 set bits , 2 is prime)
+>
+>Example 2:
+>
+>Input: L = 10, R = 15
+>
+>Output: 5
+>
+>Explanation:
+>
+>10 -> 1010 (2 set bits, 2 is prime)
+>
+>11 -> 1011 (3 set bits, 3 is prime)
+>
+>12 -> 1100 (2 set bits, 2 is prime)
+>
+>13 -> 1101 (3 set bits, 3 is prime)
+>
+>14 -> 1110 (3 set bits, 3 is prime)
+>
+>15 -> 1111 (4 set bits, 4 is not prime)
+>
+>Note:
+>1. L, R will be integers L <= R in the range [1, 10^6].
+>2. R - L will be at most 10000.
+
+## 大意：
+>给出两个整数L和R，找出[L,R]（包含）范围中的数字以二进制表示时所拥有的比特位为1的数量为质数的总个数。
+>
+>（比如，21写成二进制为10101，有三个比特位为1。此外，1不是质数。）
+>
+>例1：
+>
+>输入：L = 6, R = 10
+>
+>输出：4
+>
+>解释：
+>
+>6 -> 110 (2 个1, 2 是质数)
+>
+>7 -> 111 (3 个1, 3 是质数)
+>
+>9 -> 1001 (2 个1 , 2 是质数)
+>
+>10->1010 (2 个1 , 2 是质数)
+>
+>例2：
+>
+>输入：L = 10, R = 15
+>
+>输出：5
+>
+>10 -> 1010 (2 个1, 2 是质数)
+>
+>11 -> 1011 (3 个1, 3 是质数)
+>
+>12 -> 1100 (2 个1, 2 是质数)
+>
+>13 -> 1101 (3 个1, 3 是质数)
+>
+>14 -> 1110 (3 个1, 3 是质数)
+>
+>15 -> 1111 (4 个1, 4 不是质数)
+>
+>注意：
+>1. L、R会是[1,10^6]范围内的整数。
+>2. R - L最多为10000。
+
+## 思路：
+没有特别简单的方法，只能对于范围内每个数字去数其二进制表示形式下有几个1，这一点可以通过右移操作来一位位判断。然后对于1的个数，判断其是否是质数，因为R最多为10^6，所以最大的数字转换成二进制是20位，也就是最多有二十个1，那么只需要知道1~20有哪些质数就可以了，并不多，只有2、3、5、7、11、13、17、19，可以发现剩下的数字除了1以外都能被2或者3整除，所以可以直接判断了。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int countPrimeSetBits(int L, int R) {
+        int res = 0;
+        for (int i = L; i <= R; i++) {
+            int num = 0;
+            int temp = i;
+            while (temp > 0) {
+                if (temp & 1 == 1) num++;
+                temp = temp >> 1;
+            }
+            
+            if (num == 2 || num == 3) res++;
+            else if (num != 1 && num % 2 !=0 && num % 3 != 0) res++;
+        }
+        return res;
+    }
+};
+```
+
+当然，判断质数的时候可以用set来判断，可能会更快一些。
+
+```cpp
+class Solution {
+public:
+    int countPrimeSetBits(int L, int R) {
+        set<int> primes = { 2, 3, 5, 7, 11, 13, 17, 19 };
+        int res = 0;
+        for (int i = L; i <= R; i++) {
+            int num = 0;
+            int temp = i;
+            while (temp > 0) {
+                if (temp & 1 == 1) num++;
+                temp = temp >> 1;
+            }
+            
+            res += primes.count(num);
+        }
+        return res;
     }
 };
 ```
