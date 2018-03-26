@@ -105,6 +105,7 @@ LeetCode笔记
   * [760. Find Anagram Mappings](#760)
   * [693. Binary Number with Alternating Bits](#693)
   * [762. Prime Number of Set Bits in Binary Representation](#762)
+  * [485. Max Consecutive Ones](#485)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -8257,6 +8258,74 @@ public:
             }
             
             res += primes.count(num);
+        }
+        return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="485"/>485. Max Consecutive Ones
+## 问题（*Easy*）：
+>Given a binary array, find the maximum number of consecutive 1s in this array.
+>
+>Example 1:
+>
+>Input: [1,1,0,1,1,1]
+>
+>Output: 3
+>
+>Explanation: The first two digits or the last three digits are consecutive 1s.
+>
+>    The maximum number of consecutive 1s is 3.
+>
+>Note:
+>1. The input array will only contain 0 and 1.
+>2. The length of input array is a positive integer and will not exceed 10,000
+
+## 大意：
+>给出一个二进制数组，在数组中找到连续的1最大的长度。
+>
+>例1：
+>
+>输入：[1,1,0,1,1,1]
+>
+>输出：3
+>
+>解释：开头两个数字和最后三个数字是连续的1。
+>
+>最大的连续的1是3个。
+>
+>注意：
+>1. 输入的数组只包含0和1。
+>2. 输入数组的长度是个正整数且不超过10000。
+
+## 思路：
+无非就是遍历数组，检查连续的1，用一个临时变量记录每次连续的1的个数，连续结束时判断是否比最大的连续个数要大。
+
+代码的写法可以有很多种，也会随着写法不同带来一些效率差异，但时间复杂度是一样的。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int findMaxConsecutiveOnes(vector<int>& nums) {
+        int res = 0;
+        int temp = 0;
+        bool flag = true;
+        for (int i = 0; i < nums.size(); i++) {
+            if (nums[i] == 1) {
+                if (flag) temp++;
+                else {
+                    temp = 1;
+                    flag = true;
+                }
+                if (temp > res) res = temp;
+            } else 
+                if (flag) flag = false;
         }
         return res;
     }
