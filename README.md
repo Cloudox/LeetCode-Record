@@ -106,6 +106,7 @@ LeetCode笔记
   * [693. Binary Number with Alternating Bits](#693)
   * [762. Prime Number of Set Bits in Binary Representation](#762)
   * [485. Max Consecutive Ones](#485)
+  * [695. Max Area of Island](#695)
 * Medium
   
   * [419. Battleships in a Board](#419)
@@ -8326,6 +8327,114 @@ public:
                 if (temp > res) res = temp;
             } else 
                 if (flag) flag = false;
+        }
+        return res;
+    }
+};
+```
+
+[回到目录](#Catalogue)
+
+-------------------------
+
+## <a name="695"/>695. Max Area of Island
+## 问题（*Easy*）：
+>Given a non-empty 2D array grid of 0's and 1's, an island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+>
+>Find the maximum area of an island in the given 2D array. (If there is no island, the maximum area is 0.)
+>
+>Example 1:
+>
+>[[0,0,1,0,0,0,0,1,0,0,0,0,0],
+>
+> [0,0,0,0,0,0,0,1,1,1,0,0,0],
+>
+> [0,1,1,0,1,0,0,0,0,0,0,0,0],
+>
+> [0,1,0,0,1,1,0,0,1,0,1,0,0],
+>
+> [0,1,0,0,1,1,0,0,1,1,1,0,0],
+>
+> [0,0,0,0,0,0,0,0,0,0,1,0,0],
+>
+> [0,0,0,0,0,0,0,1,1,1,0,0,0],
+>
+> [0,0,0,0,0,0,0,1,1,0,0,0,0]]
+>
+>Given the above grid, return 6. Note the answer is not 11, because the island must be connected 4-directionally.
+>
+>Example 2:
+>
+>[[0,0,0,0,0,0,0,0]]
+>
+>Given the above grid, return 0.
+>
+>Note: The length of each dimension in the given grid does not exceed 50.
+
+## 大意：
+>给出一个非空的二维数组grid，由0和1组成，一个岛是指由1通过四个方向（水平或垂直）组成的一块区域（代表陆地）。你可以假设grid的四边都是水。
+>
+>找到给出的二维数组中最大区域的岛。（如果没有岛，最大区域就是0）。
+>
+>例1：
+>
+[[0,0,1,0,0,0,0,1,0,0,0,0,0],
+>
+> [0,0,0,0,0,0,0,1,1,1,0,0,0],
+>
+> [0,1,1,0,1,0,0,0,0,0,0,0,0],
+>
+> [0,1,0,0,1,1,0,0,1,0,1,0,0],
+>
+> [0,1,0,0,1,1,0,0,1,1,1,0,0],
+>
+> [0,0,0,0,0,0,0,0,0,0,1,0,0],
+>
+> [0,0,0,0,0,0,0,1,1,1,0,0,0],
+>
+> [0,0,0,0,0,0,0,1,1,0,0,0,0]]
+>
+>给出上面的grid，返回6。注意答案不是11，因为岛必须由四个方向连接。
+>
+>例2：
+>
+>[[0,0,0,0,0,0,0,0]]
+>
+>给出上面的grid，返回0。
+>
+>注意：给出的grid每个方向的长度不会超过50。
+
+## 思路：
+我们遍历二维数组的时候，遇到1了，肯定是要检查上下左右是否依然是1（同时注意不要超出边界），如果检查出某一边是1，则还要进一步继续检查它的上下左右是否是1，这说明我们要通过递归来做，遍历时每遇到一个1，就放到递归中去检测并计算岛屿面积。
+
+此外，为了避免循环计算重复的区域，我们要改变已经计算过的岛屿的位置的值，可以从1改成2。
+
+这种递归方式其实就是一种DFS，遇到一个1，则找遍其四周及四周的四周等等，来计算一个岛屿面积，同时改变找过的1的值，避免重复计算。
+
+## 代码（C++）：
+```cpp
+class Solution {
+public:
+    int findLand(vector<vector<int>>& grid, int i, int j) {
+        grid[i][j] = 2;
+        int sum = 1;
+        if (i > 0 && grid[i-1][j] == 1) sum = sum + findLand(grid, i-1, j);
+        if (i < grid.size()-1 && grid[i+1][j] == 1) sum = sum + findLand(grid, i+1, j);
+        if (j > 0 && grid[i][j-1] == 1) sum = sum + findLand(grid, i, j-1);
+        if (j < grid[0].size()-1 && grid[i][j+1] == 1) sum = sum + findLand(grid, i, j+1);
+        return sum;
+    }
+    
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        if (grid.size() == 0) return 0;
+        int res = 0;
+        for (int i = 0; i < grid.size(); i++) {
+            for (int j = 0; j < grid[0].size(); j++) {
+                if (grid[i][j] == 1) {
+                    int temp = findLand(grid, i, j);
+                    res = max(temp, res);
+                }
+            }
         }
         return res;
     }
